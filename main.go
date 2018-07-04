@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	bind := flag.String("bind", ":20002", "Port to bind to")
 	iterations := flag.Int("i", 600, "Graph layout iterations to run (0 = auto, buggy)")
 	flag.Parse()
 
@@ -39,7 +40,7 @@ func main() {
 	ws.updateGraph(data)
 	ws.updatePropagationData(plog)
 
-	log.Printf("Starting web server...")
-	startWeb(ws)
+	log.Printf("Starting web server on %s...", *bind)
+	startWeb(ws, *bind)
 	select {}
 }

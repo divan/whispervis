@@ -9,8 +9,7 @@ import (
 	"runtime"
 )
 
-func startWeb(ws *WSServer) {
-	port := ":20002"
+func startWeb(ws *WSServer, port string) {
 	go func() {
 		fs := http.FileServer(http.Dir("web"))
 		http.Handle("/", noCacheMiddleware(fs))
