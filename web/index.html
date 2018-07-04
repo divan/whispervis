@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>Status Whisper network graph</title>
+		<style>
+			body { margin: 0; }
+		</style>
+		<link rel="stylesheet" href="css/controls.css" type="text/css">
+		<link rel="stylesheet" href="css/pure-min.css" type="text/css">
+		<style>
+				.button-large {
+					font-size: 100%;
+					width: 100px;
+					border-radius: 4px;
+					text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+				}
+
+				.button-success {
+					background: rgb(28, 184, 65);
+					color: white;
+				}
+
+				.button-secondary {
+					color: white;
+					background: rgb(66, 184, 221);
+				}
+
+				.button-error {
+					background: rgb(202, 60, 60);
+					color: white;
+				}
+		</style>
+	</head>
+	<body>
+		<div class="pure-g">
+			<div class="pure-u-1-5">
+				<h1>Status Whisper Network Graph</h1>
+				<p>This graph represents Status cluster and connected peers, as
+				reported by instrumented nodes and Status app with metrics option
+				enabled.</p>
+				<div>
+					<button class="pure-button pure-button-primary" id="replayButton">Replay</button>
+				</div>
+			</div>
+			<div class="pure-u-4-5">
+				<canvas id="preview"></canvas>
+			</div>
+		</div>
+		<script src="node_modules/three/build/three.min.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/controls/FlyControls.js"></script>
+
+		<script src="bundle.js"></script>
+	</body>
+</html>
