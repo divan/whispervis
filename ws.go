@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/divan/graph-experiments/graph"
-	"github.com/divan/graph-experiments/layout"
+	"github.com/divan/graphx/graph"
+	"github.com/divan/graphx/layout"
 	"github.com/gorilla/websocket"
 )
 

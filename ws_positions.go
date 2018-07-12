@@ -21,11 +21,11 @@ func (ws *WSServer) updatePositions() {
 	// positions
 	nodes := ws.layout.Nodes()
 	positions := []*position{}
-	for i := 0; i < len(nodes); i++ {
+	for _, node := range nodes {
 		pos := &position{
-			X: nodes[i].X,
-			Y: nodes[i].Y,
-			Z: nodes[i].Z,
+			X: node.X,
+			Y: node.Y,
+			Z: node.Z,
 		}
 		positions = append(positions, pos)
 	}
