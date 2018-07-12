@@ -1,11 +1,13 @@
 package main
 
-import "github.com/gorilla/websocket"
+import (
+	"github.com/gorilla/websocket"
+)
 
 type position struct {
-	X int `json:"x"`
-	Y int `json:"y"`
-	Z int `json:"z"`
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+	Z float64 `json:"z"`
 }
 
 func (ws *WSServer) sendPositions(c *websocket.Conn) {
@@ -19,17 +21,21 @@ func (ws *WSServer) sendPositions(c *websocket.Conn) {
 
 func (ws *WSServer) updatePositions() {
 	// positions
-	nodes := ws.layout.Nodes()
-	positions := []*position{}
-	for _, node := range nodes {
-		pos := &position{
-			X: node.X,
-			Y: node.Y,
-			Z: node.Z,
+	nodes := ws.layout.Positions()
+	ws.Positions = nodes
+	/*
+		positions := []*position{}
+		for _, node := range nodes {
+			log.Println("node", node)
+			pos := &position{
+				X: node.X,
+				Y: node.Y,
+				Z: node.Z,
+			}
+			positions = append(positions, pos)
 		}
-		positions = append(positions, pos)
-	}
-	ws.Positions = positions
+		ws.Positions = positions
+	*/
 
 	ws.broadcastPositions()
 }

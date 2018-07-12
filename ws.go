@@ -14,13 +14,14 @@ type WSServer struct {
 	upgrader websocket.Upgrader
 	hub      []*websocket.Conn
 
-	Positions   []*position
-	layout      layout.Layout
+	//Positions   []*position
+	Positions   map[string]*layout.Object
+	layout      *layout.Layout
 	graph       *graph.Graph
 	propagation *PropagationLog
 }
 
-func NewWSServer(layout layout.Layout) *WSServer {
+func NewWSServer(layout *layout.Layout) *WSServer {
 	ws := &WSServer{
 		upgrader: websocket.Upgrader{},
 		layout:   layout,
@@ -30,10 +31,11 @@ func NewWSServer(layout layout.Layout) *WSServer {
 }
 
 type WSResponse struct {
-	Type        MsgType         `json:"type"`
-	Positions   []*position     `json:"positions,omitempty"`
-	Graph       json.RawMessage `json:"graph,omitempty"`
-	Propagation *PropagationLog `json:"propagation,omitempty"`
+	Type MsgType `json:"type"`
+	//Positions   []*position     `json:"positions,omitempty"`
+	Positions   map[string]*layout.Object `json:"positions,omitempty"`
+	Graph       json.RawMessage           `json:"graph,omitempty"`
+	Propagation *PropagationLog           `json:"propagation,omitempty"`
 }
 
 type WSRequest struct {
