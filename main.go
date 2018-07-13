@@ -26,10 +26,7 @@ func main() {
 	log.Printf("Loaded propagation data: %d timestamps\n", len(plog.Timestamps))
 
 	log.Printf("Initializing layout...")
-	repelling := layout.NewGravityForce(-100.0, layout.EachOnEach)
-	springs := layout.NewSpringForce(0.02, 10.0, layout.ForEachLink)
-	drag := layout.NewDragForce(0.1, layout.ForEachNode)
-	l := layout.New(data, repelling, springs, drag)
+	l := layout.NewAuto(data)
 
 	ws := NewWSServer(l)
 	if *iterations == 0 {
