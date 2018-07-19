@@ -4,8 +4,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/divan/graph-experiments/graph"
-	"github.com/divan/graph-experiments/layout"
+	"github.com/divan/graphx/formats"
+	"github.com/divan/graphx/layout"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	iterations := flag.Int("i", 600, "Graph layout iterations to run (0 = auto, buggy)")
 	flag.Parse()
 
-	data, err := graph.NewGraphFromJSON("network.json")
+	data, err := formats.FromD3JSON("network.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,17 +26,15 @@ func main() {
 	log.Printf("Loaded propagation data: %d timestamps\n", len(plog.Timestamps))
 
 	log.Printf("Initializing layout...")
-	repelling := layout.NewGravityForce(-100.0, layout.BarneHutMethod)
-	springs := layout.NewSpringForce(0.01, 5.0, layout.ForEachLink)
-	drag := layout.NewDragForce(0.4, layout.ForEachNode)
-	layout3D := layout.New(data, repelling, springs, drag)
+	l := layout.NewAuto(data)
 
-	ws := NewWSServer(layout3D)
+	ws := NewWSServer(l)
 	if *iterations == 0 {
 		ws.layout.Calculate()
 	} else {
 		ws.layout.CalculateN(*iterations)
 	}
+	ws.updatePositions()
 	ws.updateGraph(data)
 	ws.updatePropagationData(plog)
 

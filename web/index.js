@@ -27,7 +27,16 @@ function setPropagation(plogData) {
 }
 
 function updatePositions(data) {
-	positions = data;
+	positions = [];
+	Object.keys(data).forEach((k) => {
+		let v = data[k];
+		positions[k] = {
+			x: v.X,
+			y: v.Y,
+			z: v.Z,
+		};
+	})
+	console.log("Positions", positions);
 
 	redrawGraph();
 }
@@ -135,8 +144,8 @@ var initGraph = function () {
 		sphere.__data = node; // Attach node data
 
 		nodesGroup.add(node.__sphere = sphere);
-		if (positions[idx] !== undefined) {
-			sphere.position.set(positions[idx].x, positions[idx].y, positions[idx].z);
+		if (positions[node.id] !== undefined) {
+			sphere.position.set(positions[node.id].x, positions[node.id].y, positions[node.id].z);
 		}
 	});
 
@@ -184,9 +193,9 @@ var redrawGraph = function () {
 		const sphere = node.__sphere;
 		if (!sphere) return;
 
-		sphere.position.x = positions[idx].x;
-		sphere.position.y = positions[idx].y || 0;
-		sphere.position.z = positions[idx].z || 0;
+		sphere.position.x = positions[node.id].x;
+		sphere.position.y = positions[node.id].y || 0;
+		sphere.position.z = positions[node.id].z || 0;
 	});
 
 
@@ -196,20 +205,8 @@ var redrawGraph = function () {
 
 		linePos = line.geometry.attributes.position;
 
-		// TODO: move this index into map/cache or even into original graph data
-		let start, end;
-		for (let i = 0; i < graphData.nodes.length; i++) {
-			if (graphData.nodes[i].id === link.source) {
-				start = i;
-				break;
-			}	
-		}
-		for (let i = 0; i < graphData.nodes.length; i++) {
-			if (graphData.nodes[i].id === link["target"]) {
-				end = i;
-				break;
-			}	
-		}
+		let start = link.source;
+		let end = link.target;
 
 		linePos.array[0] = positions[start].x;
 		linePos.array[1] = positions[start].y || 0;
