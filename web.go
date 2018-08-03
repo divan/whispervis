@@ -1,8 +1,10 @@
 //go:generate browserify web/index.js web/js/ws.js -o web/bundle.js
+//go:generate $GOPATH/bin/go-bindata -nocompress=false -nomemcopy=true -prefix=web -o "assets.go" web/index.html web/bundle.js web/node_modules/three/build/three.min.js web/js/controls web/css/...
 package main
 
 import (
 	"fmt"
+	"github.com/elazarl/go-bindata-assetfs"
 	"log"
 	"net/http"
 	"os/exec"
@@ -11,8 +13,9 @@ import (
 
 func startWeb(ws *WSServer, port string) {
 	go func() {
-		fs := http.FileServer(http.Dir("web"))
-		http.Handle("/", noCacheMiddleware(fs))
+		// Handle static files
+		fs := &assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, AssetInfo: AssetInfo, Prefix: ""}
+		http.Handle("/", noCacheMiddleware(http.FileServer(fs)))
 		http.HandleFunc("/ws", ws.Handle)
 		log.Fatal(http.ListenAndServe(port, nil))
 	}()
