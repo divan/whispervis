@@ -4,3 +4,4 @@ node_modules/
 network.json
 data.json
 propagation.json
+.DS_Store
