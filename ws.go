@@ -31,8 +31,7 @@ func NewWSServer(layout *layout.Layout) *WSServer {
 }
 
 type WSResponse struct {
-	Type MsgType `json:"type"`
-	//Positions   []*position     `json:"positions,omitempty"`
+	Type        MsgType                   `json:"type"`
 	Positions   map[string]*layout.Object `json:"positions,omitempty"`
 	Graph       json.RawMessage           `json:"graph,omitempty"`
 	Propagation *PropagationLog           `json:"propagation,omitempty"`
@@ -54,7 +53,8 @@ const (
 
 // WebSocket commands
 const (
-	CmdInit WSCommand = "init"
+	CmdInit        WSCommand = "init"
+	CmdSendMessage WSCommand = "send_message"
 )
 
 func (ws *WSServer) Handle(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +90,8 @@ func (ws *WSServer) processRequest(c *websocket.Conn, mtype int, data []byte) {
 		ws.sendGraphData(c)
 		ws.updatePositions()
 		ws.sendPositions(c)
+		ws.sendPropagationData(c)
+	case CmdSendMessage:
 		ws.sendPropagationData(c)
 	}
 }
