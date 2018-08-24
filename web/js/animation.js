@@ -36,20 +36,12 @@ function blinkLink(links, indices) {
 	});
 }
 
-var nodeCounters = {};
-var maxCounter = 0;
 var nodeMaterials = {};
 
-// blinkNodes updates nodes color increasing its temperature
-// in a heatmap style
+// blinkNodes updates nodes color 
 function blinkNodes(nodes, indices) {
-	indices.forEach(idx => {
-		nodeCounters[idx] = nodeCounters[idx] ? nodeCounters[idx]+1 : 1;
-		if (nodeCounters[idx] > maxCounter) {
-			maxCounter = nodeCounters[idx];
-		}
-	});
-	// TODO: FIXME: how to make simple map counter without this fucking bullshit?
+	// TODO: implement proper node blink
+	/*
 	Object.keys(nodeCounters).forEach(idx => {
 		let c = nodeCounters[idx];
 		let scale = c / maxCounter;
@@ -59,6 +51,7 @@ function blinkNodes(nodes, indices) {
 		}
 		nodes.children[idx].material = nodeMaterials[color];
 	});
+	*/
 }
 
 function animatePropagation(nodes, links, plog) {
