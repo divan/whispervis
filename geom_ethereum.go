@@ -2,17 +2,19 @@ package main
 
 import "github.com/lngramos/three"
 
-func NewEthereumGeometry(zoom float64) three.Geometry {
+// NewEthereumGeometry creates a geometry for representing Ethereum node (non-regular 3D octahedron).
+// It scales object according to the given scale.
+func NewEthereumGeometry(scale float64) three.Geometry {
 	var geom = three.NewBasicGeometry(three.BasicGeometryParams{})
 	vertices := []struct {
 		x, y, z float64
 	}{
-		{zoom * 1.0, 0.0, 0.0},
-		{zoom * -1.0, 0.0, 0.0},
-		{0.0, zoom * 1.5, 0.0},
-		{0.0, zoom * -1.5, 0.0},
-		{0.0, 0.0, zoom * 1.0},
-		{0.0, 0.0, zoom * -1.0},
+		{scale * 1.0, 0.0, 0.0},
+		{scale * -1.0, 0.0, 0.0},
+		{0.0, scale * 1.5, 0.0},
+		{0.0, scale * -1.5, 0.0},
+		{0.0, 0.0, scale * 1.0},
+		{0.0, 0.0, scale * -1.0},
 	}
 
 	for _, v := range vertices {

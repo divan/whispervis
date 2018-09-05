@@ -31667,7 +31667,7 @@ $packages["github.com/vecty/vthree"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/status-im/whispervis"] = (function() {
-	var $pkg = {}, $init, bytes, formats, layout, js, vecty, elem, event, three, vthree, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, sliceType$3, sliceType$4, sliceType$5, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, inputJSON, NewTrackBallControl, NewEthereumGeometry, main;
+	var $pkg = {}, $init, bytes, formats, layout, js, vecty, elem, event, three, vthree, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, sliceType$3, sliceType$4, sliceType$5, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial;
 	bytes = $packages["bytes"];
 	formats = $packages["github.com/divan/graphx/formats"];
 	layout = $packages["github.com/divan/graphx/layout"];
@@ -31685,7 +31685,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		}
 		this.Object = Object_;
 	});
-	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, group_, controls_, autoRotate_) {
+	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
@@ -31693,7 +31693,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			this.scene = ptrType$2.nil;
 			this.camera = new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null));
 			this.renderer = ptrType.nil;
-			this.group = ptrType$3.nil;
+			this.graph = ptrType$3.nil;
+			this.nodes = ptrType$3.nil;
+			this.edges = ptrType$3.nil;
 			this.controls = new TrackBallControl.ptr(null);
 			this.autoRotate = false;
 			return;
@@ -31703,7 +31705,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		this.scene = scene_;
 		this.camera = camera_;
 		this.renderer = renderer_;
-		this.group = group_;
+		this.graph = graph_;
+		this.nodes = nodes_;
+		this.edges = edges_;
 		this.controls = controls_;
 		this.autoRotate = autoRotate_;
 	});
@@ -31735,7 +31739,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		$clone(p.controls, TrackBallControl).Update();
 		$global.requestAnimationFrame($externalize($methodVal(p, "animate"), funcType));
 		if (p.autoRotate) {
-			pos = p.group.Object.rotation;
+			pos = p.graph.Object.rotation;
 			pos.y = $parseFloat(pos.y) + 0.01;
 		}
 		$clone(p.renderer, three.WebGLRenderer).Render(p.scene, $clone(p.camera, three.PerspectiveCamera));
@@ -31759,10 +31763,10 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		t.Object.update();
 	};
 	TrackBallControl.prototype.Update = function() { return this.$val.Update(); };
-	NewEthereumGeometry = function(zoom) {
-		var _i, _i$1, _ref, _ref$1, f, faces, geom, v, vertices, zoom;
+	NewEthereumGeometry = function(scale) {
+		var _i, _i$1, _ref, _ref$1, f, faces, geom, scale, v, vertices;
 		geom = $clone(three.NewBasicGeometry(new three.BasicGeometryParams.ptr()), three.BasicGeometry);
-		vertices = new sliceType$1([new structType.ptr(zoom * 1, 0, 0), new structType.ptr(zoom * -1, 0, 0), new structType.ptr(0, zoom * 1.5, 0), new structType.ptr(0, zoom * -1.5, 0), new structType.ptr(0, 0, zoom * 1), new structType.ptr(0, 0, zoom * -1)]);
+		vertices = new sliceType$1([new structType.ptr(scale * 1, 0, 0), new structType.ptr(scale * -1, 0, 0), new structType.ptr(0, scale * 1.5, 0), new structType.ptr(0, scale * -1.5, 0), new structType.ptr(0, 0, scale * 1), new structType.ptr(0, 0, scale * -1)]);
 		_ref = vertices;
 		_i = 0;
 		while (true) {
@@ -31809,7 +31813,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		_r$1 = layout.NewAuto(data); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
 		l = _r$1;
 		$r = l.CalculateN(50); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l, ptrType$2.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$3.nil, new TrackBallControl.ptr(null), false);
+		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l, ptrType$2.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$3.nil, ptrType$3.nil, ptrType$3.nil, new TrackBallControl.ptr(null), false);
 		$r = vecty.SetTitle("Whisper Simulation"); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = vecty.AddStylesheet("css/pure-min.css"); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = vecty.AddStylesheet("css/controls.css"); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
@@ -31857,64 +31861,102 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.init = function(renderer) { return this.$val.init(renderer); };
 	Page.ptr.prototype.shutdown = function(renderer) {
-		var p, renderer;
+		var _tmp, _tmp$1, _tmp$2, p, renderer;
 		p = this;
 		p.scene = ptrType$2.nil;
 		three.PerspectiveCamera.copy(p.camera, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)));
 		p.renderer = ptrType.nil;
-		p.group = ptrType$3.nil;
+		_tmp = ptrType$3.nil;
+		_tmp$1 = ptrType$3.nil;
+		_tmp$2 = ptrType$3.nil;
+		p.graph = _tmp;
+		p.nodes = _tmp$1;
+		p.edges = _tmp$2;
 	};
 	Page.prototype.shutdown = function(renderer) { return this.$val.shutdown(renderer); };
+	NewNodeMaterial = function() {
+		var params;
+		params = three.NewMaterialParameters();
+		params.Object.color = $externalize(three.NewColor(0, 255, 0), ptrType$4);
+		return three.NewMeshPhongMaterial(params);
+	};
+	$pkg.NewNodeMaterial = NewNodeMaterial;
+	NewEdgeMatherial = function() {
+		var params;
+		params = three.NewMaterialParameters();
+		params.Object.color = $externalize(three.NewColor(200, 200, 255), ptrType$4);
+		return three.NewLineBasicMaterial(params);
+	};
+	$pkg.NewEdgeMatherial = NewEdgeMatherial;
 	Page.ptr.prototype.CreateObjects = function() {
-		var _entry, _entry$1, _entry$2, _i, _i$1, _keys, _r, _ref, _ref$1, end, from, geom, geometry, line, lineMaterial, lineMaterialParams, link, material, materialParams, mesh, node, p, start, to, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _entry$1 = $f._entry$1; _entry$2 = $f._entry$2; _i = $f._i; _i$1 = $f._i$1; _keys = $f._keys; _r = $f._r; _ref = $f._ref; _ref$1 = $f._ref$1; end = $f.end; from = $f.from; geom = $f.geom; geometry = $f.geometry; line = $f.line; lineMaterial = $f.lineMaterial; lineMaterialParams = $f.lineMaterialParams; link = $f.link; material = $f.material; materialParams = $f.materialParams; mesh = $f.mesh; node = $f.node; p = $f.p; start = $f.start; to = $f.to; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var p, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		p = this;
-		p.group = three.NewGroup();
-		$r = p.scene.Add(p.group); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		geometry = NewEthereumGeometry(2);
-		materialParams = three.NewMaterialParameters();
-		materialParams.Object.color = $externalize(three.NewColor(0, 255, 0), ptrType$4);
-		material = three.NewMeshPhongMaterial(materialParams);
+		p.graph = three.NewGroup();
+		$r = p.scene.Add(p.graph); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		p.nodes = three.NewGroup();
+		$r = p.graph.Add(p.nodes); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		p.edges = three.NewGroup();
+		$r = p.graph.Add(p.edges); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = p.createNodes(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = p.createEdges(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.CreateObjects }; } $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Page.prototype.CreateObjects = function() { return this.$val.CreateObjects(); };
+	Page.ptr.prototype.createNodes = function() {
+		var _entry, _i, _keys, _r, _ref, geometry, material, mesh, node, p, scale, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _i = $f._i; _keys = $f._keys; _r = $f._r; _ref = $f._ref; geometry = $f.geometry; material = $f.material; mesh = $f.mesh; node = $f.node; p = $f.p; scale = $f.scale; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		p = this;
+		scale = 2;
+		geometry = NewEthereumGeometry(scale);
+		material = NewNodeMaterial();
 		_ref = p.layout.Positions();
 		_i = 0;
 		_keys = $keys(_ref);
-		/* while (true) { */ case 2:
-			/* if (!(_i < _keys.length)) { break; } */ if(!(_i < _keys.length)) { $s = 3; continue; }
+		/* while (true) { */ case 1:
+			/* if (!(_i < _keys.length)) { break; } */ if(!(_i < _keys.length)) { $s = 2; continue; }
 			_entry = _ref[_keys[_i]];
 			if (_entry === undefined) {
 				_i++;
-				/* continue; */ $s = 2; continue;
+				/* continue; */ $s = 1; continue;
 			}
 			node = _entry.v;
-			_r = three.NewMesh(geometry, material); /* */ $s = 4; case 4: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r = three.NewMesh(geometry, material); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			mesh = _r;
 			$clone($internalize(mesh.Object.position, ptrType$5), three.Vector3).Set(node.X, node.Y, node.Z);
-			$r = p.group.Add(mesh); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = p.nodes.Add(mesh); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			_i++;
-		/* } */ $s = 2; continue; case 3:
-		lineMaterialParams = three.NewMaterialParameters();
-		lineMaterialParams.Object.color = $externalize(three.NewColor(200, 200, 255), ptrType$4);
-		lineMaterial = three.NewLineBasicMaterial(lineMaterialParams);
-		_ref$1 = p.layout.Links();
-		_i$1 = 0;
-		/* while (true) { */ case 6:
-			/* if (!(_i$1 < _ref$1.$length)) { break; } */ if(!(_i$1 < _ref$1.$length)) { $s = 7; continue; }
-			link = ((_i$1 < 0 || _i$1 >= _ref$1.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref$1.$array[_ref$1.$offset + _i$1]);
+		/* } */ $s = 1; continue; case 2:
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.createNodes }; } $f._entry = _entry; $f._i = _i; $f._keys = _keys; $f._r = _r; $f._ref = _ref; $f.geometry = geometry; $f.material = material; $f.mesh = mesh; $f.node = node; $f.p = p; $f.scale = scale; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Page.prototype.createNodes = function() { return this.$val.createNodes(); };
+	Page.ptr.prototype.createEdges = function() {
+		var _entry, _entry$1, _i, _ref, end, from, geom, line, link, material, p, start, to, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _entry$1 = $f._entry$1; _i = $f._i; _ref = $f._ref; end = $f.end; from = $f.from; geom = $f.geom; line = $f.line; link = $f.link; material = $f.material; p = $f.p; start = $f.start; to = $f.to; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		p = this;
+		material = NewEdgeMatherial();
+		_ref = p.layout.Links();
+		_i = 0;
+		/* while (true) { */ case 1:
+			/* if (!(_i < _ref.$length)) { break; } */ if(!(_i < _ref.$length)) { $s = 2; continue; }
+			link = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
 			from = link.From();
 			to = link.To();
-			start = (_entry$1 = p.layout.Positions()[$String.keyFor(from)], _entry$1 !== undefined ? _entry$1.v : ptrType$6.nil);
-			end = (_entry$2 = p.layout.Positions()[$String.keyFor(to)], _entry$2 !== undefined ? _entry$2.v : ptrType$6.nil);
+			start = (_entry = p.layout.Positions()[$String.keyFor(from)], _entry !== undefined ? _entry.v : ptrType$6.nil);
+			end = (_entry$1 = p.layout.Positions()[$String.keyFor(to)], _entry$1 !== undefined ? _entry$1.v : ptrType$6.nil);
 			geom = $clone(three.NewBasicGeometry(new three.BasicGeometryParams.ptr()), three.BasicGeometry);
 			geom.AddVertice(start.X, start.Y, start.Z);
 			geom.AddVertice(end.X, end.Y, end.Z);
-			line = three.NewLine(new geom.constructor.elem(geom), lineMaterial);
-			$r = p.group.Add(line); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			_i$1++;
-		/* } */ $s = 6; continue; case 7:
+			line = three.NewLine(new geom.constructor.elem(geom), material);
+			$r = p.edges.Add(line); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			_i++;
+		/* } */ $s = 1; continue; case 2:
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.CreateObjects }; } $f._entry = _entry; $f._entry$1 = _entry$1; $f._entry$2 = _entry$2; $f._i = _i; $f._i$1 = _i$1; $f._keys = _keys; $f._r = _r; $f._ref = _ref; $f._ref$1 = _ref$1; $f.end = end; $f.from = from; $f.geom = geom; $f.geometry = geometry; $f.line = line; $f.lineMaterial = lineMaterial; $f.lineMaterialParams = lineMaterialParams; $f.link = link; $f.material = material; $f.materialParams = materialParams; $f.mesh = mesh; $f.node = node; $f.p = p; $f.start = start; $f.to = to; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.createEdges }; } $f._entry = _entry; $f._entry$1 = _entry$1; $f._i = _i; $f._ref = _ref; $f.end = end; $f.from = from; $f.geom = geom; $f.line = line; $f.link = link; $f.material = material; $f.p = p; $f.start = start; $f.to = to; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	Page.prototype.CreateObjects = function() { return this.$val.CreateObjects(); };
+	Page.prototype.createEdges = function() { return this.$val.createEdges(); };
 	Page.ptr.prototype.InitScene = function(width, height) {
 		var height, p, width, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; height = $f.height; p = $f.p; width = $f.width; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31947,9 +31989,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.InitControls = function() { return this.$val.InitControls(); };
 	TrackBallControl.methods = [{prop: "Update", name: "Update", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$9.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$8], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
+	ptrType$9.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$8], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
 	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$7, tag: ""}]);
-	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$1, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "group", name: "group", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}]);
+	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$1, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:

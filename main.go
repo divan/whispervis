@@ -42,7 +42,9 @@ type Page struct {
 	scene    *three.Scene
 	camera   three.PerspectiveCamera
 	renderer *three.WebGLRenderer
-	group    *three.Group
+	graph    *three.Group
+	nodes    *three.Group
+	edges    *three.Group
 	controls TrackBallControl
 
 	autoRotate bool
@@ -96,5 +98,5 @@ func (p *Page) shutdown(renderer *three.WebGLRenderer) {
 	p.scene = nil
 	p.camera = three.PerspectiveCamera{}
 	p.renderer = nil
-	p.group = nil
+	p.graph, p.nodes, p.edges = nil, nil, nil
 }

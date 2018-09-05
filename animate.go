@@ -12,7 +12,7 @@ func (p *Page) animate() {
 	js.Global.Call("requestAnimationFrame", p.animate)
 
 	if p.autoRotate {
-		pos := p.group.Object.Get("rotation")
+		pos := p.graph.Object.Get("rotation")
 		pos.Set("y", pos.Get("y").Float()+float64(0.01))
 	}
 

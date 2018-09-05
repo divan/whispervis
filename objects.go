@@ -5,26 +5,32 @@ import (
 )
 
 func (p *Page) CreateObjects() {
-	p.group = three.NewGroup()
-	p.scene.Add(p.group)
+	p.graph = three.NewGroup()
+	p.scene.Add(p.graph)
 
-	geometry := NewEthereumGeometry(2)
+	p.nodes = three.NewGroup()
+	p.graph.Add(p.nodes)
 
-	materialParams := three.NewMaterialParameters()
-	materialParams.Color = three.NewColor(0, 255, 0)
-	material := three.NewMeshPhongMaterial(materialParams)
+	p.edges = three.NewGroup()
+	p.graph.Add(p.edges)
 
+	p.createNodes()
+	p.createEdges()
+}
+
+func (p *Page) createNodes() {
+	scale := 2.0
+	geometry := NewEthereumGeometry(scale)
+	material := NewNodeMaterial()
 	for _, node := range p.layout.Positions() {
 		mesh := three.NewMesh(geometry, material)
 		mesh.Position.Set(node.X, node.Y, node.Z)
-		p.group.Add(mesh)
+		p.nodes.Add(mesh)
 	}
+}
 
-	// Lines
-	lineMaterialParams := three.NewMaterialParameters()
-	lineMaterialParams.Color = three.NewColor(200, 200, 255)
-	lineMaterial := three.NewLineBasicMaterial(lineMaterialParams)
-
+func (p *Page) createEdges() {
+	material := NewEdgeMatherial()
 	for _, link := range p.layout.Links() {
 		from := link.From()
 		to := link.To()
@@ -35,7 +41,7 @@ func (p *Page) CreateObjects() {
 		geom.AddVertice(start.X, start.Y, start.Z)
 		geom.AddVertice(end.X, end.Y, end.Z)
 
-		line := three.NewLine(geom, lineMaterial)
-		p.group.Add(line)
+		line := three.NewLine(geom, material)
+		p.edges.Add(line)
 	}
 }
