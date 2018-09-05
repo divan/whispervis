@@ -89,12 +89,10 @@ func (p *Page) init(renderer *three.WebGLRenderer) {
 
 	p.CreateObjects()
 
-	// Begin animating.
 	p.animate()
 }
 
 func (p *Page) shutdown(renderer *three.WebGLRenderer) {
-	// After shutdown, we shouldn't use any of these anymore.
 	p.scene = nil
 	p.camera = three.PerspectiveCamera{}
 	p.renderer = nil
