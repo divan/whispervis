@@ -236,6 +236,57 @@ replayButton.addEventListener('click', replay);
 
 animate();
 
+// Handle mouse hover
+var INTERSECTED;
+
+function onMouseMove( event ) {
+	let canvasBounds = renderer.context.canvas.getBoundingClientRect();
+    mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
+	mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
+
+	raycaster.setFromCamera( mouse, camera );
+	var intersects = raycaster.intersectObjects( scene.children, true );
+
+    let nodeInfo = document.getElementById('nodeInfo');
+    let nodeID = document.getElementById('selectedNodeID');
+	if (intersects.length > 0) {
+		// if the closest object intersected is not the currently stored intersection object
+		if (intersects[0].object != INTERSECTED) {
+			// restore previous intersection object (if it exists) to its original color
+			if (INTERSECTED)
+				INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+			// store reference to closest object as current intersection object
+			
+			// find the object representing node (has __data.id field)
+			let obj = intersects.filter(x => x.object.__data !== undefined);
+			if (obj.length == 0) { return }
+			INTERSECTED = obj[0].object;
+			if (INTERSECTED.__data !== undefined) {
+				let id = INTERSECTED.__data.id;
+				nodeInfo.hidden = false;
+				nodeID.innerHTML = id;
+				let stats = current();
+				let nodeStats = stats.Nodes.filter(x => x.ID == id)[0];
+				let count = nodeStats.ClientsNum + nodeStats.PeersNum;
+			}
+			// store color of closest object (for later restoration)
+			INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+			// set a new color for closest object
+			INTERSECTED.material.color.setHex(0xffff00);
+		}
+	} else {
+		// restore previous intersection object (if it exists) to its original color
+		if (INTERSECTED)
+		  INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+		// remove previous intersection object reference
+		//     by setting current intersection object to "nothing"
+		INTERSECTED = null;
+		nodeInfo.hidden = true;
+	}
+}
+
+canvas.addEventListener( 'mousemove', onMouseMove, false );
+
 },{"./js/animation.js":2,"./js/colors.js":3,"./js/ethereum.js":4,"./js/keys.js":5,"./js/shitty_hacks.js":6,"dat.gui":11,"stats-js":12}],2:[function(require,module,exports){
 var gradient = require('d3-scale-chromatic').interpolateCool;
 
