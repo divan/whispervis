@@ -44,7 +44,12 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("pure-u-1-5")),
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
-				p.forceEditor,
+				elem.Div(
+					vecty.Markup(
+						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
+					),
+					p.forceEditor,
+				),
 			),
 			elem.Div(
 				vecty.Markup(vecty.Class("pure-u-4-5")),
