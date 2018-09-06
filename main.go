@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"runtime"
 	"time"
 
 	"github.com/divan/graphx/formats"
@@ -39,7 +40,7 @@ func main() {
 		for i := 0; i < steps; i++ {
 			l.UpdatePositions()
 			page.loader.Inc()
-			vecty.Rerender(page.loader)
+			runtime.Gosched()
 		}
 		page.loaded = true
 		vecty.Rerender(page)
