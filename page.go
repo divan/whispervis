@@ -33,6 +33,7 @@ type Page struct {
 	loaded      bool
 	loader      *widgets.Loader
 	forceEditor *widgets.ForceEditor
+	data        *graph.Graph
 }
 
 // Page creates and inits new app page.
@@ -41,6 +42,7 @@ func NewPage(g *graph.Graph, steps int) *Page {
 	config := forceEditor.Config()
 	l := layout.NewFromConfig(g, config)
 	page := &Page{
+		data:        g,
 		layout:      l,
 		loader:      widgets.NewLoader(steps),
 		forceEditor: forceEditor,
@@ -142,6 +144,10 @@ func (p *Page) StartSimulation() {
 	p.loader.Reset()
 	p.loaded = false
 	vecty.Rerender(p)
+
+	config := p.forceEditor.Config()
+	l := layout.NewFromConfig(p.data, config)
+	p.layout = l
 	for i := 0; i < p.loader.Steps(); i++ {
 		p.layout.UpdatePositions()
 		p.loader.Inc()

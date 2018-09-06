@@ -9,8 +9,11 @@ import (
 type ForceEditor struct {
 	vecty.Core
 
-	inputs vecty.List
 	config layout.Config
+
+	repelling *ForceInput
+	spring    *ForceInput
+	drag      *ForceInput
 }
 
 func (l *ForceEditor) Render() vecty.ComponentOrHTML {
@@ -23,24 +26,31 @@ func (l *ForceEditor) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("pure-form"),
 			),
-			vecty.List(l.inputs),
+			l.repelling,
+			l.spring,
+			l.drag,
 		),
 	)
 }
 
 func NewForceEditor() *ForceEditor {
 	config := layout.DefaultConfig
-	inputs := vecty.List{
-		NewForceInput("Gravity force:", config.Repelling),
-		NewForceInput("Spring force:", config.SpringStiffness),
-		NewForceInput("Drag force:", config.DragCoeff),
-	}
+	repelling := NewForceInput("Gravity force:", config.Repelling)
+	spring := NewForceInput("Spring force:", config.SpringStiffness)
+	drag := NewForceInput("Drag force:", config.DragCoeff)
 	return &ForceEditor{
-		inputs: inputs,
-		config: config,
+		config:    config,
+		repelling: repelling,
+		spring:    spring,
+		drag:      drag,
 	}
 }
 
 func (l *ForceEditor) Config() layout.Config {
-	return l.config
+	return layout.Config{
+		Repelling:       l.repelling.Value(),
+		SpringStiffness: l.spring.Value(),
+		SpringLen:       l.config.SpringLen,
+		DragCoeff:       l.drag.Value(),
+	}
 }

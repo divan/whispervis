@@ -31744,7 +31744,7 @@ $packages["github.com/gopherjs/vecty/prop"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/status-im/whispervis/widgets"] = (function() {
-	var $pkg = {}, $init, fmt, layout, vecty, elem, event, prop, strconv, sync, ForceEditor, ForceInput, Loader, sliceType, sliceType$1, sliceType$2, sliceType$3, ptrType, ptrType$1, ptrType$2, ptrType$3, NewForceEditor, NewForceInput, NewLoader;
+	var $pkg = {}, $init, fmt, layout, vecty, elem, event, prop, strconv, sync, ForceEditor, ForceInput, Loader, sliceType, sliceType$1, sliceType$2, ptrType, sliceType$3, ptrType$1, ptrType$2, ptrType$3, NewForceEditor, NewForceInput, NewLoader;
 	fmt = $packages["fmt"];
 	layout = $packages["github.com/divan/graphx/layout"];
 	vecty = $packages["github.com/gopherjs/vecty"];
@@ -31753,17 +31753,21 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 	prop = $packages["github.com/gopherjs/vecty/prop"];
 	strconv = $packages["strconv"];
 	sync = $packages["sync"];
-	ForceEditor = $pkg.ForceEditor = $newType(0, $kindStruct, "widgets.ForceEditor", true, "github.com/status-im/whispervis/widgets", true, function(Core_, inputs_, config_) {
+	ForceEditor = $pkg.ForceEditor = $newType(0, $kindStruct, "widgets.ForceEditor", true, "github.com/status-im/whispervis/widgets", true, function(Core_, config_, repelling_, spring_, drag_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
-			this.inputs = vecty.List.nil;
 			this.config = new layout.Config.ptr(0, 0, 0, 0);
+			this.repelling = ptrType.nil;
+			this.spring = ptrType.nil;
+			this.drag = ptrType.nil;
 			return;
 		}
 		this.Core = Core_;
-		this.inputs = inputs_;
 		this.config = config_;
+		this.repelling = repelling_;
+		this.spring = spring_;
+		this.drag = drag_;
 	});
 	ForceInput = $pkg.ForceInput = $newType(0, $kindStruct, "widgets.ForceInput", true, "github.com/status-im/whispervis/widgets", true, function(Core_, changed_, title_, value_) {
 		this.$val = this;
@@ -31796,10 +31800,10 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 	sliceType = $sliceType(vecty.MarkupOrChild);
 	sliceType$1 = $sliceType($String);
 	sliceType$2 = $sliceType(vecty.Applyer);
+	ptrType = $ptrType(ForceInput);
 	sliceType$3 = $sliceType($emptyInterface);
-	ptrType = $ptrType(ForceEditor);
-	ptrType$1 = $ptrType(vecty.Event);
-	ptrType$2 = $ptrType(ForceInput);
+	ptrType$1 = $ptrType(ForceEditor);
+	ptrType$2 = $ptrType(vecty.Event);
 	ptrType$3 = $ptrType(Loader);
 	ForceEditor.ptr.prototype.Render = function() {
 		var _arg, _arg$1, _arg$2, _r, _r$1, _r$2, _r$3, _r$4, l, x, $s, $r;
@@ -31810,7 +31814,7 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 		_arg = _r$1;
 		_r$2 = elem.HorizontalRule(new sliceType([])); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		_arg$1 = _r$2;
-		_r$3 = elem.Form(new sliceType([(x = vecty.Markup(new sliceType$2([vecty.Class(new sliceType$1(["pure-form"]))])), new x.constructor.elem(x)), (l.inputs)])); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_r$3 = elem.Form(new sliceType([(x = vecty.Markup(new sliceType$2([vecty.Class(new sliceType$1(["pure-form"]))])), new x.constructor.elem(x)), l.repelling, l.spring, l.drag])); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		_arg$2 = _r$3;
 		_r$4 = elem.Div(new sliceType([_arg, _arg$1, _arg$2])); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
 		$s = -1; return _r$4;
@@ -31818,16 +31822,18 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 	};
 	ForceEditor.prototype.Render = function() { return this.$val.Render(); };
 	NewForceEditor = function() {
-		var config, inputs;
+		var config, drag, repelling, spring;
 		config = $clone(layout.DefaultConfig, layout.Config);
-		inputs = new vecty.List([NewForceInput("Gravity force:", config.Repelling), NewForceInput("Spring force:", config.SpringStiffness), NewForceInput("Drag force:", config.DragCoeff)]);
-		return new ForceEditor.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), inputs, $clone(config, layout.Config));
+		repelling = NewForceInput("Gravity force:", config.Repelling);
+		spring = NewForceInput("Spring force:", config.SpringStiffness);
+		drag = NewForceInput("Drag force:", config.DragCoeff);
+		return new ForceEditor.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), $clone(config, layout.Config), repelling, spring, drag);
 	};
 	$pkg.NewForceEditor = NewForceEditor;
 	ForceEditor.ptr.prototype.Config = function() {
 		var l;
 		l = this;
-		return l.config;
+		return new layout.Config.ptr(l.repelling.Value(), l.spring.Value(), l.config.SpringLen, l.drag.Value());
 	};
 	ForceEditor.prototype.Config = function() { return this.$val.Config(); };
 	NewForceInput = function(title, value) {
@@ -31966,10 +31972,10 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Loader.ptr.prototype.text }; } $f._r = _r; $f._r$1 = _r$1; $f.l = l; $f.progress = progress; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Loader.prototype.text = function() { return this.$val.text(); };
-	ptrType.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Config", name: "Config", pkg: "", typ: $funcType([], [layout.Config], false)}];
-	ptrType$2.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "onEditInput", name: "onEditInput", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([ptrType$1], [], false)}, {prop: "Value", name: "Value", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Changed", name: "Changed", pkg: "", typ: $funcType([], [$Bool], false)}];
+	ptrType$1.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Config", name: "Config", pkg: "", typ: $funcType([], [layout.Config], false)}];
+	ptrType.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "onEditInput", name: "onEditInput", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([ptrType$2], [], false)}, {prop: "Value", name: "Value", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Changed", name: "Changed", pkg: "", typ: $funcType([], [$Bool], false)}];
 	ptrType$3.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Inc", name: "Inc", pkg: "", typ: $funcType([], [], false)}, {prop: "Steps", name: "Steps", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Reset", name: "Reset", pkg: "", typ: $funcType([], [], false)}, {prop: "Progress", name: "Progress", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "text", name: "text", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([], [$String], false)}];
-	ForceEditor.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "inputs", name: "inputs", embedded: false, exported: false, typ: vecty.List, tag: ""}, {prop: "config", name: "config", embedded: false, exported: false, typ: layout.Config, tag: ""}]);
+	ForceEditor.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "config", name: "config", embedded: false, exported: false, typ: layout.Config, tag: ""}, {prop: "repelling", name: "repelling", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "spring", name: "spring", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "drag", name: "drag", embedded: false, exported: false, typ: ptrType, tag: ""}]);
 	ForceInput.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "changed", name: "changed", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "title", name: "title", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "value", name: "value", embedded: false, exported: false, typ: $Float64, tag: ""}]);
 	Loader.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "mx", name: "mx", embedded: false, exported: false, typ: sync.RWMutex, tag: ""}, {prop: "steps", name: "steps", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "current", name: "current", embedded: false, exported: false, typ: $Int, tag: ""}]);
 	$init = function() {
@@ -32097,7 +32103,7 @@ $packages["github.com/vecty/vthree"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/status-im/whispervis"] = (function() {
-	var $pkg = {}, $init, bytes, formats, graph, layout, js, vecty, elem, event, three, widgets, vthree, runtime, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, sliceType$3, sliceType$4, sliceType$5, sliceType$6, ptrType$9, ptrType$10, ptrType$11, ptrType$12, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial, NewPage;
+	var $pkg = {}, $init, bytes, formats, graph, layout, js, vecty, elem, event, three, widgets, vthree, runtime, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, sliceType$3, sliceType$4, sliceType$5, sliceType$6, ptrType$10, ptrType$11, ptrType$12, ptrType$13, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial, NewPage;
 	bytes = $packages["bytes"];
 	formats = $packages["github.com/divan/graphx/formats"];
 	graph = $packages["github.com/divan/graphx/graph"];
@@ -32118,7 +32124,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		}
 		this.Object = Object_;
 	});
-	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_, loaded_, loader_, forceEditor_) {
+	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_, loaded_, loader_, forceEditor_, data_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
@@ -32134,6 +32140,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			this.loaded = false;
 			this.loader = ptrType$7.nil;
 			this.forceEditor = ptrType$8.nil;
+			this.data = ptrType$9.nil;
 			return;
 		}
 		this.Core = Core_;
@@ -32149,6 +32156,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		this.loaded = loaded_;
 		this.loader = loader_;
 		this.forceEditor = forceEditor_;
+		this.data = data_;
 	});
 	sliceType = $sliceType($Uint8);
 	ptrType = $ptrType(three.WebGLRenderer);
@@ -32165,14 +32173,15 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	ptrType$6 = $ptrType(three.Group);
 	ptrType$7 = $ptrType(widgets.Loader);
 	ptrType$8 = $ptrType(widgets.ForceEditor);
+	ptrType$9 = $ptrType(graph.Graph);
 	sliceType$3 = $sliceType($String);
 	sliceType$4 = $sliceType(vecty.Applyer);
 	sliceType$5 = $sliceType(vecty.MarkupOrChild);
 	sliceType$6 = $sliceType(vecty.ComponentOrHTML);
-	ptrType$9 = $ptrType(js.Object);
-	ptrType$10 = $ptrType(vecty.Event);
-	ptrType$11 = $ptrType(vecty.HTML);
-	ptrType$12 = $ptrType(Page);
+	ptrType$10 = $ptrType(js.Object);
+	ptrType$11 = $ptrType(vecty.Event);
+	ptrType$12 = $ptrType(vecty.HTML);
+	ptrType$13 = $ptrType(Page);
 	Page.ptr.prototype.animate = function() {
 		var p, pos;
 		p = this;
@@ -32353,7 +32362,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		config = $clone(forceEditor.Config(), layout.Config);
 		_r = layout.NewFromConfig(g, $clone(config, layout.Config)); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		l = _r;
-		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l, ptrType$5.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$6.nil, ptrType$6.nil, ptrType$6.nil, new TrackBallControl.ptr(null), false, false, widgets.NewLoader(steps), forceEditor);
+		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l, ptrType$5.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$6.nil, ptrType$6.nil, ptrType$6.nil, new TrackBallControl.ptr(null), false, false, widgets.NewLoader(steps), forceEditor, g);
 		$s = -1; return page;
 		/* */ } return; } if ($f === undefined) { $f = { $blk: NewPage }; } $f._r = _r; $f.config = config; $f.forceEditor = forceEditor; $f.g = g; $f.l = l; $f.page = page; $f.steps = steps; $f.$s = $s; $f.$r = $r; return $f;
 	};
@@ -32440,27 +32449,31 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.onUpdateClick = function(e) { return this.$val.onUpdateClick(e); };
 	Page.ptr.prototype.StartSimulation = function() {
-		var _r, _r$1, i, p, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; i = $f.i; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _r, _r$1, _r$2, config, i, l, p, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; config = $f.config; i = $f.i; l = $f.l; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		p = this;
 		$r = p.loader.Reset(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		p.loaded = false;
 		$r = vecty.Rerender(p); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		config = $clone(p.forceEditor.Config(), layout.Config);
+		_r = layout.NewFromConfig(p.data, $clone(config, layout.Config)); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		l = _r;
+		p.layout = l;
 		i = 0;
-		/* while (true) { */ case 3:
-			_r = p.loader.Steps(); /* */ $s = 5; case 5: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-			/* if (!(i < _r)) { break; } */ if(!(i < _r)) { $s = 4; continue; }
-			_r$1 = p.layout.UpdatePositions(); /* */ $s = 6; case 6: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-			_r$1;
-			$r = p.loader.Inc(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			$r = vecty.Rerender(p.loader); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			$r = runtime.Gosched(); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* while (true) { */ case 4:
+			_r$1 = p.loader.Steps(); /* */ $s = 6; case 6: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			/* if (!(i < _r$1)) { break; } */ if(!(i < _r$1)) { $s = 5; continue; }
+			_r$2 = p.layout.UpdatePositions(); /* */ $s = 7; case 7: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+			_r$2;
+			$r = p.loader.Inc(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = vecty.Rerender(p.loader); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$r = runtime.Gosched(); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			i = i + (1) >> 0;
-		/* } */ $s = 3; continue; case 4:
+		/* } */ $s = 4; continue; case 5:
 		p.loaded = true;
-		$r = vecty.Rerender(p); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vecty.Rerender(p); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.StartSimulation }; } $f._r = _r; $f._r$1 = _r$1; $f.i = i; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.StartSimulation }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.config = config; $f.i = i; $f.l = l; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Page.prototype.StartSimulation = function() { return this.$val.StartSimulation(); };
 	Page.ptr.prototype.InitScene = function(width, height) {
@@ -32495,9 +32508,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.InitControls = function() { return this.$val.InitControls(); };
 	TrackBallControl.methods = [{prop: "Update", name: "Update", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$12.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$10], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "renderWebGLCanvas", name: "renderWebGLCanvas", pkg: "github.com/status-im/whispervis", typ: $funcType([], [vecty.Component], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$11], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$10], [], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
-	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$9, tag: ""}]);
-	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$4, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$5, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "forceEditor", name: "forceEditor", embedded: false, exported: false, typ: ptrType$8, tag: ""}]);
+	ptrType$13.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$11], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "renderWebGLCanvas", name: "renderWebGLCanvas", pkg: "github.com/status-im/whispervis", typ: $funcType([], [vecty.Component], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$12], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$11], [], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
+	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$10, tag: ""}]);
+	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$4, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$5, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "forceEditor", name: "forceEditor", embedded: false, exported: false, typ: ptrType$8, tag: ""}, {prop: "data", name: "data", embedded: false, exported: false, typ: ptrType$9, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
