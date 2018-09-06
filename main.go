@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"time"
 
 	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/layout"
@@ -10,6 +11,7 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/lngramos/three"
+	"github.com/status-im/whispervis/widgets"
 	"github.com/vecty/vthree"
 )
 
@@ -21,16 +23,27 @@ func main() {
 	}
 
 	l := layout.NewAuto(data)
-	l.CalculateN(50)
-
+	steps := 50
 	page := &Page{
 		layout: l,
+		loader: widgets.NewLoader(steps),
 	}
 
 	vecty.SetTitle("Whisper Simulation")
 	vecty.AddStylesheet("css/pure-min.css")
 	vecty.AddStylesheet("css/controls.css")
 	vecty.RenderBody(page)
+
+	go func() {
+		time.Sleep(1 * time.Second)
+		for i := 0; i < steps; i++ {
+			l.UpdatePositions()
+			page.loader.Inc()
+			vecty.Rerender(page.loader)
+		}
+		page.loaded = true
+		vecty.Rerender(page)
+	}()
 }
 
 // Page is our main page component.
@@ -48,6 +61,9 @@ type Page struct {
 	controls TrackBallControl
 
 	autoRotate bool
+
+	loaded bool
+	loader *widgets.Loader
 }
 
 // Render implements the vecty.Component interface.
@@ -63,16 +79,26 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 			),
 			elem.Div(
 				vecty.Markup(vecty.Class("pure-u-4-5")),
-				vthree.WebGLRenderer(vthree.WebGLOptions{
-					Init:     p.init,
-					Shutdown: p.shutdown,
-				}),
+				vecty.If(p.loaded,
+					vthree.WebGLRenderer(vthree.WebGLOptions{
+						Init:     p.init,
+						Shutdown: p.shutdown,
+					}),
+				),
+				vecty.If(!p.loaded, p.loader),
 			),
 		),
 		vecty.Markup(
 			event.KeyDown(p.KeyListener),
 		),
 	)
+}
+
+func (p *Page) renderWebGLCanvas() vecty.Component {
+	return vthree.WebGLRenderer(vthree.WebGLOptions{
+		Init:     p.init,
+		Shutdown: p.shutdown,
+	})
 }
 
 func (p *Page) init(renderer *three.WebGLRenderer) {

@@ -14241,7 +14241,7 @@ $packages["github.com/gopherjs/gopherjs/nosync"] = (function() {
 	return $pkg;
 })();
 $packages["time"] = (function() {
-	var $pkg = {}, $init, errors, js, nosync, runtime, syscall, ParseError, Time, Month, Weekday, Duration, Location, zone, zoneTrans, sliceType, sliceType$1, ptrType, sliceType$2, arrayType, sliceType$3, arrayType$1, arrayType$2, ptrType$2, arrayType$3, ptrType$4, ptrType$7, zoneSources, std0x, longDayNames, shortDayNames, shortMonthNames, longMonthNames, atoiError, errBad, errLeadingInt, months, days, daysBefore, utcLoc, utcLoc$24ptr, localLoc, localLoc$24ptr, localOnce, errLocation, badData, init, initLocal, runtimeNano, now, indexByte, startsWithLowerCase, nextStdChunk, match, lookup, appendInt, atoi, formatNano, quote, isDigit, getnum, cutspace, skip, Parse, parse, parseTimeZone, parseGMT, parseSignedOffset, parseNanoseconds, leadingInt, absWeekday, absClock, fmtFrac, fmtInt, lessThanHalf, Since, absDate, daysIn, Now, unixTime, Unix, isLeap, norm, Date, div, FixedZone;
+	var $pkg = {}, $init, errors, js, nosync, runtime, syscall, ParseError, Time, Month, Weekday, Duration, Location, zone, zoneTrans, sliceType, sliceType$1, ptrType, sliceType$2, structType, arrayType, sliceType$3, arrayType$1, arrayType$2, ptrType$2, arrayType$3, ptrType$4, ptrType$7, zoneSources, std0x, longDayNames, shortDayNames, shortMonthNames, longMonthNames, atoiError, errBad, errLeadingInt, months, days, daysBefore, utcLoc, utcLoc$24ptr, localLoc, localLoc$24ptr, localOnce, errLocation, badData, init, initLocal, runtimeNano, now, Sleep, indexByte, startsWithLowerCase, nextStdChunk, match, lookup, appendInt, atoi, formatNano, quote, isDigit, getnum, cutspace, skip, Parse, parse, parseTimeZone, parseGMT, parseSignedOffset, parseNanoseconds, leadingInt, absWeekday, absClock, fmtFrac, fmtInt, lessThanHalf, Since, absDate, daysIn, Now, unixTime, Unix, isLeap, norm, Date, div, FixedZone;
 	errors = $packages["errors"];
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	nosync = $packages["github.com/gopherjs/gopherjs/nosync"];
@@ -14326,6 +14326,7 @@ $packages["time"] = (function() {
 	sliceType$1 = $sliceType(zoneTrans);
 	ptrType = $ptrType(zone);
 	sliceType$2 = $sliceType($String);
+	structType = $structType("", []);
 	arrayType = $arrayType($Uint8, 20);
 	sliceType$3 = $sliceType($Uint8);
 	arrayType$1 = $arrayType($Uint8, 9);
@@ -14367,6 +14368,20 @@ $packages["time"] = (function() {
 		mono = _tmp$2;
 		return [sec, nsec, mono];
 	};
+	Sleep = function(d) {
+		var _r, c, d, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; c = $f.c; d = $f.d; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		c = [c];
+		c[0] = new $Chan(structType, 0);
+		$setTimeout((function(c) { return function() {
+			$close(c[0]);
+		}; })(c), (((x = $div64(d, new Duration(0, 1000000), false), x.$low + ((x.$high >> 31) * 4294967296)) >> 0)));
+		_r = $recv(c[0]); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r[0];
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Sleep }; } $f._r = _r; $f.c = c; $f.d = d; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Sleep = Sleep;
 	indexByte = function(s, c) {
 		var c, s;
 		return $parseInt(s.indexOf($global.String.fromCharCode(c))) >> 0;
@@ -26631,7 +26646,7 @@ $packages["github.com/divan/graphx/layout"] = (function() {
 		worldSize = 2000;
 		graphWidth = estimateGraphWidth(g);
 		optimalEdge = estimateOptimalEdge(worldSize, g.Links().$length);
-		repForce = -(worldSize / graphWidth / 40);
+		repForce = -(worldSize / graphWidth / 4);
 		_r = fmt.Println(new sliceType([new $String("Optimal edge:"), new $Float64(optimalEdge)])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		_r;
 		_r$1 = fmt.Println(new sliceType([new $String("Graph width (not real):"), new $Float64(graphWidth)])); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
@@ -27765,7 +27780,7 @@ $packages["github.com/divan/graphx/formats"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/gopherjs/vecty"] = (function() {
-	var $pkg = {}, $init, js, reflect, Core, Component, Copier, Mounter, Unmounter, Keyer, ComponentOrHTML, RenderSkipper, HTML, List, KeyedList, batchRenderer, jsObject, wrappedObject, EventListener, Event, MarkupOrChild, Applyer, markupFunc, MarkupList, sliceType, sliceType$1, ptrType, sliceType$2, ptrType$1, sliceType$3, sliceType$4, structType, ptrType$2, funcType, sliceType$5, funcType$1, funcType$2, sliceType$6, ptrType$3, mapType, mapType$1, mapType$2, mapType$3, ptrType$4, mapType$4, ptrType$5, funcType$3, batch, global, undefined$1, isTest, Tag, Text, extractHTML, sameType, copyComponent, copyProps, render, renderComponent, mountUnmount, mount, unmount, requestAnimationFrame, RenderBody, SetTitle, AddStylesheet, wrapObject, init, replaceNode, apply, Class, mustValidateClassNames, containsSpace, Markup;
+	var $pkg = {}, $init, js, reflect, Core, Component, Copier, Mounter, Unmounter, Keyer, ComponentOrHTML, RenderSkipper, HTML, List, KeyedList, batchRenderer, jsObject, wrappedObject, EventListener, Event, MarkupOrChild, Applyer, markupFunc, MarkupList, sliceType, sliceType$1, ptrType, sliceType$2, ptrType$1, sliceType$3, sliceType$4, structType, ptrType$2, funcType, sliceType$5, funcType$1, funcType$2, sliceType$6, ptrType$3, mapType, mapType$1, mapType$2, mapType$3, ptrType$4, mapType$4, ptrType$5, funcType$3, batch, global, undefined$1, isTest, Tag, Text, Rerender, extractHTML, sameType, copyComponent, copyProps, render, renderComponent, mountUnmount, mount, unmount, requestAnimationFrame, RenderBody, SetTitle, AddStylesheet, wrapObject, init, replaceNode, apply, Class, mustValidateClassNames, containsSpace, Markup, If;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	reflect = $packages["reflect"];
 	Core = $pkg.Core = $newType(0, $kindStruct, "vecty.Core", true, "github.com/gopherjs/vecty", true, function(prevRenderComponent_, prevRender_, mounted_, unmounted_) {
@@ -28838,6 +28853,63 @@ $packages["github.com/gopherjs/vecty"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Text }; } $f._i = _i; $f._ref = _ref; $f.h = h; $f.m = m; $f.m$1 = m$1; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Text = Text;
+	Rerender = function(c) {
+		var _r, _r$1, c, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; c = $f.c; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		if ($interfaceIsEqual(c, $ifaceNil)) {
+			$panic(new $String("vecty: Rerender illegally called with a nil Component argument"));
+		}
+		_r = c.Context(); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		/* */ if ($interfaceIsEqual(_r.prevRender, $ifaceNil)) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if ($interfaceIsEqual(_r.prevRender, $ifaceNil)) { */ case 1:
+			$panic(new $String("vecty: Rerender invoked on Component that has never been rendered"));
+		/* } */ case 2:
+		_r$1 = c.Context(); /* */ $s = 6; case 6: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		/* */ if (_r$1.unmounted) { $s = 4; continue; }
+		/* */ $s = 5; continue;
+		/* if (_r$1.unmounted) { */ case 4:
+			$s = -1; return;
+		/* } */ case 5:
+		$r = batch.add(c); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Rerender }; } $f._r = _r; $f._r$1 = _r$1; $f.c = c; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Rerender = Rerender;
+	batchRenderer.ptr.prototype.add = function(c) {
+		var _entry, _i, _key, _key$1, _r, _ref, _tuple, b, c, c$1, i, j, ok, x, x$1, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _i = $f._i; _key = $f._key; _key$1 = $f._key$1; _r = $f._r; _ref = $f._ref; _tuple = $f._tuple; b = $f.b; c = $f.c; c$1 = $f.c$1; i = $f.i; j = $f.j; ok = $f.ok; x = $f.x; x$1 = $f.x$1; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		b = this;
+		_tuple = (_entry = b.idx[Component.keyFor(c)], _entry !== undefined ? [_entry.v, true] : [0, false]);
+		i = _tuple[0];
+		ok = _tuple[1];
+		if (ok) {
+			_ref = $subslice(b.batch, (i + 1 >> 0));
+			_i = 0;
+			while (true) {
+				if (!(_i < _ref.$length)) { break; }
+				j = _i;
+				c$1 = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+				_key = c$1; (b.idx || $throwRuntimeError("assignment to entry in nil map"))[Component.keyFor(_key)] = { k: _key, v: i + j >> 0 };
+				_i++;
+			}
+			$copySlice($subslice(b.batch, i), $subslice(b.batch, (i + 1 >> 0)));
+			(x = b.batch, x$1 = b.batch.$length - 1 >> 0, ((x$1 < 0 || x$1 >= x.$length) ? ($throwRuntimeError("index out of range"), undefined) : x.$array[x.$offset + x$1] = $ifaceNil));
+			b.batch = $subslice(b.batch, 0, (b.batch.$length - 1 >> 0));
+		}
+		b.batch = $append(b.batch, c);
+		_key$1 = c; (b.idx || $throwRuntimeError("assignment to entry in nil map"))[Component.keyFor(_key$1)] = { k: _key$1, v: b.batch.$length - 1 >> 0 };
+		/* */ if (!b.scheduled) { $s = 1; continue; }
+		/* */ $s = 2; continue;
+		/* if (!b.scheduled) { */ case 1:
+			b.scheduled = true;
+			_r = requestAnimationFrame($methodVal(b, "render")); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r;
+		/* } */ case 2:
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: batchRenderer.ptr.prototype.add }; } $f._entry = _entry; $f._i = _i; $f._key = _key; $f._key$1 = _key$1; $f._r = _r; $f._ref = _ref; $f._tuple = _tuple; $f.b = b; $f.c = c; $f.c$1 = c$1; $f.i = i; $f.j = j; $f.ok = ok; $f.x = x; $f.x$1 = x$1; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	batchRenderer.prototype.add = function(c) { return this.$val.add(c); };
 	batchRenderer.ptr.prototype.render = function(startTime) {
 		var _i, _i$1, _key, _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _ref, _ref$1, _tuple, avgRenderTime, b, budgetRemaining, c, c$1, elapsed, i, i$1, nextHTML, pending, pendingMounts, prevHTML, skip, startTime, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _i = $f._i; _i$1 = $f._i$1; _key = $f._key; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _ref = $f._ref; _ref$1 = $f._ref$1; _tuple = $f._tuple; avgRenderTime = $f.avgRenderTime; b = $f.b; budgetRemaining = $f.budgetRemaining; c = $f.c; c$1 = $f.c$1; elapsed = $f.elapsed; i = $f.i; i$1 = $f.i$1; nextHTML = $f.nextHTML; pending = $f.pending; pendingMounts = $f.pendingMounts; prevHTML = $f.prevHTML; skip = $f.skip; startTime = $f.startTime; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -29699,6 +29771,14 @@ $packages["github.com/gopherjs/vecty"] = (function() {
 		return new MarkupList.ptr(m);
 	};
 	$pkg.Markup = Markup;
+	If = function(cond, children) {
+		var children, cond;
+		if (cond) {
+			return ($subslice(new List(children.$array), children.$offset, children.$offset + children.$length));
+		}
+		return $ifaceNil;
+	};
+	$pkg.If = If;
 	ptrType$3.methods = [{prop: "Context", name: "Context", pkg: "", typ: $funcType([], [ptrType$3], false)}, {prop: "isMarkupOrChild", name: "isMarkupOrChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "isComponentOrHTML", name: "isComponentOrHTML", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}];
 	ptrType.methods = [{prop: "Node", name: "Node", pkg: "", typ: $funcType([], [ptrType$2], false)}, {prop: "Key", name: "Key", pkg: "", typ: $funcType([], [$emptyInterface], false)}, {prop: "isMarkupOrChild", name: "isMarkupOrChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "isComponentOrHTML", name: "isComponentOrHTML", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "createNode", name: "createNode", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "reconcileText", name: "reconcileText", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [], false)}, {prop: "reconcile", name: "reconcile", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [sliceType$2], false)}, {prop: "reconcileProperties", name: "reconcileProperties", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [], false)}, {prop: "removeProperties", name: "removeProperties", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [], false)}, {prop: "reconcileChildren", name: "reconcileChildren", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [sliceType$2], false)}, {prop: "removeChildren", name: "removeChildren", pkg: "github.com/gopherjs/vecty", typ: $funcType([sliceType$4], [], false)}, {prop: "firstChild", name: "firstChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [jsObject], false)}, {prop: "nextSibling", name: "nextSibling", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [jsObject], false)}, {prop: "removeChild", name: "removeChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [], false)}, {prop: "appendChild", name: "appendChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([ptrType], [], false)}, {prop: "insertBefore", name: "insertBefore", pkg: "github.com/gopherjs/vecty", typ: $funcType([jsObject, ptrType], [], false)}];
 	List.methods = [{prop: "isMarkupOrChild", name: "isMarkupOrChild", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "isComponentOrHTML", name: "isComponentOrHTML", pkg: "github.com/gopherjs/vecty", typ: $funcType([], [], false)}, {prop: "WithKey", name: "WithKey", pkg: "", typ: $funcType([$emptyInterface], [KeyedList], false)}];
@@ -31558,6 +31638,89 @@ $packages["github.com/lngramos/three"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
+$packages["github.com/status-im/whispervis/widgets"] = (function() {
+	var $pkg = {}, $init, fmt, vecty, elem, Loader, sliceType, sliceType$1, ptrType, NewLoader;
+	fmt = $packages["fmt"];
+	vecty = $packages["github.com/gopherjs/vecty"];
+	elem = $packages["github.com/gopherjs/vecty/elem"];
+	Loader = $pkg.Loader = $newType(0, $kindStruct, "widgets.Loader", true, "github.com/status-im/whispervis/widgets", true, function(Core_, steps_, current_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
+			this.steps = 0;
+			this.current = 0;
+			return;
+		}
+		this.Core = Core_;
+		this.steps = steps_;
+		this.current = current_;
+	});
+	sliceType = $sliceType($emptyInterface);
+	sliceType$1 = $sliceType(vecty.MarkupOrChild);
+	ptrType = $ptrType(Loader);
+	Loader.ptr.prototype.Render = function() {
+		var _r, _r$1, _r$2, _r$3, _r$4, _r$5, l, progress, text, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; l = $f.l; progress = $f.progress; text = $f.text; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		l = this;
+		text = "";
+		_r = l.Progress(); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		progress = _r;
+		/* */ if (progress > 99.9) { $s = 2; continue; }
+		/* */ $s = 3; continue;
+		/* if (progress > 99.9) { */ case 2:
+			text = "Completed";
+			$s = 4; continue;
+		/* } else { */ case 3:
+			_r$1 = fmt.Sprintf("Loading %.1f%%...", new sliceType([new $Float64(progress)])); /* */ $s = 5; case 5: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			text = _r$1;
+			_r$2 = fmt.Println(new sliceType([new $String("Loader.Render()"), new $String(text), new $Float64(progress)])); /* */ $s = 6; case 6: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+			_r$2;
+		/* } */ case 4:
+		_r$3 = vecty.Text(text, new sliceType$1([])); /* */ $s = 7; case 7: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_r$4 = elem.Heading1(new sliceType$1([_r$3])); /* */ $s = 8; case 8: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		_r$5 = elem.Div(new sliceType$1([_r$4])); /* */ $s = 9; case 9: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		$s = -1; return _r$5;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Loader.ptr.prototype.Render }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f.l = l; $f.progress = progress; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Loader.prototype.Render = function() { return this.$val.Render(); };
+	NewLoader = function(steps) {
+		var steps;
+		return new Loader.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), steps, 0);
+	};
+	$pkg.NewLoader = NewLoader;
+	Loader.ptr.prototype.Inc = function() {
+		var l, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; l = $f.l; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		l = this;
+		l.current = l.current + (1) >> 0;
+		$r = vecty.Rerender(l); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Loader.ptr.prototype.Inc }; } $f.l = l; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Loader.prototype.Inc = function() { return this.$val.Inc(); };
+	Loader.ptr.prototype.Progress = function() {
+		var _r, l, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; l = $f.l; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		l = this;
+		_r = fmt.Println(new sliceType([new $String("progress"), new $Float64(100 * (l.current) / (l.steps))])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r;
+		$s = -1; return 100 * (l.current) / (l.steps);
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Loader.ptr.prototype.Progress }; } $f._r = _r; $f.l = l; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Loader.prototype.Progress = function() { return this.$val.Progress(); };
+	ptrType.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Inc", name: "Inc", pkg: "", typ: $funcType([], [], false)}, {prop: "Progress", name: "Progress", pkg: "", typ: $funcType([], [$Float64], false)}];
+	Loader.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "steps", name: "steps", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "current", name: "current", embedded: false, exported: false, typ: $Int, tag: ""}]);
+	$init = function() {
+		$pkg.$init = function() {};
+		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		$r = fmt.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vecty.$init(); /* */ $s = 2; case 2: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = elem.$init(); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.$init = $init;
+	return $pkg;
+})();
 $packages["github.com/vecty/vthree"] = (function() {
 	var $pkg = {}, $init, js, vecty, elem, three, webGLRenderer, WebGLOptions, webGLRendererParameters, sliceType, ptrType, ptrType$1, mapType, ptrType$2, funcType, ptrType$3, WebGLRenderer, newWebGLRenderer;
 	js = $packages["github.com/gopherjs/gopherjs/js"];
@@ -31667,7 +31830,7 @@ $packages["github.com/vecty/vthree"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/status-im/whispervis"] = (function() {
-	var $pkg = {}, $init, bytes, formats, layout, js, vecty, elem, event, three, vthree, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, sliceType$3, sliceType$4, sliceType$5, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial;
+	var $pkg = {}, $init, bytes, formats, layout, js, vecty, elem, event, three, widgets, vthree, time, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, ptrType$4, sliceType$3, sliceType$4, sliceType$5, sliceType$6, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, ptrType$10, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial;
 	bytes = $packages["bytes"];
 	formats = $packages["github.com/divan/graphx/formats"];
 	layout = $packages["github.com/divan/graphx/layout"];
@@ -31676,7 +31839,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	elem = $packages["github.com/gopherjs/vecty/elem"];
 	event = $packages["github.com/gopherjs/vecty/event"];
 	three = $packages["github.com/lngramos/three"];
+	widgets = $packages["github.com/status-im/whispervis/widgets"];
 	vthree = $packages["github.com/vecty/vthree"];
+	time = $packages["time"];
 	TrackBallControl = $pkg.TrackBallControl = $newType(0, $kindStruct, "main.TrackBallControl", true, "github.com/status-im/whispervis", true, function(Object_) {
 		this.$val = this;
 		if (arguments.length === 0) {
@@ -31685,7 +31850,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		}
 		this.Object = Object_;
 	});
-	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_) {
+	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_, loaded_, loader_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
@@ -31698,6 +31863,8 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			this.edges = ptrType$3.nil;
 			this.controls = new TrackBallControl.ptr(null);
 			this.autoRotate = false;
+			this.loaded = false;
+			this.loader = ptrType$4.nil;
 			return;
 		}
 		this.Core = Core_;
@@ -31710,6 +31877,8 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		this.edges = edges_;
 		this.controls = controls_;
 		this.autoRotate = autoRotate_;
+		this.loaded = loaded_;
+		this.loader = loader_;
 	});
 	sliceType = $sliceType($Uint8);
 	ptrType = $ptrType(three.WebGLRenderer);
@@ -31721,15 +31890,17 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	ptrType$1 = $ptrType(layout.Layout);
 	ptrType$2 = $ptrType(three.Scene);
 	ptrType$3 = $ptrType(three.Group);
+	ptrType$4 = $ptrType(widgets.Loader);
 	sliceType$3 = $sliceType($String);
 	sliceType$4 = $sliceType(vecty.Applyer);
 	sliceType$5 = $sliceType(vecty.MarkupOrChild);
-	ptrType$4 = $ptrType(three.Color);
-	ptrType$5 = $ptrType(three.Vector3);
-	ptrType$6 = $ptrType(layout.Object);
-	ptrType$7 = $ptrType(js.Object);
-	ptrType$8 = $ptrType(vecty.Event);
-	ptrType$9 = $ptrType(Page);
+	sliceType$6 = $sliceType(vecty.ComponentOrHTML);
+	ptrType$5 = $ptrType(three.Color);
+	ptrType$6 = $ptrType(three.Vector3);
+	ptrType$7 = $ptrType(layout.Object);
+	ptrType$8 = $ptrType(js.Object);
+	ptrType$9 = $ptrType(vecty.Event);
+	ptrType$10 = $ptrType(Page);
 	Page.ptr.prototype.animate = function() {
 		var p, pos;
 		p = this;
@@ -31800,8 +31971,11 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.KeyListener = function(e) { return this.$val.KeyListener(e); };
 	main = function() {
-		var _r, _r$1, _tuple, buf, data, err, l, page, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _tuple = $f._tuple; buf = $f.buf; data = $f.data; err = $f.err; l = $f.l; page = $f.page; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _r, _r$1, _tuple, buf, data, err, l, page, steps, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _tuple = $f._tuple; buf = $f.buf; data = $f.data; err = $f.err; l = $f.l; page = $f.page; steps = $f.steps; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		l = [l];
+		page = [page];
+		steps = [steps];
 		buf = bytes.NewBuffer(inputJSON);
 		_r = formats.FromD3JSONReader(buf); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 		_tuple = _r;
@@ -31811,15 +31985,33 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			$panic(err);
 		}
 		_r$1 = layout.NewAuto(data); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		l = _r$1;
-		$r = l.CalculateN(50); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l, ptrType$2.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$3.nil, ptrType$3.nil, ptrType$3.nil, new TrackBallControl.ptr(null), false);
-		$r = vecty.SetTitle("Whisper Simulation"); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = vecty.AddStylesheet("css/pure-min.css"); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = vecty.AddStylesheet("css/controls.css"); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = vecty.RenderBody(page); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		l[0] = _r$1;
+		steps[0] = 50;
+		page[0] = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), l[0], ptrType$2.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$3.nil, ptrType$3.nil, ptrType$3.nil, new TrackBallControl.ptr(null), false, false, widgets.NewLoader(steps[0]));
+		$r = vecty.SetTitle("Whisper Simulation"); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vecty.AddStylesheet("css/pure-min.css"); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vecty.AddStylesheet("css/controls.css"); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vecty.RenderBody(page[0]); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$go((function(l, page, steps) { return function $b() {
+			var _r$2, i, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r$2 = $f._r$2; i = $f.i; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = time.Sleep(new time.Duration(0, 1000000000)); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			i = 0;
+			/* while (true) { */ case 2:
+				/* if (!(i < steps[0])) { break; } */ if(!(i < steps[0])) { $s = 3; continue; }
+				_r$2 = l[0].UpdatePositions(); /* */ $s = 4; case 4: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+				_r$2;
+				$r = page[0].loader.Inc(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				$r = vecty.Rerender(page[0].loader); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+				i = i + (1) >> 0;
+			/* } */ $s = 2; continue; case 3:
+			page[0].loaded = true;
+			$r = vecty.Rerender(page[0]); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r$2 = _r$2; $f.i = i; $f.$s = $s; $f.$r = $r; return $f;
+		}; })(l, page, steps), []);
 		$s = -1; return;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: main }; } $f._r = _r; $f._r$1 = _r$1; $f._tuple = _tuple; $f.buf = buf; $f.data = data; $f.err = err; $f.l = l; $f.page = page; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: main }; } $f._r = _r; $f._r$1 = _r$1; $f._tuple = _tuple; $f.buf = buf; $f.data = data; $f.err = err; $f.l = l; $f.page = page; $f.steps = steps; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Page.ptr.prototype.Render = function() {
 		var _arg, _arg$1, _arg$2, _arg$3, _arg$4, _arg$5, _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, p, x, x$1, x$2, x$3, $s, $r;
@@ -31835,7 +32027,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		_arg$3 = _r$3;
 		_r$4 = elem.Div(new sliceType$5([_arg$1, _arg$2, _arg$3])); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
 		_arg$4 = _r$4;
-		_r$5 = elem.Div(new sliceType$5([(x$2 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-4-5"]))])), new x$2.constructor.elem(x$2)), vthree.WebGLRenderer(new vthree.WebGLOptions.ptr($methodVal(p, "init"), $methodVal(p, "shutdown")), new sliceType$5([]))])); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		_r$5 = elem.Div(new sliceType$5([(x$2 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-4-5"]))])), new x$2.constructor.elem(x$2)), vecty.If(p.loaded, new sliceType$6([vthree.WebGLRenderer(new vthree.WebGLOptions.ptr($methodVal(p, "init"), $methodVal(p, "shutdown")), new sliceType$5([]))])), vecty.If(!p.loaded, new sliceType$6([p.loader]))])); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
 		_arg$5 = _r$5;
 		_r$6 = elem.Div(new sliceType$5([_arg, _arg$4, _arg$5])); /* */ $s = 7; case 7: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
 		_r$7 = elem.Body(new sliceType$5([_r$6, (x$3 = vecty.Markup(new sliceType$4([event.KeyDown($methodVal(p, "KeyListener"))])), new x$3.constructor.elem(x$3))])); /* */ $s = 8; case 8: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
@@ -31877,14 +32069,14 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	NewNodeMaterial = function() {
 		var params;
 		params = three.NewMaterialParameters();
-		params.Object.color = $externalize(three.NewColor(0, 255, 0), ptrType$4);
+		params.Object.color = $externalize(three.NewColor(0, 255, 0), ptrType$5);
 		return three.NewMeshPhongMaterial(params);
 	};
 	$pkg.NewNodeMaterial = NewNodeMaterial;
 	NewEdgeMatherial = function() {
 		var params;
 		params = three.NewMaterialParameters();
-		params.Object.color = $externalize(three.NewColor(200, 200, 255), ptrType$4);
+		params.Object.color = $externalize(three.NewColor(200, 200, 255), ptrType$5);
 		return three.NewLineBasicMaterial(params);
 	};
 	$pkg.NewEdgeMatherial = NewEdgeMatherial;
@@ -31924,7 +32116,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			node = _entry.v;
 			_r = three.NewMesh(geometry, material); /* */ $s = 3; case 3: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
 			mesh = _r;
-			$clone($internalize(mesh.Object.position, ptrType$5), three.Vector3).Set(node.X, node.Y, node.Z);
+			$clone($internalize(mesh.Object.position, ptrType$6), three.Vector3).Set(node.X, node.Y, node.Z);
 			$r = p.nodes.Add(mesh); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			_i++;
 		/* } */ $s = 1; continue; case 2:
@@ -31944,8 +32136,8 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			link = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
 			from = link.From();
 			to = link.To();
-			start = (_entry = p.layout.Positions()[$String.keyFor(from)], _entry !== undefined ? _entry.v : ptrType$6.nil);
-			end = (_entry$1 = p.layout.Positions()[$String.keyFor(to)], _entry$1 !== undefined ? _entry$1.v : ptrType$6.nil);
+			start = (_entry = p.layout.Positions()[$String.keyFor(from)], _entry !== undefined ? _entry.v : ptrType$7.nil);
+			end = (_entry$1 = p.layout.Positions()[$String.keyFor(to)], _entry$1 !== undefined ? _entry$1.v : ptrType$7.nil);
 			geom = $clone(three.NewBasicGeometry(new three.BasicGeometryParams.ptr()), three.BasicGeometry);
 			geom.AddVertice(start.X, start.Y, start.Z);
 			geom.AddVertice(end.X, end.Y, end.Z);
@@ -31989,9 +32181,9 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	};
 	Page.prototype.InitControls = function() { return this.$val.InitControls(); };
 	TrackBallControl.methods = [{prop: "Update", name: "Update", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$9.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$8], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
-	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$7, tag: ""}]);
-	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$1, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}]);
+	ptrType$10.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$9], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "renderWebGLCanvas", name: "renderWebGLCanvas", pkg: "github.com/status-im/whispervis", typ: $funcType([], [vecty.Component], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
+	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$8, tag: ""}]);
+	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$1, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$2, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$3, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$4, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -32003,14 +32195,16 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		$r = elem.$init(); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = event.$init(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = three.$init(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = vthree.$init(); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = widgets.$init(); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = vthree.$init(); /* */ $s = 10; case 10: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = time.$init(); /* */ $s = 11; case 11: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		inputJSON = (new sliceType($stringToBytes("{\n  \"nodes\": [\n    {\n      \"id\": \"0\"\n    },\n    {\n      \"id\": \"1\"\n    },\n    {\n      \"id\": \"2\"\n    },\n    {\n      \"id\": \"3\"\n    },\n    {\n      \"id\": \"4\"\n    },\n    {\n      \"id\": \"5\"\n    },\n    {\n      \"id\": \"6\"\n    },\n    {\n      \"id\": \"7\"\n    },\n    {\n      \"id\": \"8\"\n    },\n    {\n      \"id\": \"9\"\n    },\n    {\n      \"id\": \"10\"\n    },\n    {\n      \"id\": \"11\"\n    },\n    {\n      \"id\": \"12\"\n    },\n    {\n      \"id\": \"13\"\n    },\n    {\n      \"id\": \"14\"\n    },\n    {\n      \"id\": \"15\"\n    },\n    {\n      \"id\": \"16\"\n    },\n    {\n      \"id\": \"17\"\n    },\n    {\n      \"id\": \"18\"\n    },\n    {\n      \"id\": \"19\"\n    },\n    {\n      \"id\": \"20\"\n    },\n    {\n      \"id\": \"21\"\n    },\n    {\n      \"id\": \"22\"\n    },\n    {\n      \"id\": \"23\"\n    },\n    {\n      \"id\": \"24\"\n    },\n    {\n      \"id\": \"25\"\n    },\n    {\n      \"id\": \"26\"\n    },\n    {\n      \"id\": \"27\"\n    },\n    {\n      \"id\": \"28\"\n    },\n    {\n      \"id\": \"29\"\n    },\n    {\n      \"id\": \"30\"\n    },\n    {\n      \"id\": \"31\"\n    },\n    {\n      \"id\": \"32\"\n    },\n    {\n      \"id\": \"33\"\n    },\n    {\n      \"id\": \"34\"\n    },\n    {\n      \"id\": \"35\"\n    },\n    {\n      \"id\": \"36\"\n    },\n    {\n      \"id\": \"37\"\n    },\n    {\n      \"id\": \"38\"\n    },\n    {\n      \"id\": \"39\"\n    },\n    {\n      \"id\": \"40\"\n    },\n    {\n      \"id\": \"41\"\n    },\n    {\n      \"id\": \"42\"\n    },\n    {\n      \"id\": \"43\"\n    },\n    {\n      \"id\": \"44\"\n    },\n    {\n      \"id\": \"45\"\n    },\n    {\n      \"id\": \"46\"\n    },\n    {\n      \"id\": \"47\"\n    },\n    {\n      \"id\": \"48\"\n    },\n    {\n      \"id\": \"49\"\n    },\n    {\n      \"id\": \"50\"\n    },\n    {\n      \"id\": \"51\"\n    },\n    {\n      \"id\": \"52\"\n    },\n    {\n      \"id\": \"53\"\n    },\n    {\n      \"id\": \"54\"\n    },\n    {\n      \"id\": \"55\"\n    },\n    {\n      \"id\": \"56\"\n    },\n    {\n      \"id\": \"57\"\n    },\n    {\n      \"id\": \"58\"\n    },\n    {\n      \"id\": \"59\"\n    },\n    {\n      \"id\": \"60\"\n    },\n    {\n      \"id\": \"61\"\n    },\n    {\n      \"id\": \"62\"\n    },\n    {\n      \"id\": \"63\"\n    },\n    {\n      \"id\": \"64\"\n    },\n    {\n      \"id\": \"65\"\n    },\n    {\n      \"id\": \"66\"\n    },\n    {\n      \"id\": \"67\"\n    },\n    {\n      \"id\": \"68\"\n    },\n    {\n      \"id\": \"69\"\n    },\n    {\n      \"id\": \"70\"\n    },\n    {\n      \"id\": \"71\"\n    },\n    {\n      \"id\": \"72\"\n    },\n    {\n      \"id\": \"73\"\n    },\n    {\n      \"id\": \"74\"\n    },\n    {\n      \"id\": \"75\"\n    },\n    {\n      \"id\": \"76\"\n    },\n    {\n      \"id\": \"77\"\n    },\n    {\n      \"id\": \"78\"\n    },\n    {\n      \"id\": \"79\"\n    },\n    {\n      \"id\": \"80\"\n    },\n    {\n      \"id\": \"81\"\n    },\n    {\n      \"id\": \"82\"\n    },\n    {\n      \"id\": \"83\"\n    },\n    {\n      \"id\": \"84\"\n    },\n    {\n      \"id\": \"85\"\n    },\n    {\n      \"id\": \"86\"\n    },\n    {\n      \"id\": \"87\"\n    },\n    {\n      \"id\": \"88\"\n    },\n    {\n      \"id\": \"89\"\n    },\n    {\n      \"id\": \"90\"\n    },\n    {\n      \"id\": \"91\"\n    },\n    {\n      \"id\": \"92\"\n    },\n    {\n      \"id\": \"93\"\n    },\n    {\n      \"id\": \"94\"\n    },\n    {\n      \"id\": \"95\"\n    },\n    {\n      \"id\": \"96\"\n    },\n    {\n      \"id\": \"97\"\n    },\n    {\n      \"id\": \"98\"\n    },\n    {\n      \"id\": \"99\"\n    }\n  ],\n  \"links\": [\n    {\n      \"source\": \"1\",\n      \"target\": \"0\"\n    },\n    {\n      \"source\": \"2\",\n      \"target\": \"1\"\n    },\n    {\n      \"source\": \"3\",\n      \"target\": \"2\"\n    },\n    {\n      \"source\": \"4\",\n      \"target\": \"3\"\n    },\n    {\n      \"source\": \"5\",\n      \"target\": \"4\"\n    },\n    {\n      \"source\": \"6\",\n      \"target\": \"5\"\n    },\n    {\n      \"source\": \"7\",\n      \"target\": \"6\"\n    },\n    {\n      \"source\": \"8\",\n      \"target\": \"7\"\n    },\n    {\n      \"source\": \"9\",\n      \"target\": \"8\"\n    },\n    {\n      \"source\": \"10\",\n      \"target\": \"0\"\n    },\n    {\n      \"source\": \"11\",\n      \"target\": \"10\"\n    },\n    {\n      \"source\": \"11\",\n      \"target\": \"1\"\n    },\n    {\n      \"source\": \"12\",\n      \"target\": \"11\"\n    },\n    {\n      \"source\": \"12\",\n      \"target\": \"2\"\n    },\n    {\n      \"source\": \"13\",\n      \"target\": \"12\"\n    },\n    {\n      \"source\": \"13\",\n      \"target\": \"3\"\n    },\n    {\n      \"source\": \"14\",\n      \"target\": \"13\"\n    },\n    {\n      \"source\": \"14\",\n      \"target\": \"4\"\n    },\n    {\n      \"source\": \"15\",\n      \"target\": \"14\"\n    },\n    {\n      \"source\": \"15\",\n      \"target\": \"5\"\n    },\n    {\n      \"source\": \"16\",\n      \"target\": \"15\"\n    },\n    {\n      \"source\": \"16\",\n      \"target\": \"6\"\n    },\n    {\n      \"source\": \"17\",\n      \"target\": \"16\"\n    },\n    {\n      \"source\": \"17\",\n      \"target\": \"7\"\n    },\n    {\n      \"source\": \"18\",\n      \"target\": \"17\"\n    },\n    {\n      \"source\": \"18\",\n      \"target\": \"8\"\n    },\n    {\n      \"source\": \"19\",\n      \"target\": \"18\"\n    },\n    {\n      \"source\": \"19\",\n      \"target\": \"9\"\n    },\n    {\n      \"source\": \"20\",\n      \"target\": \"10\"\n    },\n    {\n      \"source\": \"21\",\n      \"target\": \"20\"\n    },\n    {\n      \"source\": \"21\",\n      \"target\": \"11\"\n    },\n    {\n      \"source\": \"22\",\n      \"target\": \"21\"\n    },\n    {\n      \"source\": \"22\",\n      \"target\": \"12\"\n    },\n    {\n      \"source\": \"23\",\n      \"target\": \"22\"\n    },\n    {\n      \"source\": \"23\",\n      \"target\": \"13\"\n    },\n    {\n      \"source\": \"24\",\n      \"target\": \"23\"\n    },\n    {\n      \"source\": \"24\",\n      \"target\": \"14\"\n    },\n    {\n      \"source\": \"25\",\n      \"target\": \"24\"\n    },\n    {\n      \"source\": \"25\",\n      \"target\": \"15\"\n    },\n    {\n      \"source\": \"26\",\n      \"target\": \"25\"\n    },\n    {\n      \"source\": \"26\",\n      \"target\": \"16\"\n    },\n    {\n      \"source\": \"27\",\n      \"target\": \"26\"\n    },\n    {\n      \"source\": \"27\",\n      \"target\": \"17\"\n    },\n    {\n      \"source\": \"28\",\n      \"target\": \"27\"\n    },\n    {\n      \"source\": \"28\",\n      \"target\": \"18\"\n    },\n    {\n      \"source\": \"29\",\n      \"target\": \"28\"\n    },\n    {\n      \"source\": \"29\",\n      \"target\": \"19\"\n    },\n    {\n      \"source\": \"30\",\n      \"target\": \"20\"\n    },\n    {\n      \"source\": \"31\",\n      \"target\": \"30\"\n    },\n    {\n      \"source\": \"31\",\n      \"target\": \"21\"\n    },\n    {\n      \"source\": \"32\",\n      \"target\": \"31\"\n    },\n    {\n      \"source\": \"32\",\n      \"target\": \"22\"\n    },\n    {\n      \"source\": \"33\",\n      \"target\": \"32\"\n    },\n    {\n      \"source\": \"33\",\n      \"target\": \"23\"\n    },\n    {\n      \"source\": \"34\",\n      \"target\": \"33\"\n    },\n    {\n      \"source\": \"34\",\n      \"target\": \"24\"\n    },\n    {\n      \"source\": \"35\",\n      \"target\": \"34\"\n    },\n    {\n      \"source\": \"35\",\n      \"target\": \"25\"\n    },\n    {\n      \"source\": \"36\",\n      \"target\": \"35\"\n    },\n    {\n      \"source\": \"36\",\n      \"target\": \"26\"\n    },\n    {\n      \"source\": \"37\",\n      \"target\": \"36\"\n    },\n    {\n      \"source\": \"37\",\n      \"target\": \"27\"\n    },\n    {\n      \"source\": \"38\",\n      \"target\": \"37\"\n    },\n    {\n      \"source\": \"38\",\n      \"target\": \"28\"\n    },\n    {\n      \"source\": \"39\",\n      \"target\": \"38\"\n    },\n    {\n      \"source\": \"39\",\n      \"target\": \"29\"\n    },\n    {\n      \"source\": \"40\",\n      \"target\": \"30\"\n    },\n    {\n      \"source\": \"41\",\n      \"target\": \"40\"\n    },\n    {\n      \"source\": \"41\",\n      \"target\": \"31\"\n    },\n    {\n      \"source\": \"42\",\n      \"target\": \"41\"\n    },\n    {\n      \"source\": \"42\",\n      \"target\": \"32\"\n    },\n    {\n      \"source\": \"43\",\n      \"target\": \"42\"\n    },\n    {\n      \"source\": \"43\",\n      \"target\": \"33\"\n    },\n    {\n      \"source\": \"44\",\n      \"target\": \"43\"\n    },\n    {\n      \"source\": \"44\",\n      \"target\": \"34\"\n    },\n    {\n      \"source\": \"45\",\n      \"target\": \"44\"\n    },\n    {\n      \"source\": \"45\",\n      \"target\": \"35\"\n    },\n    {\n      \"source\": \"46\",\n      \"target\": \"45\"\n    },\n    {\n      \"source\": \"46\",\n      \"target\": \"36\"\n    },\n    {\n      \"source\": \"47\",\n      \"target\": \"46\"\n    },\n    {\n      \"source\": \"47\",\n      \"target\": \"37\"\n    },\n    {\n      \"source\": \"48\",\n      \"target\": \"47\"\n    },\n    {\n      \"source\": \"48\",\n      \"target\": \"38\"\n    },\n    {\n      \"source\": \"49\",\n      \"target\": \"48\"\n    },\n    {\n      \"source\": \"49\",\n      \"target\": \"39\"\n    },\n    {\n      \"source\": \"50\",\n      \"target\": \"40\"\n    },\n    {\n      \"source\": \"51\",\n      \"target\": \"50\"\n    },\n    {\n      \"source\": \"51\",\n      \"target\": \"41\"\n    },\n    {\n      \"source\": \"52\",\n      \"target\": \"51\"\n    },\n    {\n      \"source\": \"52\",\n      \"target\": \"42\"\n    },\n    {\n      \"source\": \"53\",\n      \"target\": \"52\"\n    },\n    {\n      \"source\": \"53\",\n      \"target\": \"43\"\n    },\n    {\n      \"source\": \"54\",\n      \"target\": \"53\"\n    },\n    {\n      \"source\": \"54\",\n      \"target\": \"44\"\n    },\n    {\n      \"source\": \"55\",\n      \"target\": \"54\"\n    },\n    {\n      \"source\": \"55\",\n      \"target\": \"45\"\n    },\n    {\n      \"source\": \"56\",\n      \"target\": \"55\"\n    },\n    {\n      \"source\": \"56\",\n      \"target\": \"46\"\n    },\n    {\n      \"source\": \"57\",\n      \"target\": \"56\"\n    },\n    {\n      \"source\": \"57\",\n      \"target\": \"47\"\n    },\n    {\n      \"source\": \"58\",\n      \"target\": \"57\"\n    },\n    {\n      \"source\": \"58\",\n      \"target\": \"48\"\n    },\n    {\n      \"source\": \"59\",\n      \"target\": \"58\"\n    },\n    {\n      \"source\": \"59\",\n      \"target\": \"49\"\n    },\n    {\n      \"source\": \"60\",\n      \"target\": \"50\"\n    },\n    {\n      \"source\": \"61\",\n      \"target\": \"60\"\n    },\n    {\n      \"source\": \"61\",\n      \"target\": \"51\"\n    },\n    {\n      \"source\": \"62\",\n      \"target\": \"61\"\n    },\n    {\n      \"source\": \"62\",\n      \"target\": \"52\"\n    },\n    {\n      \"source\": \"63\",\n      \"target\": \"62\"\n    },\n    {\n      \"source\": \"63\",\n      \"target\": \"53\"\n    },\n    {\n      \"source\": \"64\",\n      \"target\": \"63\"\n    },\n    {\n      \"source\": \"64\",\n      \"target\": \"54\"\n    },\n    {\n      \"source\": \"65\",\n      \"target\": \"64\"\n    },\n    {\n      \"source\": \"65\",\n      \"target\": \"55\"\n    },\n    {\n      \"source\": \"66\",\n      \"target\": \"65\"\n    },\n    {\n      \"source\": \"66\",\n      \"target\": \"56\"\n    },\n    {\n      \"source\": \"67\",\n      \"target\": \"66\"\n    },\n    {\n      \"source\": \"67\",\n      \"target\": \"57\"\n    },\n    {\n      \"source\": \"68\",\n      \"target\": \"67\"\n    },\n    {\n      \"source\": \"68\",\n      \"target\": \"58\"\n    },\n    {\n      \"source\": \"69\",\n      \"target\": \"68\"\n    },\n    {\n      \"source\": \"69\",\n      \"target\": \"59\"\n    },\n    {\n      \"source\": \"70\",\n      \"target\": \"60\"\n    },\n    {\n      \"source\": \"71\",\n      \"target\": \"70\"\n    },\n    {\n      \"source\": \"71\",\n      \"target\": \"61\"\n    },\n    {\n      \"source\": \"72\",\n      \"target\": \"71\"\n    },\n    {\n      \"source\": \"72\",\n      \"target\": \"62\"\n    },\n    {\n      \"source\": \"73\",\n      \"target\": \"72\"\n    },\n    {\n      \"source\": \"73\",\n      \"target\": \"63\"\n    },\n    {\n      \"source\": \"74\",\n      \"target\": \"73\"\n    },\n    {\n      \"source\": \"74\",\n      \"target\": \"64\"\n    },\n    {\n      \"source\": \"75\",\n      \"target\": \"74\"\n    },\n    {\n      \"source\": \"75\",\n      \"target\": \"65\"\n    },\n    {\n      \"source\": \"76\",\n      \"target\": \"75\"\n    },\n    {\n      \"source\": \"76\",\n      \"target\": \"66\"\n    },\n    {\n      \"source\": \"77\",\n      \"target\": \"76\"\n    },\n    {\n      \"source\": \"77\",\n      \"target\": \"67\"\n    },\n    {\n      \"source\": \"78\",\n      \"target\": \"77\"\n    },\n    {\n      \"source\": \"78\",\n      \"target\": \"68\"\n    },\n    {\n      \"source\": \"79\",\n      \"target\": \"78\"\n    },\n    {\n      \"source\": \"79\",\n      \"target\": \"69\"\n    },\n    {\n      \"source\": \"80\",\n      \"target\": \"70\"\n    },\n    {\n      \"source\": \"81\",\n      \"target\": \"80\"\n    },\n    {\n      \"source\": \"81\",\n      \"target\": \"71\"\n    },\n    {\n      \"source\": \"82\",\n      \"target\": \"81\"\n    },\n    {\n      \"source\": \"82\",\n      \"target\": \"72\"\n    },\n    {\n      \"source\": \"83\",\n      \"target\": \"82\"\n    },\n    {\n      \"source\": \"83\",\n      \"target\": \"73\"\n    },\n    {\n      \"source\": \"84\",\n      \"target\": \"83\"\n    },\n    {\n      \"source\": \"84\",\n      \"target\": \"74\"\n    },\n    {\n      \"source\": \"85\",\n      \"target\": \"84\"\n    },\n    {\n      \"source\": \"85\",\n      \"target\": \"75\"\n    },\n    {\n      \"source\": \"86\",\n      \"target\": \"85\"\n    },\n    {\n      \"source\": \"86\",\n      \"target\": \"76\"\n    },\n    {\n      \"source\": \"87\",\n      \"target\": \"86\"\n    },\n    {\n      \"source\": \"87\",\n      \"target\": \"77\"\n    },\n    {\n      \"source\": \"88\",\n      \"target\": \"87\"\n    },\n    {\n      \"source\": \"88\",\n      \"target\": \"78\"\n    },\n    {\n      \"source\": \"89\",\n      \"target\": \"88\"\n    },\n    {\n      \"source\": \"89\",\n      \"target\": \"79\"\n    },\n    {\n      \"source\": \"90\",\n      \"target\": \"80\"\n    },\n    {\n      \"source\": \"91\",\n      \"target\": \"90\"\n    },\n    {\n      \"source\": \"91\",\n      \"target\": \"81\"\n    },\n    {\n      \"source\": \"92\",\n      \"target\": \"91\"\n    },\n    {\n      \"source\": \"92\",\n      \"target\": \"82\"\n    },\n    {\n      \"source\": \"93\",\n      \"target\": \"92\"\n    },\n    {\n      \"source\": \"93\",\n      \"target\": \"83\"\n    },\n    {\n      \"source\": \"94\",\n      \"target\": \"93\"\n    },\n    {\n      \"source\": \"94\",\n      \"target\": \"84\"\n    },\n    {\n      \"source\": \"95\",\n      \"target\": \"94\"\n    },\n    {\n      \"source\": \"95\",\n      \"target\": \"85\"\n    },\n    {\n      \"source\": \"96\",\n      \"target\": \"95\"\n    },\n    {\n      \"source\": \"96\",\n      \"target\": \"86\"\n    },\n    {\n      \"source\": \"97\",\n      \"target\": \"96\"\n    },\n    {\n      \"source\": \"97\",\n      \"target\": \"87\"\n    },\n    {\n      \"source\": \"98\",\n      \"target\": \"97\"\n    },\n    {\n      \"source\": \"98\",\n      \"target\": \"88\"\n    },\n    {\n      \"source\": \"99\",\n      \"target\": \"98\"\n    },\n    {\n      \"source\": \"99\",\n      \"target\": \"89\"\n    }\n  ]\n}")));
-		/* */ if ($pkg === $mainPkg) { $s = 10; continue; }
-		/* */ $s = 11; continue;
-		/* if ($pkg === $mainPkg) { */ case 10:
-			$r = main(); /* */ $s = 12; case 12: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ if ($pkg === $mainPkg) { $s = 12; continue; }
+		/* */ $s = 13; continue;
+		/* if ($pkg === $mainPkg) { */ case 12:
+			$r = main(); /* */ $s = 14; case 14: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 			$mainFinished = true;
-		/* } */ case 11:
+		/* } */ case 13:
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;
