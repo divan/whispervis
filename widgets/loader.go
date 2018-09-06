@@ -38,6 +38,10 @@ func (l *Loader) Inc() {
 	l.current++
 }
 
+func (l *Loader) Steps() int {
+	return l.steps
+}
+
 // Progress reports loader's progress in percentage.
 func (l *Loader) Progress() float64 {
 	return 100 * float64(l.current) / float64(l.steps)

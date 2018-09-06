@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"runtime"
+
+	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -32,6 +36,19 @@ type Page struct {
 	forceEditor *widgets.ForceEditor
 }
 
+// Page creates and inits new app page.
+func NewPage(g *graph.Graph, steps int) *Page {
+	forceEditor := widgets.NewForceEditor()
+	config := forceEditor.Config()
+	l := layout.NewFromConfig(g, config)
+	page := &Page{
+		layout:      l,
+		loader:      widgets.NewLoader(steps),
+		forceEditor: forceEditor,
+	}
+	return page
+}
+
 // Render implements the vecty.Component interface.
 func (p *Page) Render() vecty.ComponentOrHTML {
 	return elem.Body(
@@ -49,6 +66,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
 					),
 					p.forceEditor,
+					p.updateButton(),
 				),
 			),
 			elem.Div(
@@ -97,4 +115,34 @@ func (p *Page) shutdown(renderer *three.WebGLRenderer) {
 	p.camera = three.PerspectiveCamera{}
 	p.renderer = nil
 	p.graph, p.nodes, p.edges = nil, nil, nil
+}
+
+func (p *Page) updateButton() *vecty.HTML {
+	return elem.Div(
+		elem.Button(
+			vecty.Markup(
+				vecty.Class("pure-button"),
+				vecty.Style("background", "rgb(28, 184, 65)"),
+				vecty.Style("color", "white"),
+				vecty.Style("border-radius", "4px"),
+				event.Click(p.onUpdateClick),
+			),
+			vecty.Text("Update"),
+		),
+	)
+}
+
+func (p *Page) onUpdateClick(e *vecty.Event) {
+	fmt.Println("Clicked")
+}
+
+func (p *Page) StartSimulation() {
+	for i := 0; i < p.loader.Steps(); i++ {
+		p.layout.UpdatePositions()
+		p.loader.Inc()
+		vecty.Rerender(p.loader)
+		runtime.Gosched()
+	}
+	p.loaded = true
+	vecty.Rerender(p)
 }

@@ -1,12 +1,9 @@
 package widgets
 
 import (
-	"fmt"
-
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
 )
 
 type ForceEditor struct {
@@ -28,18 +25,6 @@ func (l *ForceEditor) Render() vecty.ComponentOrHTML {
 			),
 			vecty.List(l.inputs),
 		),
-		elem.Div(
-			elem.Button(
-				vecty.Markup(
-					vecty.Class("pure-button"),
-					vecty.Style("background", "rgb(28, 184, 65)"),
-					vecty.Style("color", "white"),
-					vecty.Style("border-radius", "4px"),
-					event.Click(l.onUpdateClick),
-				),
-				vecty.Text("Update"),
-			),
-		),
 	)
 }
 
@@ -58,8 +43,4 @@ func NewForceEditor() *ForceEditor {
 
 func (l *ForceEditor) Config() layout.Config {
 	return l.config
-}
-
-func (l *ForceEditor) onUpdateClick(e *vecty.Event) {
-	fmt.Println("Clicked")
 }

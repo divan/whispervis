@@ -2,12 +2,9 @@ package main
 
 import (
 	"bytes"
-	"runtime"
 
 	"github.com/divan/graphx/formats"
-	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
-	"github.com/status-im/whispervis/widgets"
 )
 
 func main() {
@@ -17,29 +14,12 @@ func main() {
 		panic(err)
 	}
 
-	forceEditor := widgets.NewForceEditor()
-	config := forceEditor.Config()
-	l := layout.NewFromConfig(data, config)
-	steps := 50
-	page := &Page{
-		layout:      l,
-		loader:      widgets.NewLoader(steps),
-		forceEditor: forceEditor,
-	}
+	page := NewPage(data, 50)
 
 	vecty.SetTitle("Whisper Simulation")
 	vecty.AddStylesheet("css/pure-min.css")
 	vecty.AddStylesheet("css/controls.css")
 	vecty.RenderBody(page)
 
-	go func() {
-		for i := 0; i < steps; i++ {
-			l.UpdatePositions()
-			page.loader.Inc()
-			vecty.Rerender(page.loader)
-			runtime.Gosched()
-		}
-		page.loaded = true
-		vecty.Rerender(page)
-	}()
+	page.StartSimulation()
 }
