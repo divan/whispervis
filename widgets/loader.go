@@ -2,6 +2,7 @@ package widgets
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -10,6 +11,7 @@ import (
 type Loader struct {
 	vecty.Core
 
+	mx      sync.RWMutex
 	steps   int
 	current int
 }
@@ -35,15 +37,27 @@ func NewLoader(steps int) *Loader {
 }
 
 func (l *Loader) Inc() {
+	l.mx.Lock()
 	l.current++
+	l.mx.Unlock()
 }
 
 func (l *Loader) Steps() int {
+	l.mx.RLock()
+	defer l.mx.RUnlock()
 	return l.steps
+}
+
+func (l *Loader) Reset() {
+	l.mx.Lock()
+	l.current = 0
+	l.mx.Unlock()
 }
 
 // Progress reports loader's progress in percentage.
 func (l *Loader) Progress() float64 {
+	l.mx.RLock()
+	defer l.mx.RUnlock()
 	return 100 * float64(l.current) / float64(l.steps)
 }
 

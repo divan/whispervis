@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"runtime"
 
 	"github.com/divan/graphx/graph"
@@ -133,10 +132,16 @@ func (p *Page) updateButton() *vecty.HTML {
 }
 
 func (p *Page) onUpdateClick(e *vecty.Event) {
-	fmt.Println("Clicked")
+	if !p.loaded {
+		return
+	}
+	go p.StartSimulation()
 }
 
 func (p *Page) StartSimulation() {
+	p.loader.Reset()
+	p.loaded = false
+	vecty.Rerender(p)
 	for i := 0; i < p.loader.Steps(); i++ {
 		p.layout.UpdatePositions()
 		p.loader.Inc()
