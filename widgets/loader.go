@@ -15,16 +15,16 @@ type Loader struct {
 }
 
 func (l *Loader) Render() vecty.ComponentOrHTML {
-	var text string
-	progress := l.Progress()
-	if progress > 99.9 {
-		text = "Completed"
-	} else {
-		text = fmt.Sprintf("Loading %.1f%%...", progress)
-		fmt.Println("Loader.Render()", text, progress)
-	}
+	text := l.text()
 	return elem.Div(
-		elem.Heading1(vecty.Text(text)),
+		vecty.Markup(
+			vecty.Style("text-align", "center"),
+			vecty.Style("position", "relative"),
+			vecty.Style("top", "50%"),
+		),
+		elem.Heading1(
+			vecty.Text(text),
+		),
 	)
 }
 
@@ -43,4 +43,16 @@ func (l *Loader) Inc() {
 func (l *Loader) Progress() float64 {
 	fmt.Println("progress", 100*float64(l.current)/float64(l.steps))
 	return 100 * float64(l.current) / float64(l.steps)
+}
+
+// Text returns formatted string to display.
+func (l *Loader) text() string {
+	var text string
+	progress := l.Progress()
+	if progress > 99.9 {
+		text = "Completed"
+	} else {
+		text = fmt.Sprintf("Loading %.0f%%...", progress)
+	}
+	return text
 }
