@@ -34,6 +34,7 @@ func main() {
 		for i := 0; i < steps; i++ {
 			l.UpdatePositions()
 			page.loader.Inc()
+			vecty.Rerender(page.loader)
 			runtime.Gosched()
 		}
 		page.loaded = true

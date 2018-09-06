@@ -36,12 +36,10 @@ func NewLoader(steps int) *Loader {
 
 func (l *Loader) Inc() {
 	l.current++
-	vecty.Rerender(l)
 }
 
 // Progress reports loader's progress in percentage.
 func (l *Loader) Progress() float64 {
-	fmt.Println("progress", 100*float64(l.current)/float64(l.steps))
 	return 100 * float64(l.current) / float64(l.steps)
 }
 
