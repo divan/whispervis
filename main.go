@@ -17,12 +17,14 @@ func main() {
 		panic(err)
 	}
 
-	l := layout.NewAuto(data)
+	forceEditor := widgets.NewForceEditor()
+	config := forceEditor.Config()
+	l := layout.NewFromConfig(data, config)
 	steps := 50
 	page := &Page{
 		layout:      l,
 		loader:      widgets.NewLoader(steps),
-		forceEditor: widgets.NewForceEditor(),
+		forceEditor: forceEditor,
 	}
 
 	vecty.SetTitle("Whisper Simulation")
