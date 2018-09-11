@@ -1,8 +1,6 @@
 package main
 
 import (
-	"runtime"
-
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/gopherjs/js"
@@ -62,6 +60,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("pure-u-1-5")),
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
+				p.uploadButton(),
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
@@ -138,22 +137,4 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 		return
 	}
 	go p.StartSimulation()
-}
-
-func (p *Page) StartSimulation() {
-	p.loader.Reset()
-	p.loaded = false
-	vecty.Rerender(p)
-
-	config := p.forceEditor.Config()
-	l := layout.NewFromConfig(p.data, config)
-	p.layout = l
-	for i := 0; i < p.loader.Steps(); i++ {
-		p.layout.UpdatePositions()
-		p.loader.Inc()
-		vecty.Rerender(p.loader)
-		runtime.Gosched()
-	}
-	p.loaded = true
-	vecty.Rerender(p)
 }
