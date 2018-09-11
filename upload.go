@@ -16,6 +16,7 @@ func (p *Page) uploadButton() *vecty.HTML {
 			vecty.Markup(
 				prop.ID("file"),
 				prop.Type("file"),
+				vecty.Property("accept", "application/json"), // TODO(divan): add prop.Accept PR
 				event.Input(p.onUploadClick),
 			),
 			vecty.Text("Upload network.json"),
