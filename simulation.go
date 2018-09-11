@@ -7,6 +7,7 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
+// StartSimulation starts graph layout simulation.
 func (p *Page) StartSimulation() {
 	p.loader.Reset()
 	p.loaded = false

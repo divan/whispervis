@@ -34,7 +34,7 @@ type Page struct {
 	data        *graph.Graph
 }
 
-// Page creates and inits new app page.
+// NewPage creates and inits new app page.
 func NewPage(g *graph.Graph, steps int) *Page {
 	forceEditor := widgets.NewForceEditor()
 	config := forceEditor.Config()
