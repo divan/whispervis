@@ -1,4 +1,4 @@
-package main
+package jsapi
 
 import "github.com/gopherjs/gopherjs/js"
 

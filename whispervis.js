@@ -29854,7 +29854,7 @@ $packages["github.com/gopherjs/vecty"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/gopherjs/vecty/elem"] = (function() {
-	var $pkg = {}, $init, vecty, Body, Button, Canvas, Div, Form, Heading1, Heading3, HorizontalRule, Input, Label, Paragraph;
+	var $pkg = {}, $init, vecty, Body, Button, Canvas, Div, Form, Heading1, Heading3, HorizontalRule, Input, Label, Paragraph, Span;
 	vecty = $packages["github.com/gopherjs/vecty"];
 	Body = function(markup) {
 		var _r, markup, $s, $r;
@@ -29944,6 +29944,14 @@ $packages["github.com/gopherjs/vecty/elem"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Paragraph }; } $f._r = _r; $f.markup = markup; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.Paragraph = Paragraph;
+	Span = function(markup) {
+		var _r, markup, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; markup = $f.markup; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		_r = vecty.Tag("span", markup); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		$s = -1; return _r;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Span }; } $f._r = _r; $f.markup = markup; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.Span = Span;
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31753,14 +31761,65 @@ $packages["github.com/lngramos/three"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
+$packages["github.com/status-im/whispervis/jsapi"] = (function() {
+	var $pkg = {}, $init, js, FileReader, sliceType, funcType, ptrType, ptrType$1, NewFileReader;
+	js = $packages["github.com/gopherjs/gopherjs/js"];
+	FileReader = $pkg.FileReader = $newType(0, $kindStruct, "jsapi.FileReader", true, "github.com/status-im/whispervis/jsapi", true, function(Object_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.Object = null;
+			return;
+		}
+		this.Object = Object_;
+	});
+	sliceType = $sliceType($Uint8);
+	funcType = $funcType([], [], false);
+	ptrType = $ptrType(js.Object);
+	ptrType$1 = $ptrType(FileReader);
+	NewFileReader = function() {
+		return new FileReader.ptr(new ($global.FileReader)());
+	};
+	$pkg.NewFileReader = NewFileReader;
+	FileReader.ptr.prototype.ReadAll = function(blob) {
+		var _r, blob, ch, fr, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; blob = $f.blob; ch = $f.ch; fr = $f.fr; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		ch = [ch];
+		fr = [fr];
+		fr[0] = this;
+		ch[0] = new $Chan(sliceType, 0);
+		fr[0].Object.onload = $externalize((function(ch, fr) { return function $b() {
+			var $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			$r = $send(ch[0], $assertType($internalize(new ($global.Uint8Array)(fr[0].Object.result), $emptyInterface), sliceType)); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$s = $s; $f.$r = $r; return $f;
+		}; })(ch, fr), funcType);
+		fr[0].Object.readAsArrayBuffer(blob);
+		_r = $recv(ch[0]); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		$s = -1; return _r[0];
+		/* */ } return; } if ($f === undefined) { $f = { $blk: FileReader.ptr.prototype.ReadAll }; } $f._r = _r; $f.blob = blob; $f.ch = ch; $f.fr = fr; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	FileReader.prototype.ReadAll = function(blob) { return this.$val.ReadAll(blob); };
+	ptrType$1.methods = [{prop: "ReadAll", name: "ReadAll", pkg: "", typ: $funcType([ptrType], [sliceType], false)}];
+	FileReader.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType, tag: ""}]);
+	$init = function() {
+		$pkg.$init = function() {};
+		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		$r = js.$init(); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
+	};
+	$pkg.$init = $init;
+	return $pkg;
+})();
 $packages["github.com/status-im/whispervis/widgets"] = (function() {
-	var $pkg = {}, $init, fmt, layout, vecty, elem, event, prop, strconv, sync, ForceEditor, ForceInput, Loader, sliceType, sliceType$1, sliceType$2, ptrType, sliceType$3, ptrType$1, ptrType$2, ptrType$3, NewForceEditor, NewForceInput, NewLoader;
+	var $pkg = {}, $init, fmt, layout, vecty, elem, event, prop, jsapi, strconv, sync, ForceEditor, ForceInput, Loader, UploadWidget, sliceType, sliceType$1, sliceType$2, ptrType, sliceType$3, ptrType$1, ptrType$2, ptrType$3, ptrType$4, sliceType$4, funcType, NewForceEditor, NewForceInput, NewLoader, NewUploadWidget;
 	fmt = $packages["fmt"];
 	layout = $packages["github.com/divan/graphx/layout"];
 	vecty = $packages["github.com/gopherjs/vecty"];
 	elem = $packages["github.com/gopherjs/vecty/elem"];
 	event = $packages["github.com/gopherjs/vecty/event"];
 	prop = $packages["github.com/gopherjs/vecty/prop"];
+	jsapi = $packages["github.com/status-im/whispervis/jsapi"];
 	strconv = $packages["strconv"];
 	sync = $packages["sync"];
 	ForceEditor = $pkg.ForceEditor = $newType(0, $kindStruct, "widgets.ForceEditor", true, "github.com/status-im/whispervis/widgets", true, function(Core_, config_, repelling_, spring_, drag_) {
@@ -31807,6 +31866,16 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 		this.steps = steps_;
 		this.current = current_;
 	});
+	UploadWidget = $pkg.UploadWidget = $newType(0, $kindStruct, "widgets.UploadWidget", true, "github.com/status-im/whispervis/widgets", true, function(Core_, handler_) {
+		this.$val = this;
+		if (arguments.length === 0) {
+			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
+			this.handler = $throwNilPointerError;
+			return;
+		}
+		this.Core = Core_;
+		this.handler = handler_;
+	});
 	sliceType = $sliceType(vecty.MarkupOrChild);
 	sliceType$1 = $sliceType($String);
 	sliceType$2 = $sliceType(vecty.Applyer);
@@ -31815,6 +31884,9 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 	ptrType$1 = $ptrType(ForceEditor);
 	ptrType$2 = $ptrType(vecty.Event);
 	ptrType$3 = $ptrType(Loader);
+	ptrType$4 = $ptrType(UploadWidget);
+	sliceType$4 = $sliceType($Uint8);
+	funcType = $funcType([sliceType$4], [], false);
 	ForceEditor.ptr.prototype.Render = function() {
 		var _arg, _arg$1, _arg$2, _r, _r$1, _r$2, _r$3, _r$4, l, x, $s, $r;
 		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$2 = $f._arg$2; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; l = $f.l; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31982,12 +32054,58 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Loader.ptr.prototype.text }; } $f._r = _r; $f._r$1 = _r$1; $f.l = l; $f.progress = progress; $f.text = text; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Loader.prototype.text = function() { return this.$val.text(); };
+	NewUploadWidget = function(handler) {
+		var handler;
+		return new UploadWidget.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), handler);
+	};
+	$pkg.NewUploadWidget = NewUploadWidget;
+	UploadWidget.ptr.prototype.Render = function() {
+		var _arg, _arg$1, _arg$2, _arg$3, _r, _r$1, _r$2, _r$3, _r$4, u, x, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$2 = $f._arg$2; _arg$3 = $f._arg$3; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; u = $f.u; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		u = this;
+		_arg = (x = vecty.Markup(new sliceType$2([prop.ID("file"), prop.Type("file"), vecty.Property("accept", new $String("application/json")), event.Input($methodVal(u, "onUploadClick"))])), new x.constructor.elem(x));
+		_r = vecty.Text("Upload network.json", new sliceType([])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_arg$1 = _r;
+		_r$1 = elem.Input(new sliceType([_arg, _arg$1])); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+		_arg$2 = _r$1;
+		_r$2 = vecty.Text("Using graph with", new sliceType([])); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		_r$3 = elem.Span(new sliceType([_r$2])); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_arg$3 = _r$3;
+		_r$4 = elem.Div(new sliceType([_arg$2, _arg$3])); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		$s = -1; return _r$4;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: UploadWidget.ptr.prototype.Render }; } $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f.u = u; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	UploadWidget.prototype.Render = function() { return this.$val.Render(); };
+	UploadWidget.ptr.prototype.Reset = function() {
+		var u;
+		u = this;
+	};
+	UploadWidget.prototype.Reset = function() { return this.$val.Reset(); };
+	UploadWidget.ptr.prototype.onUploadClick = function(e) {
+		var e, u;
+		u = this;
+		$go((function $b() {
+			var _r, _r$1, data, file, $s, $r;
+			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; data = $f.data; file = $f.file; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+			file = e.Target.files[0];
+			_r = fmt.Println(new sliceType$3([new $String("File size:"), new $jsObjectPtr(file.size)])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+			_r;
+			_r$1 = jsapi.NewFileReader().ReadAll(file); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			data = _r$1;
+			$r = u.handler(data); /* */ $s = 3; case 3: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+			$s = -1; return;
+			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r = _r; $f._r$1 = _r$1; $f.data = data; $f.file = file; $f.$s = $s; $f.$r = $r; return $f;
+		}), []);
+	};
+	UploadWidget.prototype.onUploadClick = function(e) { return this.$val.onUploadClick(e); };
 	ptrType$1.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Config", name: "Config", pkg: "", typ: $funcType([], [layout.Config], false)}];
 	ptrType.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "onEditInput", name: "onEditInput", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([ptrType$2], [], false)}, {prop: "Value", name: "Value", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "Changed", name: "Changed", pkg: "", typ: $funcType([], [$Bool], false)}];
 	ptrType$3.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Inc", name: "Inc", pkg: "", typ: $funcType([], [], false)}, {prop: "Steps", name: "Steps", pkg: "", typ: $funcType([], [$Int], false)}, {prop: "Reset", name: "Reset", pkg: "", typ: $funcType([], [], false)}, {prop: "Progress", name: "Progress", pkg: "", typ: $funcType([], [$Float64], false)}, {prop: "text", name: "text", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([], [$String], false)}];
+	ptrType$4.methods = [{prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "Reset", name: "Reset", pkg: "", typ: $funcType([], [], false)}, {prop: "onUploadClick", name: "onUploadClick", pkg: "github.com/status-im/whispervis/widgets", typ: $funcType([ptrType$2], [], false)}];
 	ForceEditor.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "config", name: "config", embedded: false, exported: false, typ: layout.Config, tag: ""}, {prop: "repelling", name: "repelling", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "spring", name: "spring", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "drag", name: "drag", embedded: false, exported: false, typ: ptrType, tag: ""}]);
 	ForceInput.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "changed", name: "changed", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "title", name: "title", embedded: false, exported: false, typ: $String, tag: ""}, {prop: "value", name: "value", embedded: false, exported: false, typ: $Float64, tag: ""}]);
 	Loader.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "mx", name: "mx", embedded: false, exported: false, typ: sync.RWMutex, tag: ""}, {prop: "steps", name: "steps", embedded: false, exported: false, typ: $Int, tag: ""}, {prop: "current", name: "current", embedded: false, exported: false, typ: $Int, tag: ""}]);
+	UploadWidget.init("github.com/status-im/whispervis/widgets", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "handler", name: "handler", embedded: false, exported: false, typ: funcType, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -31997,8 +32115,9 @@ $packages["github.com/status-im/whispervis/widgets"] = (function() {
 		$r = elem.$init(); /* */ $s = 4; case 4: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = event.$init(); /* */ $s = 5; case 5: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		$r = prop.$init(); /* */ $s = 6; case 6: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = strconv.$init(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-		$r = sync.$init(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = jsapi.$init(); /* */ $s = 7; case 7: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = strconv.$init(); /* */ $s = 8; case 8: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
+		$r = sync.$init(); /* */ $s = 9; case 9: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
 		/* */ } return; } if ($f === undefined) { $f = { $blk: $init }; } $f.$s = $s; $f.$r = $r; return $f;
 	};
 	$pkg.$init = $init;
@@ -32113,7 +32232,7 @@ $packages["github.com/vecty/vthree"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/status-im/whispervis"] = (function() {
-	var $pkg = {}, $init, bytes, fmt, formats, graph, layout, js, vecty, elem, event, prop, three, widgets, vthree, runtime, TrackBallControl, FileReader, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, sliceType$3, sliceType$4, sliceType$5, sliceType$6, sliceType$7, ptrType$10, ptrType$11, ptrType$12, ptrType$13, ptrType$14, inputJSON, NewTrackBallControl, NewFileReader, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial, NewPage;
+	var $pkg = {}, $init, bytes, fmt, formats, graph, layout, js, vecty, elem, event, prop, three, widgets, vthree, runtime, TrackBallControl, Page, sliceType, ptrType, funcType, structType, sliceType$1, structType$1, sliceType$2, ptrType$1, ptrType$2, ptrType$3, ptrType$4, ptrType$5, ptrType$6, ptrType$7, ptrType$8, ptrType$9, ptrType$10, sliceType$3, sliceType$4, sliceType$5, sliceType$6, sliceType$7, ptrType$11, ptrType$12, ptrType$13, ptrType$14, inputJSON, NewTrackBallControl, NewEthereumGeometry, main, NewNodeMaterial, NewEdgeMatherial, NewPage;
 	bytes = $packages["bytes"];
 	fmt = $packages["fmt"];
 	formats = $packages["github.com/divan/graphx/formats"];
@@ -32136,15 +32255,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		}
 		this.Object = Object_;
 	});
-	FileReader = $pkg.FileReader = $newType(0, $kindStruct, "main.FileReader", true, "github.com/status-im/whispervis", true, function(Object_) {
-		this.$val = this;
-		if (arguments.length === 0) {
-			this.Object = null;
-			return;
-		}
-		this.Object = Object_;
-	});
-	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_, loaded_, loader_, forceEditor_, data_) {
+	Page = $pkg.Page = $newType(0, $kindStruct, "main.Page", true, "github.com/status-im/whispervis", true, function(Core_, layout_, scene_, camera_, renderer_, graph_, nodes_, edges_, controls_, autoRotate_, loaded_, loader_, forceEditor_, upload_, data_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Core = new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false);
@@ -32160,7 +32271,8 @@ $packages["github.com/status-im/whispervis"] = (function() {
 			this.loaded = false;
 			this.loader = ptrType$7.nil;
 			this.forceEditor = ptrType$8.nil;
-			this.data = ptrType$9.nil;
+			this.upload = ptrType$9.nil;
+			this.data = ptrType$10.nil;
 			return;
 		}
 		this.Core = Core_;
@@ -32176,6 +32288,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		this.loaded = loaded_;
 		this.loader = loader_;
 		this.forceEditor = forceEditor_;
+		this.upload = upload_;
 		this.data = data_;
 	});
 	sliceType = $sliceType($Uint8);
@@ -32193,14 +32306,14 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	ptrType$6 = $ptrType(three.Group);
 	ptrType$7 = $ptrType(widgets.Loader);
 	ptrType$8 = $ptrType(widgets.ForceEditor);
-	ptrType$9 = $ptrType(graph.Graph);
+	ptrType$9 = $ptrType(widgets.UploadWidget);
+	ptrType$10 = $ptrType(graph.Graph);
 	sliceType$3 = $sliceType($String);
 	sliceType$4 = $sliceType(vecty.Applyer);
 	sliceType$5 = $sliceType(vecty.MarkupOrChild);
 	sliceType$6 = $sliceType(vecty.ComponentOrHTML);
 	sliceType$7 = $sliceType($emptyInterface);
-	ptrType$10 = $ptrType(js.Object);
-	ptrType$11 = $ptrType(FileReader);
+	ptrType$11 = $ptrType(js.Object);
 	ptrType$12 = $ptrType(vecty.Event);
 	ptrType$13 = $ptrType(vecty.HTML);
 	ptrType$14 = $ptrType(Page);
@@ -32237,30 +32350,6 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		t.Object.update();
 	};
 	TrackBallControl.prototype.Update = function() { return this.$val.Update(); };
-	NewFileReader = function() {
-		return new FileReader.ptr(new ($global.FileReader)());
-	};
-	$pkg.NewFileReader = NewFileReader;
-	FileReader.ptr.prototype.ReadAll = function(blob) {
-		var _r, blob, ch, fr, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; blob = $f.blob; ch = $f.ch; fr = $f.fr; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-		ch = [ch];
-		fr = [fr];
-		fr[0] = this;
-		ch[0] = new $Chan(sliceType, 0);
-		fr[0].Object.onload = $externalize((function(ch, fr) { return function $b() {
-			var $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			$r = $send(ch[0], $assertType($internalize(new ($global.Uint8Array)(fr[0].Object.result), $emptyInterface), sliceType)); /* */ $s = 1; case 1: if($c) { $c = false; $r = $r.$blk(); } if ($r && $r.$blk !== undefined) { break s; }
-			$s = -1; return;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f.$s = $s; $f.$r = $r; return $f;
-		}; })(ch, fr), funcType);
-		fr[0].Object.readAsArrayBuffer(blob);
-		_r = $recv(ch[0]); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		$s = -1; return _r[0];
-		/* */ } return; } if ($f === undefined) { $f = { $blk: FileReader.ptr.prototype.ReadAll }; } $f._r = _r; $f.blob = blob; $f.ch = ch; $f.fr = fr; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	FileReader.prototype.ReadAll = function(blob) { return this.$val.ReadAll(blob); };
 	NewEthereumGeometry = function(scale) {
 		var _i, _i$1, _ref, _ref$1, f, faces, geom, scale, v, vertices;
 		geom = $clone(three.NewBasicGeometry(new three.BasicGeometryParams.ptr()), three.BasicGeometry);
@@ -32395,13 +32484,14 @@ $packages["github.com/status-im/whispervis"] = (function() {
 	Page.prototype.createEdges = function() { return this.$val.createEdges(); };
 	NewPage = function(steps) {
 		var page, steps;
-		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), ptrType$4.nil, ptrType$5.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$6.nil, ptrType$6.nil, ptrType$6.nil, new TrackBallControl.ptr(null), false, false, widgets.NewLoader(steps), widgets.NewForceEditor(), ptrType$9.nil);
+		page = new Page.ptr(new vecty.Core.ptr($ifaceNil, $ifaceNil, false, false), ptrType$4.nil, ptrType$5.nil, new three.PerspectiveCamera.ptr(null, new three.Vector3.ptr(null)), ptrType.nil, ptrType$6.nil, ptrType$6.nil, ptrType$6.nil, new TrackBallControl.ptr(null), false, false, widgets.NewLoader(steps), widgets.NewForceEditor(), ptrType$9.nil, ptrType$10.nil);
+		page.upload = widgets.NewUploadWidget($methodVal(page, "onUpload"));
 		return page;
 	};
 	$pkg.NewPage = NewPage;
 	Page.ptr.prototype.Render = function() {
-		var _arg, _arg$1, _arg$10, _arg$2, _arg$3, _arg$4, _arg$5, _arg$6, _arg$7, _arg$8, _arg$9, _r, _r$1, _r$10, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, p, x, x$1, x$2, x$3, x$4, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$10 = $f._arg$10; _arg$2 = $f._arg$2; _arg$3 = $f._arg$3; _arg$4 = $f._arg$4; _arg$5 = $f._arg$5; _arg$6 = $f._arg$6; _arg$7 = $f._arg$7; _arg$8 = $f._arg$8; _arg$9 = $f._arg$9; _r = $f._r; _r$1 = $f._r$1; _r$10 = $f._r$10; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; p = $f.p; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; x$4 = $f.x$4; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _arg, _arg$1, _arg$10, _arg$2, _arg$3, _arg$4, _arg$5, _arg$6, _arg$7, _arg$8, _arg$9, _r, _r$1, _r$2, _r$3, _r$4, _r$5, _r$6, _r$7, _r$8, _r$9, p, x, x$1, x$2, x$3, x$4, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _arg$10 = $f._arg$10; _arg$2 = $f._arg$2; _arg$3 = $f._arg$3; _arg$4 = $f._arg$4; _arg$5 = $f._arg$5; _arg$6 = $f._arg$6; _arg$7 = $f._arg$7; _arg$8 = $f._arg$8; _arg$9 = $f._arg$9; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _r$5 = $f._r$5; _r$6 = $f._r$6; _r$7 = $f._r$7; _r$8 = $f._r$8; _r$9 = $f._r$9; p = $f.p; x = $f.x; x$1 = $f.x$1; x$2 = $f.x$2; x$3 = $f.x$3; x$4 = $f.x$4; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		p = this;
 		_arg = (x = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-g"])), vecty.Style("height", "100%")])), new x.constructor.elem(x));
 		_arg$1 = (x$1 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-1-5"]))])), new x$1.constructor.elem(x$1));
@@ -32411,22 +32501,21 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		_r$2 = vecty.Text("This visualization represents message propagation in the p2p network.", new sliceType$5([])); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
 		_r$3 = elem.Paragraph(new sliceType$5([_r$2])); /* */ $s = 4; case 4: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
 		_arg$3 = _r$3;
-		_r$4 = p.uploadButton(); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-		_arg$4 = _r$4;
+		_arg$4 = p.upload;
 		_arg$5 = (x$2 = vecty.Markup(new sliceType$4([vecty.MarkupIf(!p.loaded, new sliceType$4([vecty.Style("visibility", "hidden")]))])), new x$2.constructor.elem(x$2));
 		_arg$6 = p.forceEditor;
-		_r$5 = p.updateButton(); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
-		_arg$7 = _r$5;
-		_r$6 = elem.Div(new sliceType$5([_arg$5, _arg$6, _arg$7])); /* */ $s = 7; case 7: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
-		_arg$8 = _r$6;
-		_r$7 = elem.Div(new sliceType$5([_arg$1, _arg$2, _arg$3, _arg$4, _arg$8])); /* */ $s = 8; case 8: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
-		_arg$9 = _r$7;
-		_r$8 = elem.Div(new sliceType$5([(x$3 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-4-5"]))])), new x$3.constructor.elem(x$3)), vecty.If(p.loaded, new sliceType$6([vthree.WebGLRenderer(new vthree.WebGLOptions.ptr($methodVal(p, "init"), $methodVal(p, "shutdown")), new sliceType$5([]))])), vecty.If(!p.loaded, new sliceType$6([p.loader]))])); /* */ $s = 9; case 9: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
-		_arg$10 = _r$8;
-		_r$9 = elem.Div(new sliceType$5([_arg, _arg$9, _arg$10])); /* */ $s = 10; case 10: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
-		_r$10 = elem.Body(new sliceType$5([_r$9, (x$4 = vecty.Markup(new sliceType$4([event.KeyDown($methodVal(p, "KeyListener"))])), new x$4.constructor.elem(x$4))])); /* */ $s = 11; case 11: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
-		$s = -1; return _r$10;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.Render }; } $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$10 = _arg$10; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._arg$5 = _arg$5; $f._arg$6 = _arg$6; $f._arg$7 = _arg$7; $f._arg$8 = _arg$8; $f._arg$9 = _arg$9; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f.p = p; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.x$4 = x$4; $f.$s = $s; $f.$r = $r; return $f;
+		_r$4 = p.updateButton(); /* */ $s = 5; case 5: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		_arg$7 = _r$4;
+		_r$5 = elem.Div(new sliceType$5([_arg$5, _arg$6, _arg$7])); /* */ $s = 6; case 6: if($c) { $c = false; _r$5 = _r$5.$blk(); } if (_r$5 && _r$5.$blk !== undefined) { break s; }
+		_arg$8 = _r$5;
+		_r$6 = elem.Div(new sliceType$5([_arg$1, _arg$2, _arg$3, _arg$4, _arg$8])); /* */ $s = 7; case 7: if($c) { $c = false; _r$6 = _r$6.$blk(); } if (_r$6 && _r$6.$blk !== undefined) { break s; }
+		_arg$9 = _r$6;
+		_r$7 = elem.Div(new sliceType$5([(x$3 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-4-5"]))])), new x$3.constructor.elem(x$3)), vecty.If(p.loaded, new sliceType$6([vthree.WebGLRenderer(new vthree.WebGLOptions.ptr($methodVal(p, "init"), $methodVal(p, "shutdown")), new sliceType$5([]))])), vecty.If(!p.loaded, new sliceType$6([p.loader]))])); /* */ $s = 8; case 8: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
+		_arg$10 = _r$7;
+		_r$8 = elem.Div(new sliceType$5([_arg, _arg$9, _arg$10])); /* */ $s = 9; case 9: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
+		_r$9 = elem.Body(new sliceType$5([_r$8, (x$4 = vecty.Markup(new sliceType$4([event.KeyDown($methodVal(p, "KeyListener"))])), new x$4.constructor.elem(x$4))])); /* */ $s = 10; case 10: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
+		$s = -1; return _r$9;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.Render }; } $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$10 = _arg$10; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._arg$5 = _arg$5; $f._arg$6 = _arg$6; $f._arg$7 = _arg$7; $f._arg$8 = _arg$8; $f._arg$9 = _arg$9; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f.p = p; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.x$4 = x$4; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Page.prototype.Render = function() { return this.$val.Render(); };
 	Page.ptr.prototype.init = function(renderer) {
@@ -32565,52 +32654,29 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.StartSimulation }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.config = config; $f.i = i; $f.l = l; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Page.prototype.StartSimulation = function() { return this.$val.StartSimulation(); };
-	Page.ptr.prototype.uploadButton = function() {
-		var _arg, _arg$1, _r, _r$1, _r$2, p, x, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _arg = $f._arg; _arg$1 = $f._arg$1; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; p = $f.p; x = $f.x; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+	Page.ptr.prototype.onUpload = function(json) {
+		var _r, _r$1, _r$2, err, json, p, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; err = $f.err; json = $f.json; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		p = this;
-		_arg = (x = vecty.Markup(new sliceType$4([prop.ID("file"), prop.Type("file"), vecty.Property("accept", new $String("application/json")), event.Input($methodVal(p, "onUploadClick"))])), new x.constructor.elem(x));
-		_r = vecty.Text("Upload network.json", new sliceType$5([])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-		_arg$1 = _r;
-		_r$1 = elem.Input(new sliceType$5([_arg, _arg$1])); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-		_r$2 = elem.Div(new sliceType$5([_r$1])); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-		$s = -1; return _r$2;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.uploadButton }; } $f._arg = _arg; $f._arg$1 = _arg$1; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.p = p; $f.x = x; $f.$s = $s; $f.$r = $r; return $f;
-	};
-	Page.prototype.uploadButton = function() { return this.$val.uploadButton(); };
-	Page.ptr.prototype.onUploadClick = function(e) {
-		var e, p;
-		p = this;
-		$go((function $b() {
-			var _r, _r$1, _r$2, _r$3, _r$4, data, err, file, $s, $r;
-			/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; data = $f.data; err = $f.err; file = $f.file; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
-			file = e.Target.files[0];
-			_r = fmt.Println(new sliceType$7([new $String("File size:"), new $jsObjectPtr(file.size)])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
-			_r;
-			_r$1 = NewFileReader().ReadAll(file); /* */ $s = 2; case 2: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
-			data = _r$1;
-			_r$2 = p.UpdateNetworkGraph(data); /* */ $s = 3; case 3: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
-			err = _r$2;
-			/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 4; continue; }
-			/* */ $s = 5; continue;
-			/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 4:
-				_r$3 = fmt.Println(new sliceType$7([new $String("[ERROR] Failed to process network.json:"), err])); /* */ $s = 6; case 6: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
-				_r$3;
-				$s = -1; return;
-			/* } */ case 5:
-			_r$4 = fmt.Println(new sliceType$7([new $String("Uploaded new network graph")])); /* */ $s = 7; case 7: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
-			_r$4;
+		_r = p.UpdateNetworkGraph(json); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		err = _r;
+		/* */ if (!($interfaceIsEqual(err, $ifaceNil))) { $s = 2; continue; }
+		/* */ $s = 3; continue;
+		/* if (!($interfaceIsEqual(err, $ifaceNil))) { */ case 2:
+			_r$1 = fmt.Println(new sliceType$7([new $String("[ERROR] Failed to process network.json:"), err])); /* */ $s = 4; case 4: if($c) { $c = false; _r$1 = _r$1.$blk(); } if (_r$1 && _r$1.$blk !== undefined) { break s; }
+			_r$1;
 			$s = -1; return;
-			/* */ } return; } if ($f === undefined) { $f = { $blk: $b }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f.data = data; $f.err = err; $f.file = file; $f.$s = $s; $f.$r = $r; return $f;
-		}), []);
+		/* } */ case 3:
+		_r$2 = fmt.Println(new sliceType$7([new $String("Uploaded new network graph")])); /* */ $s = 5; case 5: if($c) { $c = false; _r$2 = _r$2.$blk(); } if (_r$2 && _r$2.$blk !== undefined) { break s; }
+		_r$2;
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.onUpload }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.err = err; $f.json = json; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
 	};
-	Page.prototype.onUploadClick = function(e) { return this.$val.onUploadClick(e); };
+	Page.prototype.onUpload = function(json) { return this.$val.onUpload(json); };
 	TrackBallControl.methods = [{prop: "Update", name: "Update", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$11.methods = [{prop: "ReadAll", name: "ReadAll", pkg: "", typ: $funcType([ptrType$10], [sliceType], false)}];
-	ptrType$14.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$12], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "renderWebGLCanvas", name: "renderWebGLCanvas", pkg: "github.com/status-im/whispervis", typ: $funcType([], [vecty.Component], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$13], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$12], [], false)}, {prop: "UpdateNetworkGraph", name: "UpdateNetworkGraph", pkg: "", typ: $funcType([sliceType], [$error], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "uploadButton", name: "uploadButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$13], false)}, {prop: "onUploadClick", name: "onUploadClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$12], [], false)}];
-	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$10, tag: ""}]);
-	FileReader.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$10, tag: ""}]);
-	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$4, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$5, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "forceEditor", name: "forceEditor", embedded: false, exported: false, typ: ptrType$8, tag: ""}, {prop: "data", name: "data", embedded: false, exported: false, typ: ptrType$9, tag: ""}]);
+	ptrType$14.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$12], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "renderWebGLCanvas", name: "renderWebGLCanvas", pkg: "github.com/status-im/whispervis", typ: $funcType([], [vecty.Component], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$13], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$12], [], false)}, {prop: "UpdateNetworkGraph", name: "UpdateNetworkGraph", pkg: "", typ: $funcType([sliceType], [$error], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "onUpload", name: "onUpload", pkg: "github.com/status-im/whispervis", typ: $funcType([sliceType], [], false)}];
+	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$11, tag: ""}]);
+	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$4, tag: ""}, {prop: "scene", name: "scene", embedded: false, exported: false, typ: ptrType$5, tag: ""}, {prop: "camera", name: "camera", embedded: false, exported: false, typ: three.PerspectiveCamera, tag: ""}, {prop: "renderer", name: "renderer", embedded: false, exported: false, typ: ptrType, tag: ""}, {prop: "graph", name: "graph", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "nodes", name: "nodes", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "edges", name: "edges", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "controls", name: "controls", embedded: false, exported: false, typ: TrackBallControl, tag: ""}, {prop: "autoRotate", name: "autoRotate", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "forceEditor", name: "forceEditor", embedded: false, exported: false, typ: ptrType$8, tag: ""}, {prop: "upload", name: "upload", embedded: false, exported: false, typ: ptrType$9, tag: ""}, {prop: "data", name: "data", embedded: false, exported: false, typ: ptrType$10, tag: ""}]);
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:

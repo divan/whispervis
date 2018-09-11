@@ -35,6 +35,7 @@ type Page struct {
 	loaded      bool
 	loader      *widgets.Loader
 	forceEditor *widgets.ForceEditor
+	upload      *widgets.UploadWidget
 	data        *graph.Graph
 }
 
@@ -44,6 +45,7 @@ func NewPage(steps int) *Page {
 		loader:      widgets.NewLoader(steps),
 		forceEditor: widgets.NewForceEditor(),
 	}
+	page.upload = widgets.NewUploadWidget(page.onUpload)
 	return page
 }
 
@@ -59,7 +61,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("pure-u-1-5")),
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
-				p.uploadButton(),
+				p.upload,
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
