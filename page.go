@@ -1,6 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
+
+	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/gopherjs/js"
@@ -35,15 +39,10 @@ type Page struct {
 }
 
 // NewPage creates and inits new app page.
-func NewPage(g *graph.Graph, steps int) *Page {
-	forceEditor := widgets.NewForceEditor()
-	config := forceEditor.Config()
-	l := layout.NewFromConfig(g, config)
+func NewPage(steps int) *Page {
 	page := &Page{
-		data:        g,
-		layout:      l,
 		loader:      widgets.NewLoader(steps),
-		forceEditor: forceEditor,
+		forceEditor: widgets.NewForceEditor(),
 	}
 	return page
 }
@@ -137,4 +136,18 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 		return
 	}
 	go p.StartSimulation()
+}
+
+func (p *Page) UpdateNetworkGraph(json []byte) error {
+	buf := bytes.NewBuffer(json)
+	data, err := formats.FromD3JSONReader(buf)
+	if err != nil {
+		return fmt.Errorf("update graph: %v", err)
+	}
+
+	p.data = data
+	config := p.forceEditor.Config()
+	p.layout = layout.NewFromConfig(data, config)
+	go p.StartSimulation()
+	return nil
 }

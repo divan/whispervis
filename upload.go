@@ -32,6 +32,10 @@ func (p *Page) onUploadClick(e *vecty.Event) {
 		fmt.Println("File size:", file.Get("size"))
 
 		data := NewFileReader().ReadAll(file)
-		fmt.Println("Input", string(data))
+		if err := p.UpdateNetworkGraph(data); err != nil {
+			fmt.Println("[ERROR] Failed to process network.json:", err)
+			return
+		}
+		fmt.Println("Uploaded new network graph")
 	}()
 }
