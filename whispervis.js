@@ -29965,7 +29965,7 @@ $packages["github.com/gopherjs/vecty/elem"] = (function() {
 	return $pkg;
 })();
 $packages["github.com/gopherjs/vecty/event"] = (function() {
-	var $pkg = {}, $init, vecty, Click, Input, KeyDown;
+	var $pkg = {}, $init, vecty, Click, Input, KeyDown, VisibilityChange;
 	vecty = $packages["github.com/gopherjs/vecty"];
 	Click = function(listener) {
 		var listener;
@@ -29982,6 +29982,11 @@ $packages["github.com/gopherjs/vecty/event"] = (function() {
 		return new vecty.EventListener.ptr("keydown", listener, false, false, $throwNilPointerError);
 	};
 	$pkg.KeyDown = KeyDown;
+	VisibilityChange = function(listener) {
+		var listener;
+		return new vecty.EventListener.ptr("visibilitychange", listener, false, false, $throwNilPointerError);
+	};
+	$pkg.VisibilityChange = VisibilityChange;
 	$init = function() {
 		$pkg.$init = function() {};
 		/* */ var $f, $c = false, $s = 0, $r; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
@@ -32627,7 +32632,7 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		_r$8 = elem.Div(new sliceType$5([(x$4 = vecty.Markup(new sliceType$4([vecty.Class(new sliceType$3(["pure-u-4-5"]))])), new x$4.constructor.elem(x$4)), vecty.If(!p.loaded, new sliceType$6([p.loader]))])); /* */ $s = 9; case 9: if($c) { $c = false; _r$8 = _r$8.$blk(); } if (_r$8 && _r$8.$blk !== undefined) { break s; }
 		_arg$11 = _r$8;
 		_r$9 = elem.Div(new sliceType$5([_arg, _arg$9, _arg$10, _arg$11])); /* */ $s = 10; case 10: if($c) { $c = false; _r$9 = _r$9.$blk(); } if (_r$9 && _r$9.$blk !== undefined) { break s; }
-		_r$10 = elem.Body(new sliceType$5([_r$9, (x$5 = vecty.Markup(new sliceType$4([event.KeyDown($methodVal(p, "KeyListener"))])), new x$5.constructor.elem(x$5))])); /* */ $s = 11; case 11: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
+		_r$10 = elem.Body(new sliceType$5([_r$9, (x$5 = vecty.Markup(new sliceType$4([event.KeyDown($methodVal(p, "KeyListener")), event.VisibilityChange($methodVal(p, "VisibilityListener"))])), new x$5.constructor.elem(x$5))])); /* */ $s = 11; case 11: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
 		$s = -1; return _r$10;
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.Render }; } $f._arg = _arg; $f._arg$1 = _arg$1; $f._arg$10 = _arg$10; $f._arg$11 = _arg$11; $f._arg$2 = _arg$2; $f._arg$3 = _arg$3; $f._arg$4 = _arg$4; $f._arg$5 = _arg$5; $f._arg$6 = _arg$6; $f._arg$7 = _arg$7; $f._arg$8 = _arg$8; $f._arg$9 = _arg$9; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f.p = p; $f.x = x; $f.x$1 = x$1; $f.x$2 = x$2; $f.x$3 = x$3; $f.x$4 = x$4; $f.x$5 = x$5; $f.$s = $s; $f.$r = $r; return $f;
 	};
@@ -32808,8 +32813,20 @@ $packages["github.com/status-im/whispervis"] = (function() {
 		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.onUpload }; } $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f.err = err; $f.json = json; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	Page.prototype.onUpload = function(json) { return this.$val.onUpload(json); };
+	Page.ptr.prototype.VisibilityListener = function(e) {
+		var _r, document, e, hidden, p, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _r = $f._r; document = $f.document; e = $f.e; hidden = $f.hidden; p = $f.p; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		p = this;
+		document = $global.document;
+		hidden = document.hidden;
+		_r = fmt.Println(new sliceType$7([new $String("Page is hidden:"), new $jsObjectPtr(hidden)])); /* */ $s = 1; case 1: if($c) { $c = false; _r = _r.$blk(); } if (_r && _r.$blk !== undefined) { break s; }
+		_r;
+		$s = -1; return;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: Page.ptr.prototype.VisibilityListener }; } $f._r = _r; $f.document = document; $f.e = e; $f.hidden = hidden; $f.p = p; $f.$s = $s; $f.$r = $r; return $f;
+	};
+	Page.prototype.VisibilityListener = function(e) { return this.$val.VisibilityListener(e); };
 	TrackBallControl.methods = [{prop: "Update", name: "Update", pkg: "", typ: $funcType([], [], false)}];
-	ptrType$16.methods = [{prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$14], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$15], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$14], [], false)}, {prop: "UpdateNetworkGraph", name: "UpdateNetworkGraph", pkg: "", typ: $funcType([sliceType], [$error], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "onUpload", name: "onUpload", pkg: "github.com/status-im/whispervis", typ: $funcType([sliceType], [], false)}];
+	ptrType$16.methods = [{prop: "KeyListener", name: "KeyListener", pkg: "", typ: $funcType([ptrType$14], [], false)}, {prop: "Render", name: "Render", pkg: "", typ: $funcType([], [vecty.ComponentOrHTML], false)}, {prop: "updateButton", name: "updateButton", pkg: "github.com/status-im/whispervis", typ: $funcType([], [ptrType$15], false)}, {prop: "onUpdateClick", name: "onUpdateClick", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType$14], [], false)}, {prop: "UpdateNetworkGraph", name: "UpdateNetworkGraph", pkg: "", typ: $funcType([sliceType], [$error], false)}, {prop: "StartSimulation", name: "StartSimulation", pkg: "", typ: $funcType([], [], false)}, {prop: "onUpload", name: "onUpload", pkg: "github.com/status-im/whispervis", typ: $funcType([sliceType], [], false)}, {prop: "VisibilityListener", name: "VisibilityListener", pkg: "", typ: $funcType([ptrType$14], [], false)}];
 	ptrType$6.methods = [{prop: "animate", name: "animate", pkg: "github.com/status-im/whispervis", typ: $funcType([], [], false)}, {prop: "ToggleAutoRotation", name: "ToggleAutoRotation", pkg: "", typ: $funcType([], [], false)}, {prop: "CreateObjects", name: "CreateObjects", pkg: "", typ: $funcType([mapType, sliceType$8], [], false)}, {prop: "createNodes", name: "createNodes", pkg: "github.com/status-im/whispervis", typ: $funcType([mapType], [], false)}, {prop: "createEdges", name: "createEdges", pkg: "github.com/status-im/whispervis", typ: $funcType([mapType, sliceType$8], [], false)}, {prop: "RemoveObjects", name: "RemoveObjects", pkg: "", typ: $funcType([], [], false)}, {prop: "init", name: "init", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "shutdown", name: "shutdown", pkg: "github.com/status-im/whispervis", typ: $funcType([ptrType], [], false)}, {prop: "Reset", name: "Reset", pkg: "", typ: $funcType([], [], false)}, {prop: "InitScene", name: "InitScene", pkg: "", typ: $funcType([$Float64, $Float64], [], false)}, {prop: "InitLights", name: "InitLights", pkg: "", typ: $funcType([], [], false)}, {prop: "InitControls", name: "InitControls", pkg: "", typ: $funcType([], [], false)}];
 	TrackBallControl.init("", [{prop: "Object", name: "Object", embedded: true, exported: true, typ: ptrType$13, tag: ""}]);
 	Page.init("github.com/status-im/whispervis", [{prop: "Core", name: "Core", embedded: true, exported: true, typ: vecty.Core, tag: ""}, {prop: "layout", name: "layout", embedded: false, exported: false, typ: ptrType$5, tag: ""}, {prop: "webgl", name: "webgl", embedded: false, exported: false, typ: ptrType$6, tag: ""}, {prop: "loaded", name: "loaded", embedded: false, exported: false, typ: $Bool, tag: ""}, {prop: "loader", name: "loader", embedded: false, exported: false, typ: ptrType$7, tag: ""}, {prop: "forceEditor", name: "forceEditor", embedded: false, exported: false, typ: ptrType$8, tag: ""}, {prop: "upload", name: "upload", embedded: false, exported: false, typ: ptrType$9, tag: ""}, {prop: "data", name: "data", embedded: false, exported: false, typ: ptrType$10, tag: ""}]);

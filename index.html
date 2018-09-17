@@ -9,6 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.js"></script>
 	<script src="js/TrackballControls.js"></script>
     <script src="whispervis.js"></script>
+    <script>
+	document.addEventListener("visibilitychange", function() {
+	  console.log( "whoa", document.visibilityState );
+	});
+	</script>
 </body>
 
 </html>
