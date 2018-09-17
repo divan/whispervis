@@ -5,12 +5,11 @@ import (
 )
 
 func main() {
-	page := NewPage(50)
+	page := NewPage()
 
 	vecty.SetTitle("Whisper Simulation")
 	vecty.AddStylesheet("css/pure-min.css")
 	vecty.AddStylesheet("css/controls.css")
 	vecty.RenderBody(page)
-
 	page.UpdateNetworkGraph(inputJSON)
 }

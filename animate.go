@@ -1,24 +1,27 @@
 package main
 
-import "github.com/gopherjs/gopherjs/js"
+import (
+	"github.com/gopherjs/gopherjs/js"
+)
 
-func (p *Page) animate() {
-	if p.renderer == nil {
+func (w *WebGLScene) animate() {
+	if w.renderer == nil {
 		return
 	}
 
-	p.controls.Update()
+	w.controls.Update()
 
-	js.Global.Call("requestAnimationFrame", p.animate)
+	js.Global.Call("requestAnimationFrame", w.animate)
 
-	if p.autoRotate {
-		pos := p.graph.Object.Get("rotation")
-		pos.Set("y", pos.Get("y").Float()+float64(0.01))
+	if w.autoRotate {
+		pos := w.graph.Object.Get("rotation")
+		pos.Set("y", pos.Get("y").Float()+float64(0.001))
 	}
 
-	p.renderer.Render(p.scene, p.camera)
+	w.renderer.Render(w.scene, w.camera)
 }
 
-func (p *Page) ToggleAutoRotation() {
-	p.autoRotate = !p.autoRotate
+// ToggleAutoRotation switches auto rotation option.
+func (w *WebGLScene) ToggleAutoRotation() {
+	w.autoRotate = !w.autoRotate
 }

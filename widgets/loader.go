@@ -8,6 +8,7 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
+// Loader implements prograss-bar style loader widget.
 type Loader struct {
 	vecty.Core
 
@@ -16,6 +17,7 @@ type Loader struct {
 	current int
 }
 
+// Render implements Component interface for Loader.
 func (l *Loader) Render() vecty.ComponentOrHTML {
 	text := l.text()
 	return elem.Div(
@@ -30,38 +32,49 @@ func (l *Loader) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func NewLoader(steps int) *Loader {
-	return &Loader{
-		steps: steps,
-	}
+// NewLoader creates new Loader.
+func NewLoader() *Loader {
+	return &Loader{}
 }
 
+// Inc increases current value of loader by one.
 func (l *Loader) Inc() {
 	l.mx.Lock()
-	l.current++
+	if l.current < l.steps {
+		l.current++
+	}
 	l.mx.Unlock()
 }
 
+// Steps returns the total number of steps.
 func (l *Loader) Steps() int {
 	l.mx.RLock()
 	defer l.mx.RUnlock()
 	return l.steps
 }
 
+// Reset resets the current state of Loader.
 func (l *Loader) Reset() {
 	l.mx.Lock()
 	l.current = 0
 	l.mx.Unlock()
 }
 
-// Progress reports loader's progress in percentage.
+// SetSteps updates the number of steps for loader.
+func (l *Loader) SetSteps(steps int) {
+	l.mx.Lock()
+	l.steps = steps
+	l.mx.Unlock()
+}
+
+// Progress reports Loader's progress in percentage.
 func (l *Loader) Progress() float64 {
 	l.mx.RLock()
 	defer l.mx.RUnlock()
 	return 100 * float64(l.current) / float64(l.steps)
 }
 
-// Text returns formatted string to display.
+// text returns formatted string to display.
 func (l *Loader) text() string {
 	var text string
 	progress := l.Progress()

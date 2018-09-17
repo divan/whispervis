@@ -7,6 +7,6 @@ func (p *Page) KeyListener(e *vecty.Event) {
 	key := e.Get("key").String()
 	switch key {
 	case "p":
-		p.ToggleAutoRotation()
+		p.webgl.ToggleAutoRotation()
 	}
 }

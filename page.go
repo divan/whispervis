@@ -7,13 +7,10 @@ import (
 	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
-	"github.com/lngramos/three"
 	"github.com/status-im/whispervis/widgets"
-	"github.com/vecty/vthree"
 )
 
 // Page is our main page component.
@@ -22,30 +19,25 @@ type Page struct {
 
 	layout *layout.Layout
 
-	scene    *three.Scene
-	camera   three.PerspectiveCamera
-	renderer *three.WebGLRenderer
-	graph    *three.Group
-	nodes    *three.Group
-	edges    *three.Group
-	controls TrackBallControl
+	webgl *WebGLScene
 
-	autoRotate bool
+	loaded bool
 
-	loaded      bool
 	loader      *widgets.Loader
 	forceEditor *widgets.ForceEditor
 	upload      *widgets.UploadWidget
-	data        *graph.Graph
+
+	data *graph.Graph
 }
 
 // NewPage creates and inits new app page.
-func NewPage(steps int) *Page {
+func NewPage() *Page {
 	page := &Page{
-		loader:      widgets.NewLoader(steps),
+		loader:      widgets.NewLoader(),
 		forceEditor: widgets.NewForceEditor(),
 	}
 	page.upload = widgets.NewUploadWidget(page.onUpload)
+	page.webgl = NewWebGLScene()
 	return page
 }
 
@@ -71,12 +63,24 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				),
 			),
 			elem.Div(
-				vecty.Markup(vecty.Class("pure-u-4-5")),
-				vecty.If(p.loaded,
-					vthree.WebGLRenderer(vthree.WebGLOptions{
-						Init:     p.init,
-						Shutdown: p.shutdown,
-					}),
+				vecty.Markup(
+					vecty.Class("pure-u-4-5"),
+					/*
+						we use display:none property to hide WebGL instead of mounting/unmounting,
+						because we want to create only one WebGL context and reuse it. Plus,
+						WebGL takes time to initialize, so it can do it being hidden.
+					*/
+					vecty.MarkupIf(!p.loaded,
+						vecty.Style("visibility", "hidden"),
+						vecty.Style("height", "0px"),
+						vecty.Style("width", "0px"),
+					),
+				),
+				p.webgl,
+			),
+			elem.Div(
+				vecty.Markup(
+					vecty.Class("pure-u-4-5"),
 				),
 				vecty.If(!p.loaded, p.loader),
 			),
@@ -85,37 +89,6 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 			event.KeyDown(p.KeyListener),
 		),
 	)
-}
-
-func (p *Page) renderWebGLCanvas() vecty.Component {
-	return vthree.WebGLRenderer(vthree.WebGLOptions{
-		Init:     p.init,
-		Shutdown: p.shutdown,
-	})
-}
-
-func (p *Page) init(renderer *three.WebGLRenderer) {
-	windowWidth := js.Global.Get("innerWidth").Float()*80/100 - 20
-	windowHeight := js.Global.Get("innerHeight").Float() - 20
-
-	p.renderer = renderer
-	p.renderer.SetSize(windowWidth, windowHeight, true)
-
-	devicePixelRatio := js.Global.Get("devicePixelRatio").Float()
-	p.renderer.SetPixelRatio(devicePixelRatio)
-
-	p.InitScene(windowWidth, windowHeight)
-
-	p.CreateObjects()
-
-	p.animate()
-}
-
-func (p *Page) shutdown(renderer *three.WebGLRenderer) {
-	p.scene = nil
-	p.camera = three.PerspectiveCamera{}
-	p.renderer = nil
-	p.graph, p.nodes, p.edges = nil, nil, nil
 }
 
 func (p *Page) updateButton() *vecty.HTML {
@@ -140,6 +113,7 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 	go p.StartSimulation()
 }
 
+// UpdateNetworkGraph updates graph and scene with new data.
 func (p *Page) UpdateNetworkGraph(json []byte) error {
 	buf := bytes.NewBuffer(json)
 	data, err := formats.FromD3JSONReader(buf)
@@ -149,7 +123,7 @@ func (p *Page) UpdateNetworkGraph(json []byte) error {
 
 	p.data = data
 	config := p.forceEditor.Config()
-	p.layout = layout.NewFromConfig(data, config)
+	p.layout = layout.NewFromConfig(data, config.Config)
 	go p.StartSimulation()
 	return nil
 }

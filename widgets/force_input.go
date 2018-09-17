@@ -2,7 +2,6 @@ package widgets
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -51,14 +50,10 @@ func (f *ForceInput) Render() vecty.ComponentOrHTML {
 }
 
 func (f *ForceInput) onEditInput(event *vecty.Event) {
-	value := event.Target.Get("value").String()
-	fvalue, err := strconv.ParseFloat(value, 0)
-	if err != nil {
-		return
-	}
+	value := event.Target.Get("value").Float()
 
 	f.changed = true
-	f.value = fvalue
+	f.value = value
 }
 
 // Value returns the current value.

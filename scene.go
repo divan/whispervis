@@ -1,29 +1,94 @@
 package main
 
-import "github.com/lngramos/three"
+import (
+	"fmt"
+
+	"github.com/gopherjs/gopherjs/js"
+	"github.com/lngramos/three"
+	"github.com/vecty/vthree"
+)
+
+// WebGLScene represents WebGL part of app.
+type WebGLScene struct {
+	*vthree.WebGLRenderer
+
+	scene    *three.Scene
+	camera   three.PerspectiveCamera
+	renderer *three.WebGLRenderer
+	graph    *three.Group
+	nodes    *three.Group
+	edges    *three.Group
+	controls TrackBallControl
+
+	autoRotate bool
+}
+
+// NewWebGLScene inits and returns new WebGL scene and canvas.
+func NewWebGLScene() *WebGLScene {
+	w := &WebGLScene{}
+	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
+		Init:     w.init,
+		Shutdown: w.shutdown,
+	})
+	return w
+}
+
+func (w *WebGLScene) init(renderer *three.WebGLRenderer) {
+	fmt.Println("WebGL init")
+	windowWidth := js.Global.Get("innerWidth").Float()*80/100 - 20
+	windowHeight := js.Global.Get("innerHeight").Float() - 20
+
+	w.renderer = renderer
+	w.renderer.SetSize(windowWidth, windowHeight, true)
+
+	devicePixelRatio := js.Global.Get("devicePixelRatio").Float()
+	w.renderer.SetPixelRatio(devicePixelRatio)
+
+	w.InitScene(windowWidth, windowHeight)
+
+	w.animate()
+}
+
+func (w *WebGLScene) shutdown(renderer *three.WebGLRenderer) {
+	fmt.Println("WebGL shutdown")
+	w.scene = nil
+	w.camera = three.PerspectiveCamera{}
+	w.renderer = nil
+	w.RemoveObjects()
+}
+
+// Reset resets state of WebGLScene.
+func (w *WebGLScene) Reset() {
+	fmt.Println("Resetting WebGL")
+	w.RemoveObjects()
+	zeroCamera := three.PerspectiveCamera{}
+	if w.camera != zeroCamera {
+		w.camera.Position.Set(0, 0, 400)
+	}
+}
 
 // InitScene inits a new scene, sets up camera, lights and all that.
-func (p *Page) InitScene(width, height float64) {
-	p.camera = three.NewPerspectiveCamera(70, width/height, 1, 1000)
-	p.camera.Position.Set(0, 0, 400)
+func (w *WebGLScene) InitScene(width, height float64) {
+	w.camera = three.NewPerspectiveCamera(70, width/height, 1, 1000)
 
-	p.scene = three.NewScene()
+	w.scene = three.NewScene()
 
-	p.InitLights()
-	p.InitControls()
+	w.InitLights()
+	w.InitControls()
+	w.Reset()
 }
 
 // InitLights init lights for the scene.
-func (p *Page) InitLights() {
+func (w *WebGLScene) InitLights() {
 	ambLight := three.NewAmbientLight(three.NewColor(187, 187, 187), 0.5)
-	p.scene.Add(ambLight)
+	w.scene.Add(ambLight)
 
 	light := three.NewDirectionalLight(three.NewColor(255, 255, 255), 0.3)
 	//light.Position.Set(256, 256, 256).Normalize()
-	p.scene.Add(light)
+	w.scene.Add(light)
 }
 
 // InitControls init controls for the scene.
-func (p *Page) InitControls() {
-	p.controls = NewTrackBallControl(p.camera, p.renderer)
+func (w *WebGLScene) InitControls() {
+	w.controls = NewTrackBallControl(w.camera, w.renderer)
 }

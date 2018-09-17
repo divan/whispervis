@@ -3,7 +3,6 @@ package main
 import (
 	"runtime"
 
-	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
 )
 
@@ -14,14 +13,14 @@ func (p *Page) StartSimulation() {
 	vecty.Rerender(p)
 
 	config := p.forceEditor.Config()
-	l := layout.NewFromConfig(p.data, config)
-	p.layout = l
-	for i := 0; i < p.loader.Steps(); i++ {
+	p.loader.SetSteps(config.Steps)
+	for i := 0; i < config.Steps; i++ {
 		p.layout.UpdatePositions()
 		p.loader.Inc()
 		vecty.Rerender(p.loader)
 		runtime.Gosched()
 	}
 	p.loaded = true
+	p.webgl.CreateObjects(p.layout.Positions(), p.layout.Links())
 	vecty.Rerender(p)
 }
