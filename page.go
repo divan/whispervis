@@ -26,6 +26,7 @@ type Page struct {
 	loader      *widgets.Loader
 	forceEditor *widgets.ForceEditor
 	upload      *widgets.UploadWidget
+	network     *NetworkSelector
 
 	data *graph.Graph
 }
@@ -35,6 +36,7 @@ func NewPage() *Page {
 	page := &Page{
 		loader:      widgets.NewLoader(),
 		forceEditor: widgets.NewForceEditor(),
+		network:     NewNetworkSelector("net100"),
 	}
 	page.upload = widgets.NewUploadWidget(page.onUpload)
 	page.webgl = NewWebGLScene()
@@ -53,6 +55,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("pure-u-1-5")),
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
+				p.network,
 				p.upload,
 				elem.Div(
 					vecty.Markup(
