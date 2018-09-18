@@ -36,9 +36,9 @@ func NewPage() *Page {
 	page := &Page{
 		loader:      widgets.NewLoader(),
 		forceEditor: widgets.NewForceEditor(),
-		network:     NewNetworkSelector("net100"),
 	}
 	page.upload = widgets.NewUploadWidget(page.onUpload)
+	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
 	return page
 }
@@ -114,6 +114,16 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 	if !p.loaded {
 		return
 	}
+	go p.StartSimulation()
+}
+
+func (p *Page) onNetworkChange(network *Network) {
+	p.data = network.Data
+	if !p.loaded {
+		return
+	}
+	config := p.forceEditor.Config()
+	p.layout = layout.NewFromConfig(p.data, config.Config)
 	go p.StartSimulation()
 }
 

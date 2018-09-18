@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -12,13 +14,27 @@ type NetworkSelector struct {
 	vecty.Core
 
 	current  *Network
+	isCustom bool
 	networks map[string]*Network
-	value    string
+
+	handler func(*Network)
 }
 
 // NewNetworkSelector creates new NetworkSelector.
-func NewNetworkSelector(defaultNet string) *NetworkSelector {
-	return &NetworkSelector{}
+func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
+	current := &Network{}
+	networks, err := LoadNetworks()
+	if err != nil {
+		fmt.Println("No networks loaded:", err)
+	} else {
+		current = networks["net100.json"]
+	}
+
+	return &NetworkSelector{
+		networks: networks,
+		current:  current,
+		handler:  handler,
+	}
 }
 
 // Render implements the vecty.Component interface.
@@ -29,35 +45,11 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				event.Change(n.onChange),
 			),
-			elem.Option(
-				vecty.Markup(
-					vecty.Property("value", "net100"),
-					vecty.Property("selected", n.value == "net100"),
-					vecty.Property("description", "Random network consisting from 100 nodes, 4-5 connections each"),
-				),
-				vecty.Text("Random network: 100 nodes"),
-			),
-			elem.Option(
-				vecty.Markup(
-					vecty.Property("value", "net300"),
-					vecty.Property("selected", n.value == "net300"),
-					vecty.Property("description", "Random network consisting from 300 nodes, 4-5 connections each"),
-				),
-				vecty.Text("Random network: 300 nodes"),
-			),
-			elem.Option(
-				vecty.Markup(
-					vecty.Property("value", "3dgrid"),
-					vecty.Property("selected", n.value == "3dgrid"),
-					vecty.Property("description", "5x5 3D cube, 125 nodes in total"),
-				),
-				vecty.Text("3D cube graph: 125 nodes"),
-			),
+			n.networkOptions(),
 			elem.Option(
 				vecty.Markup(
 					vecty.Property("value", "upload"),
-					vecty.Property("selected", n.value == "upload"),
-					vecty.Property("description", "Upload custom network topology..."),
+					vecty.Property("selected", n.isCustom),
 				),
 				vecty.Text("Upload custom..."),
 			),
@@ -81,13 +73,51 @@ func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 // onChange implements handler for select input changed value
 func (n *NetworkSelector) onChange(e *vecty.Event) {
 	value := e.Target.Get("value").String()
-	for i := 0; i < e.Target.Length(); i++ {
-		optValue := e.Target.Index(i).Get("value").String()
-		if optValue == value {
-			//desc = e.Target.Index(i).Get("description").String()
-		}
+
+	if value == "upload" {
+		n.isCustom = true
+		// TODO(divan): handle uploaded network
+	} else {
+		n.isCustom = false
+		n.current = n.networks[value]
 	}
 
-	n.value = value
+	if n.handler != nil {
+		go n.handler(n.current)
+	}
+
 	vecty.Rerender(n)
+}
+
+// LoadNetworks imports preloaded neworks from the directory with JSON files.
+func LoadNetworks() (map[string]*Network, error) {
+	files, err := AssetDir("data")
+	if err != nil {
+		return nil, err
+	}
+
+	networks := map[string]*Network{}
+	for _, file := range files {
+		network, err := LoadNetwork("data/" + file)
+		if err != nil {
+			return nil, fmt.Errorf("load network: %v", err)
+		}
+
+		networks[file] = network
+	}
+	return networks, nil
+}
+
+func (n *NetworkSelector) networkOptions() vecty.List {
+	var options vecty.List
+	for name, _ := range n.networks {
+		options = append(options, elem.Option(
+			vecty.Markup(
+				vecty.Property("value", name),
+				vecty.Property("selected", n.current.Name == name),
+			),
+			vecty.Text(name),
+		))
+	}
+	return options
 }
