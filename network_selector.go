@@ -11,15 +11,14 @@ import (
 type NetworkSelector struct {
 	vecty.Core
 
-	description string
-	value       string
+	current  *Network
+	networks map[string]*Network
+	value    string
 }
 
 // NewNetworkSelector creates new NetworkSelector.
-func NewNetworkSelector(defaultValue string) *NetworkSelector {
-	return &NetworkSelector{
-		value: defaultValue,
-	}
+func NewNetworkSelector(defaultNet string) *NetworkSelector {
+	return &NetworkSelector{}
 }
 
 // Render implements the vecty.Component interface.
@@ -75,22 +74,20 @@ func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 			vecty.Style("font-style", "italic"),
 			vecty.Style("color", "blue"),
 		),
-		vecty.Text(n.description),
+		vecty.Text(n.current.Description),
 	)
 }
 
 // onChange implements handler for select input changed value
 func (n *NetworkSelector) onChange(e *vecty.Event) {
-	var desc string
 	value := e.Target.Get("value").String()
 	for i := 0; i < e.Target.Length(); i++ {
 		optValue := e.Target.Index(i).Get("value").String()
 		if optValue == value {
-			desc = e.Target.Index(i).Get("description").String()
+			//desc = e.Target.Index(i).Get("description").String()
 		}
 	}
 
 	n.value = value
-	n.description = desc
 	vecty.Rerender(n)
 }
