@@ -66,6 +66,7 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 	)
 }
 
+// descriptionBlock renders the block with network description.
 func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 	return elem.Div(
 		vecty.Markup(
@@ -96,10 +97,10 @@ func LoadNetworks() (map[string]*Network, error) {
 	return networks, nil
 }
 
+// networkOptions renders 'option' elements for network 'select' input tag.
 func (n *NetworkSelector) networkOptions() vecty.List {
 	var options vecty.List
 	for name := range n.networks {
-		fmt.Printf("'%s' == '%s'\n", n.current.Name, name)
 		options = append(options, elem.Option(
 			vecty.Markup(
 				vecty.Property("value", name),
