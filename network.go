@@ -4,6 +4,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
 
 	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/graph"
@@ -20,8 +21,6 @@ type Network struct {
 // LoadNetwork loads network information from the JSON file.
 // JSON format is specified in graphx/formats package.
 func LoadNetwork(file string) (*Network, error) {
-	desc := ""
-
 	content, err := Asset(file)
 	if err != nil {
 		return nil, fmt.Errorf("open bindata '%s': %v", file, err)
@@ -29,13 +28,23 @@ func LoadNetwork(file string) (*Network, error) {
 
 	r := bytes.NewReader(content)
 
+	n, err := LoadNetworkFromReader(r)
+	if err != nil {
+		return nil, fmt.Errorf("open file '%s': %v", file, err)
+	}
+	n.Name = file
+	return n, nil
+}
+
+// LoadNetworkFromReader loads network information from the io.Reader.
+func LoadNetworkFromReader(r io.Reader) (*Network, error) {
 	g, err := formats.FromD3JSONReader(r)
 	if err != nil {
-		return nil, fmt.Errorf("open '%s': %v", file, err)
+		return nil, fmt.Errorf("parse JSON: %v", err)
 	}
 
+	desc := "TBD"
 	return &Network{
-		Name:        file,
 		Description: desc,
 		Data:        g,
 	}, nil

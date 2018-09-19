@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
+	"github.com/status-im/whispervis/widgets"
 )
 
 // NetworkSelector represents widget for choosing or uploading network topology
@@ -17,7 +19,9 @@ type NetworkSelector struct {
 	isCustom bool
 	networks map[string]*Network
 
-	handler func(*Network)
+	upload *widgets.UploadWidget
+
+	handler func(*Network) // executed on network change
 }
 
 // NewNetworkSelector creates new NetworkSelector.
@@ -30,11 +34,13 @@ func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
 		current = networks["net100.json"]
 	}
 
-	return &NetworkSelector{
+	ns := &NetworkSelector{
 		networks: networks,
 		current:  current,
 		handler:  handler,
 	}
+	ns.upload = widgets.NewUploadWidget(ns.onUpload)
+	return ns
 }
 
 // Render implements the vecty.Component interface.
@@ -56,6 +62,7 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 		),
 		n.descriptionBlock(),
 		elem.HorizontalRule(),
+		vecty.If(n.isCustom, n.upload),
 	)
 }
 
@@ -76,11 +83,12 @@ func (n *NetworkSelector) onChange(e *vecty.Event) {
 
 	if value == "upload" {
 		n.isCustom = true
-		// TODO(divan): handle uploaded network
-	} else {
-		n.isCustom = false
-		n.current = n.networks[value]
+		vecty.Rerender(n)
+		return
 	}
+
+	n.isCustom = false
+	n.current = n.networks[value]
 
 	if n.handler != nil {
 		go n.handler(n.current)
@@ -120,4 +128,23 @@ func (n *NetworkSelector) networkOptions() vecty.List {
 		))
 	}
 	return options
+}
+
+// onUpload implements callback for "Upload" button clicked event.
+func (n *NetworkSelector) onUpload(json []byte) {
+	r := bytes.NewReader(json)
+	net, err := LoadNetworkFromReader(r)
+	if err != nil {
+		fmt.Printf("[ERROR] Load network: %v", err)
+	}
+
+	net.Name = fmt.Sprintf("Uploaded (%d nodes)", net.NodesCount())
+	n.networks[net.Name] = net
+	n.current = net
+
+	if n.handler != nil {
+		go n.handler(n.current)
+	}
+
+	vecty.Rerender(n)
 }
