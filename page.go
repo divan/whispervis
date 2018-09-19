@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 
-	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
@@ -25,7 +23,6 @@ type Page struct {
 
 	loader      *widgets.Loader
 	forceEditor *widgets.ForceEditor
-	upload      *widgets.UploadWidget
 	network     *NetworkSelector
 
 	data *graph.Graph
@@ -37,7 +34,6 @@ func NewPage() *Page {
 		loader:      widgets.NewLoader(),
 		forceEditor: widgets.NewForceEditor(),
 	}
-	page.upload = widgets.NewUploadWidget(page.onUpload)
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
 	return page
@@ -56,7 +52,6 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
 				p.network,
-				p.upload,
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
@@ -118,26 +113,9 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 }
 
 func (p *Page) onNetworkChange(network *Network) {
+	fmt.Println("Network changed:", network)
 	p.data = network.Data
-	if !p.loaded {
-		return
-	}
 	config := p.forceEditor.Config()
 	p.layout = layout.NewFromConfig(p.data, config.Config)
 	go p.StartSimulation()
-}
-
-// UpdateNetworkGraph updates graph and scene with new data.
-func (p *Page) UpdateNetworkGraph(json []byte) error {
-	buf := bytes.NewBuffer(json)
-	data, err := formats.FromD3JSONReader(buf)
-	if err != nil {
-		return fmt.Errorf("update graph: %v", err)
-	}
-
-	p.data = data
-	config := p.forceEditor.Config()
-	p.layout = layout.NewFromConfig(data, config.Config)
-	go p.StartSimulation()
-	return nil
 }

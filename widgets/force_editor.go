@@ -30,7 +30,6 @@ func (l *ForceEditor) Render() vecty.ComponentOrHTML {
 		elem.Heading3(
 			vecty.Text("Layout forces:"),
 		),
-		elem.HorizontalRule(),
 		elem.Form(
 			vecty.Markup(
 				vecty.Class("pure-form"),
@@ -43,7 +42,7 @@ func (l *ForceEditor) Render() vecty.ComponentOrHTML {
 	)
 }
 
-// NewForcesEditor creates a new ForceEditor widget.
+// NewForceEditor creates a new ForceEditor widget.
 func NewForceEditor() *ForceEditor {
 	config := DefaultForcesConfig
 	repelling := NewForceInput("Gravity force:", config.Repelling)

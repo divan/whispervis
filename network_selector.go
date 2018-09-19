@@ -40,6 +40,7 @@ func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
 		handler:  handler,
 	}
 	ns.upload = widgets.NewUploadWidget(ns.onUpload)
+	ns.setCurrentNetwork(current)
 	return ns
 }
 
@@ -61,8 +62,8 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 			),
 		),
 		n.descriptionBlock(),
-		elem.HorizontalRule(),
 		vecty.If(n.isCustom, n.upload),
+		elem.HorizontalRule(),
 	)
 }
 
@@ -75,26 +76,6 @@ func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 		),
 		vecty.Text(n.current.Description),
 	)
-}
-
-// onChange implements handler for select input changed value
-func (n *NetworkSelector) onChange(e *vecty.Event) {
-	value := e.Target.Get("value").String()
-
-	if value == "upload" {
-		n.isCustom = true
-		vecty.Rerender(n)
-		return
-	}
-
-	n.isCustom = false
-	n.current = n.networks[value]
-
-	if n.handler != nil {
-		go n.handler(n.current)
-	}
-
-	vecty.Rerender(n)
 }
 
 // LoadNetworks imports preloaded neworks from the directory with JSON files.
@@ -118,16 +99,35 @@ func LoadNetworks() (map[string]*Network, error) {
 
 func (n *NetworkSelector) networkOptions() vecty.List {
 	var options vecty.List
-	for name, _ := range n.networks {
+	for name := range n.networks {
+		fmt.Printf("'%s' == '%s'\n", n.current.Name, name)
 		options = append(options, elem.Option(
 			vecty.Markup(
 				vecty.Property("value", name),
-				vecty.Property("selected", n.current.Name == name),
+				vecty.Property("selected", n.current.Name == "data/"+name), // TODO(divan): get rid of "data"
 			),
 			vecty.Text(name),
 		))
 	}
 	return options
+}
+
+// onChange implements handler for select input changed value
+func (n *NetworkSelector) onChange(e *vecty.Event) {
+	value := e.Target.Get("value").String()
+
+	if value == "upload" {
+		n.isCustom = true
+		vecty.Rerender(n)
+		return
+	}
+
+	n.isCustom = false
+
+	net := n.networks[value]
+	n.setCurrentNetwork(net)
+
+	vecty.Rerender(n)
 }
 
 // onUpload implements callback for "Upload" button clicked event.
@@ -139,12 +139,18 @@ func (n *NetworkSelector) onUpload(json []byte) {
 	}
 
 	net.Name = fmt.Sprintf("Uploaded (%d nodes)", net.NodesCount())
+
 	n.networks[net.Name] = net
+	n.setCurrentNetwork(net)
+
+	vecty.Rerender(n)
+}
+
+// setCurrentNetwork changes current network and runs needed update handlers.
+func (n *NetworkSelector) setCurrentNetwork(net *Network) {
 	n.current = net
 
 	if n.handler != nil {
 		go n.handler(n.current)
 	}
-
-	vecty.Rerender(n)
 }
