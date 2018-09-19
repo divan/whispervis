@@ -1,29 +1,36 @@
 package widgets
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/status-im/simulation/propagation"
 )
 
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
+	networkFn func() []byte // function that returns current network JSON description
 
 	address string // backend host address
 }
 
 // NewSimulation creates new simulation configuration panel. If simulation
 // backend host address is not specified, it'll use 'localhost:8084' as a default.
-func NewSimulation(address string) *Simulation {
+func NewSimulation(address string, networkFn func() []byte) *Simulation {
 	if address == "" {
 		address = "http://localhost:8084"
 	}
 	return &Simulation{
-		address: address,
+		address:   address,
+		networkFn: networkFn,
 	}
 }
 
@@ -78,6 +85,42 @@ func (s *Simulation) Address() string {
 }
 
 func (s *Simulation) onSimulateClick(e *vecty.Event) {
-	// TODO(divan): connect to backend and run simulation
-	fmt.Println("Start simulation")
+	if s.networkFn == nil {
+		return
+	}
+
+	go s.runSimulation()
+}
+
+// runSimulation starts whisper message propagation simulation,
+// remotely talking to simulation backend.
+func (s *Simulation) runSimulation() {
+	payload := s.networkFn()
+	buf := bytes.NewBuffer(payload)
+	url := "http://" + s.address + "/"
+	resp, err := http.Post(url, "application/json", buf)
+	if err != nil {
+		fmt.Println("[ERROR] POST request to simulation backend:", err)
+		return
+	}
+
+	var plog propagation.Log
+	err = json.NewDecoder(resp.Body).Decode(&plog)
+	if err != nil {
+		fmt.Println("[ERROR] decoding response from simulation backend:", err)
+		return
+	}
+
+	var max int
+	for _, ts := range plog.Timestamps {
+		if ts > max {
+			max = ts
+		}
+	}
+
+	timespan := time.Duration(max) * time.Millisecond
+	fmt.Printf("Whoa! Got results! %d timestamps over %v\n", len(plog.Timestamps), timespan)
+	for i, ts := range plog.Timestamps {
+		fmt.Printf("[%dms] %d / %d links/nodes\n", ts, len(plog.Indices[i]), len(plog.Nodes[i]))
+	}
 }

@@ -1,9 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 
-	"github.com/divan/graphx/graph"
+	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -25,19 +26,17 @@ type Page struct {
 	forceEditor    *widgets.ForceEditor
 	network        *NetworkSelector
 	simulationConf *widgets.Simulation
-
-	data *graph.Graph
 }
 
 // NewPage creates and inits new app page.
 func NewPage() *Page {
 	page := &Page{
-		loader:         widgets.NewLoader(),
-		forceEditor:    widgets.NewForceEditor(),
-		simulationConf: widgets.NewSimulation(""),
+		loader:      widgets.NewLoader(),
+		forceEditor: widgets.NewForceEditor(),
 	}
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
+	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork)
 	return page
 }
 
@@ -119,8 +118,19 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 
 func (p *Page) onNetworkChange(network *Network) {
 	fmt.Println("Network changed:", network)
-	p.data = network.Data
 	config := p.forceEditor.Config()
-	p.layout = layout.NewFromConfig(p.data, config.Config)
+	p.layout = layout.NewFromConfig(network.Data, config.Config)
 	go p.UpdateGraph()
+}
+
+// CurrentNetwork returns JSON encoded description of the current graph/network.
+func (p *Page) CurrentNetwork() []byte {
+	net := p.network.current.Data
+	var buf bytes.Buffer
+	err := formats.NewD3JSON(&buf, true).ExportGraph(net)
+	if err != nil {
+		fmt.Println("[ERROR] Can't export graph:", err)
+		return nil
+	}
+	return buf.Bytes()
 }
