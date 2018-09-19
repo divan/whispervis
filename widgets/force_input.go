@@ -9,6 +9,7 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+// ForceInput represents input widget for forces.
 type ForceInput struct {
 	vecty.Core
 
@@ -17,6 +18,7 @@ type ForceInput struct {
 	value   float64
 }
 
+// NewForceInput creates new input.
 func NewForceInput(title string, value float64) *ForceInput {
 	return &ForceInput{
 		title: title,
@@ -24,6 +26,7 @@ func NewForceInput(title string, value float64) *ForceInput {
 	}
 }
 
+// Render implements vecty.Component interface for ForceInput.
 func (f *ForceInput) Render() vecty.ComponentOrHTML {
 	value := fmt.Sprintf("%.2f", f.value)
 	return elem.Div(

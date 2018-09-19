@@ -6,8 +6,8 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
-// StartSimulation starts graph layout simulation.
-func (p *Page) StartSimulation() {
+// UpdateGraph starts graph layout simulation.
+func (p *Page) UpdateGraph() {
 	p.loader.Reset()
 	p.loaded = false
 	vecty.Rerender(p)
@@ -21,6 +21,7 @@ func (p *Page) StartSimulation() {
 		runtime.Gosched()
 	}
 	p.loaded = true
+	// TODO(divan): remove previous objects
 	p.webgl.CreateObjects(p.layout.Positions(), p.layout.Links())
 	vecty.Rerender(p)
 }

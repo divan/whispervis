@@ -21,9 +21,10 @@ type Page struct {
 
 	loaded bool
 
-	loader      *widgets.Loader
-	forceEditor *widgets.ForceEditor
-	network     *NetworkSelector
+	loader         *widgets.Loader
+	forceEditor    *widgets.ForceEditor
+	network        *NetworkSelector
+	simulationConf *widgets.Simulation
 
 	data *graph.Graph
 }
@@ -31,8 +32,9 @@ type Page struct {
 // NewPage creates and inits new app page.
 func NewPage() *Page {
 	page := &Page{
-		loader:      widgets.NewLoader(),
-		forceEditor: widgets.NewForceEditor(),
+		loader:         widgets.NewLoader(),
+		forceEditor:    widgets.NewForceEditor(),
+		simulationConf: widgets.NewSimulation(""),
 	}
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
@@ -52,10 +54,13 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
 				p.network,
+				elem.HorizontalRule(),
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
 					),
+					p.simulationConf,
+					elem.HorizontalRule(),
 					p.forceEditor,
 					p.updateButton(),
 				),
@@ -109,7 +114,7 @@ func (p *Page) onUpdateClick(e *vecty.Event) {
 	if !p.loaded {
 		return
 	}
-	go p.StartSimulation()
+	go p.UpdateGraph()
 }
 
 func (p *Page) onNetworkChange(network *Network) {
@@ -117,5 +122,5 @@ func (p *Page) onNetworkChange(network *Network) {
 	p.data = network.Data
 	config := p.forceEditor.Config()
 	p.layout = layout.NewFromConfig(p.data, config.Config)
-	go p.StartSimulation()
+	go p.UpdateGraph()
 }

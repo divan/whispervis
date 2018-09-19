@@ -63,7 +63,6 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 		),
 		n.descriptionBlock(),
 		vecty.If(n.isCustom, n.upload),
-		elem.HorizontalRule(),
 	)
 }
 

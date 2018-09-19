@@ -6,7 +6,8 @@ import (
 )
 
 func TestLoader(t *testing.T) {
-	l := NewLoader(100)
+	l := NewLoader()
+	l.SetSteps(100)
 
 	for i := 1; i < 100; i++ {
 		l.Inc()
