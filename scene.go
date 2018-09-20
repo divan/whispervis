@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/divan/three"
 	"github.com/gopherjs/gopherjs/js"
-	"github.com/lngramos/three"
-	"github.com/vecty/vthree"
+	"github.com/status-im/whispervis/vthree"
 )
 
 // WebGLScene represents WebGL part of app.

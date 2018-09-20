@@ -1,6 +1,6 @@
 package main
 
-import "github.com/lngramos/three"
+import "github.com/divan/three"
 
 // NewEthereumGeometry creates a geometry for representing Ethereum node (non-regular 3D octahedron).
 // It scales object according to the given scale.

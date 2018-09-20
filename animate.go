@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/status-im/simulation/propagation"
 )
 
 func (w *WebGLScene) animate() {
@@ -24,4 +27,9 @@ func (w *WebGLScene) animate() {
 // ToggleAutoRotation switches auto rotation option.
 func (w *WebGLScene) ToggleAutoRotation() {
 	w.autoRotate = !w.autoRotate
+}
+
+// AnimatePropagation visualizes propagation of message based on plog.
+func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
+	fmt.Println("Animating plog")
 }

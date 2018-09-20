@@ -1,6 +1,6 @@
 package main
 
-import "github.com/lngramos/three"
+import "github.com/divan/three"
 
 // NewNodeMaterial creates a new default material for the graph node lines.
 func NewNodeMaterial() three.Material {

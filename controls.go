@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/divan/three"
 	"github.com/gopherjs/gopherjs/js"
-	"github.com/lngramos/three"
 )
 
 type TrackBallControl struct {

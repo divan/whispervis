@@ -36,7 +36,7 @@ func NewPage() *Page {
 	}
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
-	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork)
+	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork, page.webgl.AnimatePropagation)
 	return page
 }
 

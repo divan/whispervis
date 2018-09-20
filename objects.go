@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
-	"github.com/lngramos/three"
+	"github.com/divan/three"
 )
 
 // CreateObjects creates WebGL primitives from layout/graph data.

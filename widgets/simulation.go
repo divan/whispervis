@@ -17,20 +17,22 @@ import (
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
-	networkFn func() []byte // function that returns current network JSON description
+	networkFn    func() []byte // function that returns current network JSON description
+	simulationFn func(*propagation.Log)
 
 	address string // backend host address
 }
 
 // NewSimulation creates new simulation configuration panel. If simulation
 // backend host address is not specified, it'll use 'localhost:8084' as a default.
-func NewSimulation(address string, networkFn func() []byte) *Simulation {
+func NewSimulation(address string, networkFn func() []byte, simulationFn func(*propagation.Log)) *Simulation {
 	if address == "" {
 		address = "http://localhost:8084"
 	}
 	return &Simulation{
-		address:   address,
-		networkFn: networkFn,
+		address:      address,
+		networkFn:    networkFn,
+		simulationFn: simulationFn,
 	}
 }
 
@@ -120,7 +122,5 @@ func (s *Simulation) runSimulation() {
 
 	timespan := time.Duration(max) * time.Millisecond
 	fmt.Printf("Whoa! Got results! %d timestamps over %v\n", len(plog.Timestamps), timespan)
-	for i, ts := range plog.Timestamps {
-		fmt.Printf("[%dms] %d / %d links/nodes\n", ts, len(plog.Indices[i]), len(plog.Nodes[i]))
-	}
+	s.simulationFn(&plog)
 }
