@@ -20,7 +20,8 @@ type Simulation struct {
 	networkFn    func() []byte // function that returns current network JSON description
 	simulationFn func(*propagation.Log)
 
-	address string // backend host address
+	address string           // backend host address
+	plog    *propagation.Log // last simulation result
 }
 
 // NewSimulation creates new simulation configuration panel. If simulation
@@ -71,6 +72,16 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 				),
 				vecty.Text("Start simulation"),
 			),
+			elem.Button(
+				vecty.Markup(
+					vecty.Class("pure-button"),
+					vecty.Style("background", "rgb(28, 184, 65)"),
+					vecty.Style("color", "white"),
+					vecty.Style("border-radius", "4px"),
+					event.Click(s.onRestartClick),
+				),
+				vecty.Text("Replay"),
+			),
 		),
 	)
 }
@@ -92,6 +103,10 @@ func (s *Simulation) onSimulateClick(e *vecty.Event) {
 	}
 
 	go s.runSimulation()
+}
+
+func (s *Simulation) onRestartClick(e *vecty.Event) {
+	go s.play()
 }
 
 // runSimulation starts whisper message propagation simulation,
@@ -122,5 +137,10 @@ func (s *Simulation) runSimulation() {
 
 	timespan := time.Duration(max) * time.Millisecond
 	fmt.Printf("Whoa! Got results! %d timestamps over %v\n", len(plog.Timestamps), timespan)
-	s.simulationFn(&plog)
+	s.plog = &plog
+	s.play()
+}
+
+func (s *Simulation) play() {
+	s.simulationFn(s.plog)
 }
