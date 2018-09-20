@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/divan/three"
@@ -34,12 +32,10 @@ func (w *WebGLScene) createNodes(positions map[string]*layout.Object) {
 		w.nodesGroup.Add(mesh)
 		w.nodes = append(w.nodes, mesh)
 	}
-	obj := w.nodesGroup.GetObjectById(100)
-	fmt.Println("Moving mesh", obj)
 }
 
 func (w *WebGLScene) createEdges(positions map[string]*layout.Object, links []*graph.Link) {
-	material := NewEdgeMatherial()
+	material := NewEdgeMaterial()
 	for _, link := range links {
 		from := link.From()
 		to := link.To()
