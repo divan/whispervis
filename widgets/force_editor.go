@@ -6,6 +6,12 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
+// DefaultForcesConfig specifies default configuration for physics simulation.
+var DefaultForcesConfig = ForcesConfig{
+	Config: layout.DefaultConfig,
+	Steps:  100,
+}
+
 // ForceEditor represents forces and physics simulation configuration widget.
 type ForceEditor struct {
 	vecty.Core
@@ -69,10 +75,4 @@ func (l *ForceEditor) Config() ForcesConfig {
 			DragCoeff:       l.drag.Value(),
 		},
 	}
-}
-
-// DefaultForcesConfig specifies default configuration for physics simulation.
-var DefaultForcesConfig = ForcesConfig{
-	Config: layout.DefaultConfig,
-	Steps:  20,
 }
