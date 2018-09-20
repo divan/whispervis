@@ -12,15 +12,18 @@ import (
 type WebGLScene struct {
 	*vthree.WebGLRenderer
 
-	scene    *three.Scene
-	camera   three.PerspectiveCamera
-	renderer *three.WebGLRenderer
-	graph    *three.Group
-	nodes    *three.Group
-	edges    *three.Group
-	controls TrackBallControl
+	scene      *three.Scene
+	camera     three.PerspectiveCamera
+	renderer   *three.WebGLRenderer
+	graphGroup *three.Group
+	nodesGroup *three.Group
+	edgesGroup *three.Group
+	controls   TrackBallControl
 
 	autoRotate bool
+
+	nodes []*three.Mesh
+	lines []*three.Line
 }
 
 // NewWebGLScene inits and returns new WebGL scene and canvas.

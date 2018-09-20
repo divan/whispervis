@@ -1,22 +1,24 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/divan/graphx/graph"
 	"github.com/divan/graphx/layout"
 	"github.com/divan/three"
 )
 
-// CreateObjects creates WebGL primitives from layout/graph data.
+// CreateObjects creates WebGL primitives from layout/graphGroup data.
 // TODO(divan): change positions and links types to something more clear and readable
 func (w *WebGLScene) CreateObjects(positions map[string]*layout.Object, links []*graph.Link) {
-	w.graph = three.NewGroup()
-	w.scene.Add(w.graph)
+	w.graphGroup = three.NewGroup()
+	w.scene.Add(w.graphGroup)
 
-	w.nodes = three.NewGroup()
-	w.graph.Add(w.nodes)
+	w.nodesGroup = three.NewGroup()
+	w.graphGroup.Add(w.nodesGroup)
 
-	w.edges = three.NewGroup()
-	w.graph.Add(w.edges)
+	w.edgesGroup = three.NewGroup()
+	w.graphGroup.Add(w.edgesGroup)
 
 	w.createNodes(positions)
 	w.createEdges(positions, links)
@@ -29,8 +31,11 @@ func (w *WebGLScene) createNodes(positions map[string]*layout.Object) {
 	for _, node := range positions {
 		mesh := three.NewMesh(geometry, material)
 		mesh.Position.Set(node.X, node.Y, node.Z)
-		w.nodes.Add(mesh)
+		w.nodesGroup.Add(mesh)
+		w.nodes = append(w.nodes, mesh)
 	}
+	obj := w.nodesGroup.GetObjectById(100)
+	fmt.Println("Moving mesh", obj)
 }
 
 func (w *WebGLScene) createEdges(positions map[string]*layout.Object, links []*graph.Link) {
@@ -46,21 +51,24 @@ func (w *WebGLScene) createEdges(positions map[string]*layout.Object, links []*g
 		geom.AddVertice(end.X, end.Y, end.Z)
 
 		line := three.NewLine(geom, material)
-		w.edges.Add(line)
+		w.edgesGroup.Add(line)
+		w.lines = append(w.lines, line)
 	}
 }
 
 // RemoveObjects removes WebGL primitives, cleaning up scene.
 func (w *WebGLScene) RemoveObjects() {
-	if w.nodes != nil {
-		for _, child := range w.nodes.Children {
-			w.nodes.Remove(child)
+	if w.nodesGroup != nil {
+		for _, child := range w.nodesGroup.Children {
+			w.nodesGroup.Remove(child)
 		}
 	}
-	if w.edges != nil {
-		for _, child := range w.edges.Children {
-			w.edges.Remove(child)
+	if w.edgesGroup != nil {
+		for _, child := range w.edgesGroup.Children {
+			w.edgesGroup.Remove(child)
 		}
 	}
-	w.graph, w.nodes, w.edges = nil, nil, nil
+
+	w.nodes, w.lines = nil, nil
+	w.graphGroup, w.nodesGroup, w.edgesGroup = nil, nil, nil
 }

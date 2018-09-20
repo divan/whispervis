@@ -17,7 +17,7 @@ func (w *WebGLScene) animate() {
 	js.Global.Call("requestAnimationFrame", w.animate)
 
 	if w.autoRotate {
-		pos := w.graph.Object.Get("rotation")
+		pos := w.graphGroup.Object.Get("rotation")
 		pos.Set("y", pos.Get("y").Float()+float64(0.001))
 	}
 
