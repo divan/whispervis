@@ -9,8 +9,6 @@ import (
 // CreateObjects creates WebGL primitives from layout/graph data.
 // TODO(divan): change positions and links types to something more clear and readable
 func (w *WebGLScene) CreateObjects(positions map[string]*layout.Object, links []*graph.Link) {
-	w.RemoveObjects()
-
 	w.graph = three.NewGroup()
 	w.scene.Add(w.graph)
 
@@ -54,6 +52,15 @@ func (w *WebGLScene) createEdges(positions map[string]*layout.Object, links []*g
 
 // RemoveObjects removes WebGL primitives, cleaning up scene.
 func (w *WebGLScene) RemoveObjects() {
-	// TODO(divan): remove objects from scene via vthree
+	if w.nodes != nil {
+		for _, child := range w.nodes.Children {
+			w.nodes.Remove(child)
+		}
+	}
+	if w.edges != nil {
+		for _, child := range w.edges.Children {
+			w.edges.Remove(child)
+		}
+	}
 	w.graph, w.nodes, w.edges = nil, nil, nil
 }

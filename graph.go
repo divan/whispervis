@@ -22,6 +22,7 @@ func (p *Page) UpdateGraph() {
 	}
 	p.loaded = true
 	// TODO(divan): remove previous objects
+	p.webgl.RemoveObjects()
 	p.webgl.CreateObjects(p.layout.Positions(), p.layout.Links())
 	vecty.Rerender(p)
 }
