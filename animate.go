@@ -22,12 +22,22 @@ func (w *WebGLScene) animate() {
 		pos.Set("y", pos.Get("y").Float()+float64(0.001))
 	}
 
+	if w.wobble {
+		w.wobbling.Animate()
+		w.updatePositions()
+	}
+
 	w.renderer.Render(w.scene, w.camera)
 }
 
 // ToggleAutoRotation switches auto rotation option.
 func (w *WebGLScene) ToggleAutoRotation() {
 	w.autoRotate = !w.autoRotate
+}
+
+// ToggleWobbling switches wobbling option.
+func (w *WebGLScene) ToggleWobbling() {
+	w.wobble = !w.wobble
 }
 
 // BlinkNode animates a single node blinking. Node specified by its idx.

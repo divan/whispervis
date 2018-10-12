@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/divan/graphx/layout"
 	"github.com/divan/three"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/status-im/whispervis/vthree"
@@ -21,9 +22,15 @@ type WebGLScene struct {
 	controls   TrackBallControl
 
 	autoRotate bool
+	wobble     bool
+	wobbling   *Wobbling
 
-	nodes []*three.Mesh
-	lines []*three.Line
+	positions map[string]*layout.Object
+
+	// these slices exist here because we have no good way to access three.Group children for now
+	// TODO(divan): as soon as three.js wrappers allow us to access children, get rid of it here
+	nodes []*Mesh
+	lines []*Line
 }
 
 // NewWebGLScene inits and returns new WebGL scene and canvas.

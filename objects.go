@@ -6,9 +6,24 @@ import (
 	"github.com/divan/three"
 )
 
+// Mesh represents three.Mesh, and holds some additional metadata.
+type Mesh struct {
+	ID string
+	*three.Mesh
+}
+
+// Line represents three.Line, and holds some additional metadata.
+type Line struct {
+	From string
+	To   string
+	*three.Line
+}
+
 // CreateObjects creates WebGL primitives from layout/graphGroup data.
 // TODO(divan): change positions and links types to something more clear and readable
 func (w *WebGLScene) CreateObjects(positions map[string]*layout.Object, links []*graph.Link) {
+	w.positions = positions
+
 	w.graphGroup = three.NewGroup()
 	w.scene.Add(w.graphGroup)
 
@@ -18,37 +33,71 @@ func (w *WebGLScene) CreateObjects(positions map[string]*layout.Object, links []
 	w.edgesGroup = three.NewGroup()
 	w.graphGroup.Add(w.edgesGroup)
 
-	w.createNodes(positions)
-	w.createEdges(positions, links)
+	w.createNodes()
+	w.createEdges(links)
+
+	// once we know nodes, we can prepare fancy stuff
+	w.wobbling = NewWobbling(w.positions)
 }
 
-func (w *WebGLScene) createNodes(positions map[string]*layout.Object) {
+func (w *WebGLScene) createNodes() {
 	scale := 2.0
 	geometry := NewEthereumGeometry(scale)
 	material := NewNodeMaterial()
-	for _, node := range positions {
-		mesh := three.NewMesh(geometry, material)
+	for id, node := range w.positions {
+		mesh := &Mesh{
+			ID:   id,
+			Mesh: three.NewMesh(geometry, material),
+		}
 		mesh.Position.Set(node.X, node.Y, node.Z)
-		w.nodesGroup.Add(mesh)
+		w.nodesGroup.Add(mesh.Mesh)
 		w.nodes = append(w.nodes, mesh)
 	}
 }
 
-func (w *WebGLScene) createEdges(positions map[string]*layout.Object, links []*graph.Link) {
+func (w *WebGLScene) createEdges(links []*graph.Link) {
 	material := NewEdgeMaterial()
 	for _, link := range links {
 		from := link.From()
 		to := link.To()
-		start := positions[from]
-		end := positions[to]
+		start := w.positions[from]
+		end := w.positions[to]
 
-		var geom = three.NewBasicGeometry(three.BasicGeometryParams{})
-		geom.AddVertice(start.X, start.Y, start.Z)
-		geom.AddVertice(end.X, end.Y, end.Z)
+		var geom = three.NewBufferGeometry()
+		var positions = make([]float32, 2*3) // 2 positions (start and end), 3 coords per each
+		var attr = three.NewBufferAttribute(positions, 3)
 
-		line := three.NewLine(geom, material)
-		w.edgesGroup.Add(line)
+		geom.AddAttribute("position", attr)
+
+		attr.SetXYZ(0, start.X, start.Y, start.Z)
+		attr.SetXYZ(1, end.X, end.Y, end.Z)
+		attr.NeedsUpdate = true
+
+		line := &Line{
+			From: from,
+			To:   to,
+			Line: three.NewLine(geom, material),
+		}
+		w.edgesGroup.Add(line.Line)
 		w.lines = append(w.lines, line)
+	}
+}
+
+// updatePositions sets meshes/lines positions from positions (probably
+// recalculated somewhere else)
+func (w *WebGLScene) updatePositions() {
+	for _, node := range w.nodes {
+		pos := w.positions[node.ID]
+		node.Position.Set(pos.X, pos.Y, pos.Z)
+	}
+	for i := range w.lines {
+		start := w.positions[w.lines[i].From]
+		end := w.positions[w.lines[i].To]
+
+		attr := w.lines[i].Geometry.GetAttribute("position")
+		attr.SetXYZ(0, start.X, start.Y, start.Z)
+		attr.SetXYZ(1, end.X, end.Y, end.Z)
+		attr.NeedsUpdate = true
 	}
 }
 
@@ -66,5 +115,6 @@ func (w *WebGLScene) RemoveObjects() {
 	}
 
 	w.nodes, w.lines = nil, nil
+	w.positions = nil
 	w.graphGroup, w.nodesGroup, w.edgesGroup = nil, nil, nil
 }
