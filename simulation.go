@@ -7,7 +7,7 @@ import (
 	"github.com/status-im/simulation/propagation"
 )
 
-const AnimationSlowdown = 3
+const AnimationSlowdown = 1
 
 // AnimatePropagation visualizes propagation of message based on plog.
 func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
