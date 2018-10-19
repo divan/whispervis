@@ -136,9 +136,10 @@ func (p *Page) startSimulation() error {
 	}
 
 	// calculate stats and update stats widget
-	p.RecalculateStats()
-	p.statsWidget.Update(sim.stats)
+	stats := p.RecalculateStats(sim.plog)
+	p.statsWidget.Update(stats)
 
+	sim.stats = stats
 	p.simulation = sim
 
 	p.replaySimulation()

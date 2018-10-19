@@ -1,17 +1,14 @@
 package main
 
-import "github.com/status-im/simulation/stats"
+import (
+	"github.com/status-im/simulation/propagation"
+	"github.com/status-im/simulation/stats"
+)
 
-func (p *Page) RecalculateStats() {
-	sim := p.simulation
-	if sim == nil || sim.plog == nil {
-		return
-	}
-
+func (p *Page) RecalculateStats(plog *propagation.Log) *stats.Stats {
 	net := p.network.current
 	nodes := len(net.Data.Nodes())
 	links := len(net.Data.Links())
 
-	stats := stats.Analyze(sim.plog, nodes, links)
-	p.simulation.stats = stats
+	return stats.Analyze(plog, nodes, links)
 }
