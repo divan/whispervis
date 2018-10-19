@@ -9,6 +9,7 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
+	"github.com/status-im/simulation/propagation"
 	"github.com/status-im/whispervis/widgets"
 )
 
@@ -26,6 +27,7 @@ type Page struct {
 	forceEditor    *widgets.ForceEditor
 	network        *NetworkSelector
 	simulationConf *widgets.Simulation
+	statsWidget    *widgets.Stats
 }
 
 // NewPage creates and inits new app page.
@@ -36,7 +38,8 @@ func NewPage() *Page {
 	}
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
-	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork, page.webgl.AnimatePropagation)
+	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork, page.onSimulationFinish)
+	page.statsWidget = widgets.NewStats()
 	return page
 }
 
@@ -62,6 +65,8 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					elem.HorizontalRule(),
 					p.forceEditor,
 					p.updateButton(),
+					elem.HorizontalRule(),
+					p.statsWidget,
 				),
 			),
 			elem.Div(
@@ -133,4 +138,14 @@ func (p *Page) CurrentNetwork() []byte {
 		return nil
 	}
 	return buf.Bytes()
+}
+
+// onSimulationFinish is called on the end of each simulation round.
+func (p *Page) onSimulationFinish(plog *propagation.Log) {
+	net := p.network.current
+	nodesCount := len(net.Data.Nodes())
+	linksCount := len(net.Data.Links())
+	p.statsWidget.Update(plog, nodesCount, linksCount)
+
+	p.webgl.AnimatePropagation(plog)
 }
