@@ -18,7 +18,8 @@ type Page struct {
 
 	webgl *WebGLScene
 
-	loaded bool
+	loaded       bool
+	isSimulating bool
 
 	loader           *widgets.Loader
 	forceEditor      *widgets.ForceEditor
@@ -54,18 +55,36 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("pure-u-1-5")),
 				elem.Heading1(vecty.Text("Whisper Message Propagation")),
 				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
-				p.network,
+				elem.Div(
+					vecty.Markup(
+						vecty.MarkupIf(p.isSimulating,
+							// disable
+							vecty.Style("pointer-events", "none"),
+							vecty.Style("opacity", "0.4"),
+						),
+					),
+					p.network,
+				),
 				elem.HorizontalRule(),
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
 					),
 					p.simulationWidget,
-					elem.HorizontalRule(),
-					p.forceEditor,
-					p.updateButton(),
-					elem.HorizontalRule(),
-					p.statsWidget,
+					elem.Div(
+						vecty.Markup(
+							vecty.MarkupIf(p.isSimulating,
+								// disable
+								vecty.Style("pointer-events", "none"),
+								vecty.Style("opacity", "0.4"),
+							),
+						),
+						elem.HorizontalRule(),
+						p.forceEditor,
+						p.updateButton(),
+						elem.HorizontalRule(),
+						p.statsWidget,
+					),
 				),
 			),
 			elem.Div(
@@ -129,6 +148,14 @@ func (p *Page) onNetworkChange(network *Network) {
 
 // startSimulation is called on the end of each simulation round.
 func (p *Page) startSimulation() error {
+	p.isSimulating = true
+	vecty.Rerender(p)
+
+	defer func() {
+		p.isSimulating = false
+		vecty.Rerender(p)
+	}()
+
 	backend := p.simulationWidget.Address()
 	sim, err := p.runSimulation(backend)
 	if err != nil {

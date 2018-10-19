@@ -17,6 +17,7 @@ type Simulation struct {
 
 	errMsg     string
 	hasResults bool
+	inProgress bool
 }
 
 // NewSimulation creates new simulation configuration panel. If simulation
@@ -40,20 +41,29 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("pure-markup-group", "pure-u-1"),
 			),
-			elem.Label(
+			elem.Div(
 				vecty.Markup(
-					vecty.Class("pure-u-1-2"),
+					vecty.MarkupIf(s.inProgress,
+						// disable
+						vecty.Style("pointer-events", "none"),
+						vecty.Style("opacity", "0.4"),
+					),
 				),
-				vecty.Text("Host address:"),
-			),
-			elem.Input(
-				vecty.Markup(
-					prop.Value(s.address),
-					event.Input(s.onEditInput),
-					vecty.Class("pure-input-1-3"),
-					vecty.Style("float", "right"),
-					vecty.Style("margin-right", "10px"),
-					vecty.Style("text-align", "right"),
+				elem.Label(
+					vecty.Markup(
+						vecty.Class("pure-u-1-2"),
+					),
+					vecty.Text("Host address:"),
+				),
+				elem.Input(
+					vecty.Markup(
+						prop.Value(s.address),
+						event.Input(s.onEditInput),
+						vecty.Class("pure-input-1-3"),
+						vecty.Style("float", "right"),
+						vecty.Style("margin-right", "10px"),
+						vecty.Style("text-align", "right"),
+					),
 				),
 			),
 		),
@@ -63,6 +73,11 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 			),
 			elem.Button(
 				vecty.Markup(
+					vecty.MarkupIf(s.inProgress,
+						// disable
+						vecty.Style("pointer-events", "none"),
+						vecty.Style("opacity", "0.4"),
+					),
 					vecty.Class("pure-button"),
 					vecty.Class("pure-u-1-2"),
 					vecty.Style("background", "rgb(28, 184, 65)"),
@@ -87,6 +102,9 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 				),
 			),
 			elem.Break(),
+			vecty.If(s.inProgress, elem.Heading5(
+				vecty.Text("Running simulation..."),
+			)),
 			elem.Div(
 				vecty.If(s.errMsg != "", elem.Paragraph(
 					vecty.Markup(
@@ -118,6 +136,7 @@ func (s *Simulation) onSimulateClick(e *vecty.Event) {
 	go func() {
 		s.errMsg = ""
 		s.hasResults = false
+		s.inProgress = true
 		vecty.Rerender(s)
 
 		err := s.startSimulation()
@@ -126,6 +145,7 @@ func (s *Simulation) onSimulateClick(e *vecty.Event) {
 		}
 
 		s.hasResults = err == nil
+		s.inProgress = false
 		vecty.Rerender(s)
 	}()
 }
