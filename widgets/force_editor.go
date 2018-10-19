@@ -9,7 +9,7 @@ import (
 // DefaultForcesConfig specifies default configuration for physics simulation.
 var DefaultForcesConfig = ForcesConfig{
 	Config: layout.DefaultConfig,
-	Steps:  100,
+	Steps:  10,
 }
 
 // ForceEditor represents forces and physics simulation configuration widget.

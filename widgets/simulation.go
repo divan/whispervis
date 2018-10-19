@@ -5,22 +5,23 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/status-im/simulation/propagation"
 )
 
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
-	startSimulation func()
+	startSimulation func() error
 	replay          func()
 
-	address string           // backend host address
-	plog    *propagation.Log // last simulation result
+	address string // backend host address
+
+	errMsg     string
+	hasResults bool
 }
 
 // NewSimulation creates new simulation configuration panel. If simulation
 // backend host address is not specified, it'll use 'localhost:8084' as a default.
-func NewSimulation(address string, startSimulation, replay func()) *Simulation {
+func NewSimulation(address string, startSimulation func() error, replay func()) *Simulation {
 	if address == "" {
 		address = "http://localhost:8084"
 	}
@@ -55,10 +56,15 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 					vecty.Style("text-align", "right"),
 				),
 			),
-			elem.Break(),
+		),
+		elem.Div(
+			vecty.Markup(
+				vecty.Class("pure-markup-group", "pure-u-1"),
+			),
 			elem.Button(
 				vecty.Markup(
 					vecty.Class("pure-button"),
+					vecty.Class("pure-u-1-2"),
 					vecty.Style("background", "rgb(28, 184, 65)"),
 					vecty.Style("color", "white"),
 					vecty.Style("border-radius", "4px"),
@@ -66,15 +72,32 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 				),
 				vecty.Text("Start simulation"),
 			),
-			elem.Button(
-				vecty.Markup(
-					vecty.Class("pure-button"),
-					vecty.Style("background", "rgb(28, 184, 65)"),
-					vecty.Style("color", "white"),
-					vecty.Style("border-radius", "4px"),
-					event.Click(s.onRestartClick),
+			vecty.If(s.hasResults,
+				elem.Button(
+					vecty.Markup(
+						vecty.Class("pure-button"),
+						vecty.Class("pure-u-1-3"),
+						vecty.Style("background", "rgb(28, 184, 65)"),
+						vecty.Style("color", "white"),
+						vecty.Style("margin", "10px"),
+						vecty.Style("border-radius", "4px"),
+						event.Click(s.onRestartClick),
+					),
+					vecty.Text("Replay"),
 				),
-				vecty.Text("Replay"),
+			),
+			elem.Break(),
+			elem.Div(
+				vecty.If(s.errMsg != "", elem.Paragraph(
+					vecty.Markup(
+						vecty.Style("background", "rgb(202, 60, 60)"),
+						vecty.Style("color", "white"),
+						vecty.Style("border-radius", "4px"),
+						vecty.Style("margin-right", "5px"),
+						vecty.Style("padding", "5px"),
+					),
+					vecty.Text(s.errMsg),
+				)),
 			),
 		),
 	)
@@ -92,7 +115,19 @@ func (s *Simulation) Address() string {
 }
 
 func (s *Simulation) onSimulateClick(e *vecty.Event) {
-	go s.startSimulation()
+	go func() {
+		s.errMsg = ""
+		s.hasResults = false
+		vecty.Rerender(s)
+
+		err := s.startSimulation()
+		if err != nil {
+			s.errMsg = err.Error()
+		}
+
+		s.hasResults = err == nil
+		vecty.Rerender(s)
+	}()
 }
 
 func (s *Simulation) onRestartClick(e *vecty.Event) {

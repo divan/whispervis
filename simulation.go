@@ -22,11 +22,11 @@ type Simulation struct {
 func (p *Page) runSimulation(address string) (*Simulation, error) {
 	payload := p.currentNetworkJSON()
 	buf := bytes.NewBuffer(payload)
-	url := "http://" + address + "/"
-	resp, err := http.Post(url, "application/json", buf)
+	host := "http://" + address + "/"
+	resp, err := http.Post(host, "application/json", buf)
 	if err != nil {
 		fmt.Println("[ERROR] POST request to simulation backend:", err)
-		return nil, fmt.Errorf("backend error: %v", err)
+		return nil, fmt.Errorf("Backend error. Did you run backend?")
 	}
 
 	var plog propagation.Log

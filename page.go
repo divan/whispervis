@@ -128,12 +128,11 @@ func (p *Page) onNetworkChange(network *Network) {
 }
 
 // startSimulation is called on the end of each simulation round.
-func (p *Page) startSimulation() {
+func (p *Page) startSimulation() error {
 	backend := p.simulationWidget.Address()
 	sim, err := p.runSimulation(backend)
 	if err != nil {
-		// TODO(divan): handle error
-		return
+		return err
 	}
 
 	// calculate stats and update stats widget
@@ -143,6 +142,7 @@ func (p *Page) startSimulation() {
 	p.simulation = sim
 
 	p.replaySimulation()
+	return nil
 }
 
 // replaySimulation animates last simulation.
