@@ -30,34 +30,40 @@ func (r *Range) Render() vecty.ComponentOrHTML {
 	value := fmt.Sprintf("%d", r.value)
 	return elem.Div(
 		vecty.Markup(
-			vecty.Class("pure-markup-group", "pure-u-1"),
-			vecty.Style("height", "32px"),
+			vecty.Class("field", "is-horizontal", "is-paddingless", "is-marginless"),
 		),
-		elem.Label(
+		elem.Div(
 			vecty.Markup(
-				vecty.Class("pure-u-1-3"),
+				vecty.Class("field-label"),
 			),
-			vecty.Text(r.title),
-		),
-		elem.Input(
-			vecty.Markup(
-				prop.Value(value),
-				prop.Type("range"),
-				vecty.Attribute("min", "1"),
-				vecty.Attribute("max", "1000"), // allow 1-1000 range for steps
-				event.Input(r.onChange),
-				vecty.Class("pure-input-1-3"),
-				vecty.Style("height", "100%"),
+			elem.Label(
+				vecty.Markup(
+					vecty.Class("label"),
+				),
+				vecty.Text(r.title),
 			),
 		),
-		elem.Input(
-			vecty.Markup(
-				prop.Value(value),
-				event.Input(r.onChange),
-				vecty.Class("pure-input-1-4"),
-				vecty.Style("float", "right"),
-				vecty.Style("margin-right", "10px"),
-				vecty.Style("text-align", "right"),
+
+		fieldControl(
+			elem.Input(
+				vecty.Markup(
+					vecty.Class("is-small"),
+					vecty.Style("margin-right", "10px"),
+					prop.Value(value),
+					prop.Type("range"),
+					vecty.Attribute("min", "1"),
+					vecty.Attribute("max", "1000"), // allow 1-1000 range for steps
+					event.Input(r.onChange),
+				),
+			),
+		),
+		fieldControl(
+			elem.Input(
+				vecty.Markup(
+					prop.Value(value),
+					event.Input(r.onChange),
+					vecty.Class("input", "is-small"),
+				),
 			),
 		),
 	)

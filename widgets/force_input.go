@@ -31,22 +31,49 @@ func (f *ForceInput) Render() vecty.ComponentOrHTML {
 	value := fmt.Sprintf("%.2f", f.value)
 	return elem.Div(
 		vecty.Markup(
-			vecty.Class("pure-markup-group", "pure-u-1"),
+			vecty.Class("field", "is-horizontal", "is-paddingless", "is-marginless"),
 		),
-		elem.Label(
+
+		elem.Div(
 			vecty.Markup(
-				vecty.Class("pure-u-1-2"),
+				vecty.Class("field-label"),
 			),
-			vecty.Text(f.title),
+			elem.Label(
+				vecty.Markup(
+					vecty.Class("label"),
+				),
+				vecty.Text(f.title),
+			),
 		),
-		elem.Input(
+
+		fieldControl(
+			elem.Input(
+				vecty.Markup(
+					vecty.Class("input", "is-small"),
+					prop.Value(value),
+					event.Input(f.onEditInput),
+				),
+			),
+		),
+	)
+}
+
+// helper for wrapping many divs
+func fieldControl(element *vecty.HTML) *vecty.HTML {
+	return elem.Div(
+		vecty.Markup(
+			vecty.Class("field-body"),
+		),
+		elem.Div(
 			vecty.Markup(
-				prop.Value(value),
-				event.Input(f.onEditInput),
-				vecty.Class("pure-input-1-3"),
-				vecty.Style("float", "right"),
-				vecty.Style("margin-right", "10px"),
-				vecty.Style("text-align", "right"),
+				vecty.Class("field"),
+			),
+			elem.Div(
+				vecty.Markup(
+					vecty.Class("control"),
+				),
+
+				element,
 			),
 		),
 	)

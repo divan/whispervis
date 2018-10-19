@@ -47,18 +47,24 @@ func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
 // Render implements the vecty.Component interface.
 func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 	return elem.Div(
-		elem.Heading3(vecty.Text("Choose network:")),
-		elem.Select(
+		widgets.Header("Network graph:"),
+		elem.Div(
 			vecty.Markup(
+				vecty.Class("select"),
 				event.Change(n.onChange),
 			),
-			n.networkOptions(),
-			elem.Option(
+			elem.Select(
 				vecty.Markup(
-					vecty.Property("value", "upload"),
-					vecty.Property("selected", n.isCustom),
+					event.Change(n.onChange),
 				),
-				vecty.Text("Upload custom..."),
+				n.networkOptions(),
+				elem.Option(
+					vecty.Markup(
+						vecty.Property("value", "upload"),
+						vecty.Property("selected", n.isCustom),
+					),
+					vecty.Text("Upload custom..."),
+				),
 			),
 		),
 		n.descriptionBlock(),
@@ -68,13 +74,17 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 
 // descriptionBlock renders the block with network description.
 func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
+	if n.current == nil || n.current.Description == "" {
+		return elem.Span()
+	}
+
 	return elem.Div(
 		vecty.Markup(
-			vecty.Style("padding", "7px"),
-			vecty.Style("font-style", "italic"),
-			vecty.Style("color", "blue"),
+			vecty.Class("is-small", "is-marginless"),
 		),
-		vecty.Text(n.current.Description),
+		elem.Div(
+			vecty.Text(n.current.Description),
+		),
 	)
 }
 

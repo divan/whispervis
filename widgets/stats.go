@@ -39,18 +39,15 @@ func (s *Stats) Render() vecty.ComponentOrHTML {
 		return elem.Div()
 	}
 	return elem.Div(
-		elem.Div(
-			elem.Heading3(vecty.Text("Stats")),
-			elem.Table(
-				vecty.Markup(
-					vecty.Style("width", "90%"),
-					vecty.Style("margin", "10px"),
-				),
-				elem.TableBody(
-					s.tableRow("Elapsed time:", s.stats.Time),
-					s.tableRow("Nodes hit:", s.stats.NodeCoverage.Actual),
-					s.tableRow("Links hit:", s.stats.LinkCoverage.Actual),
-				),
+		Header("Stats:"),
+		elem.Table(
+			vecty.Markup(
+				vecty.Class("table", "is-hoverable", "is-fullwidth"),
+			),
+			elem.TableBody(
+				s.tableRow("Elapsed time:", s.stats.Time),
+				s.tableRow("Nodes hit:", s.stats.NodeCoverage.Actual),
+				s.tableRow("Links hit:", s.stats.LinkCoverage.Actual),
 			),
 		),
 	)

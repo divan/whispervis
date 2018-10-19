@@ -37,32 +37,17 @@ func NewSimulation(address string, startSimulation func() error, replay func()) 
 func (s *Simulation) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		elem.Div(
-			elem.Heading3(vecty.Text("Simulation backend:")),
-			vecty.Markup(
-				vecty.Class("pure-markup-group", "pure-u-1"),
-			),
+			Header("Simulation backend:"),
 			elem.Div(
-				vecty.Markup(
-					vecty.MarkupIf(s.inProgress,
-						// disable
-						vecty.Style("pointer-events", "none"),
-						vecty.Style("opacity", "0.4"),
-					),
-				),
-				elem.Label(
-					vecty.Markup(
-						vecty.Class("pure-u-1-2"),
-					),
-					vecty.Text("Host address:"),
-				),
 				elem.Input(
 					vecty.Markup(
+						vecty.MarkupIf(s.inProgress,
+							vecty.Attribute("disabled", "true"),
+						),
 						prop.Value(s.address),
+						vecty.Attribute("placehoder", "backend url"),
 						event.Input(s.onEditInput),
-						vecty.Class("pure-input-1-3"),
-						vecty.Style("float", "right"),
-						vecty.Style("margin-right", "10px"),
-						vecty.Style("text-align", "right"),
+						vecty.Class("input", "is-small"),
 					),
 				),
 			),
@@ -74,15 +59,10 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 			elem.Button(
 				vecty.Markup(
 					vecty.MarkupIf(s.inProgress,
-						// disable
-						vecty.Style("pointer-events", "none"),
-						vecty.Style("opacity", "0.4"),
+						vecty.Attribute("disabled", "true"),
+						vecty.Class("is-loading"),
 					),
-					vecty.Class("pure-button"),
-					vecty.Class("pure-u-1-2"),
-					vecty.Style("background", "rgb(28, 184, 65)"),
-					vecty.Style("color", "white"),
-					vecty.Style("border-radius", "4px"),
+					vecty.Class("button", "is-info", "is-small"),
 					event.Click(s.onSimulateClick),
 				),
 				vecty.Text("Start simulation"),
@@ -90,29 +70,23 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 			vecty.If(s.hasResults,
 				elem.Button(
 					vecty.Markup(
-						vecty.Class("pure-button"),
-						vecty.Class("pure-u-1-3"),
-						vecty.Style("background", "rgb(28, 184, 65)"),
-						vecty.Style("color", "white"),
-						vecty.Style("margin", "10px"),
-						vecty.Style("border-radius", "4px"),
+						vecty.Class("button", "is-success", "is-small"),
 						event.Click(s.onRestartClick),
 					),
 					vecty.Text("Replay"),
 				),
 			),
 			elem.Break(),
-			vecty.If(s.inProgress, elem.Heading5(
+			vecty.If(s.inProgress, elem.Div(
+				vecty.Markup(
+					vecty.Class("notification", "is-success"),
+				),
 				vecty.Text("Running simulation..."),
 			)),
 			elem.Div(
-				vecty.If(s.errMsg != "", elem.Paragraph(
+				vecty.If(s.errMsg != "", elem.Div(
 					vecty.Markup(
-						vecty.Style("background", "rgb(202, 60, 60)"),
-						vecty.Style("color", "white"),
-						vecty.Style("border-radius", "4px"),
-						vecty.Style("margin-right", "5px"),
-						vecty.Style("padding", "5px"),
+						vecty.Class("notification", "is-danger"),
 					),
 					vecty.Text(s.errMsg),
 				)),

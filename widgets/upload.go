@@ -26,14 +26,33 @@ func NewUploadWidget(handler func([]byte)) *UploadWidget {
 
 func (u *UploadWidget) Render() vecty.ComponentOrHTML {
 	return elem.Div(
-		elem.Input(
+		vecty.Markup(
+			vecty.Class("file"),
+		),
+		elem.Label(
 			vecty.Markup(
-				prop.ID("file"),
-				prop.Type("file"),
-				vecty.Property("accept", "application/json"), // TODO(divan): add prop.Accept PR
-				event.Input(u.onUploadClick),
+				vecty.Class("file-label"),
 			),
-			vecty.Text("Upload network.json"),
+			elem.Input(
+				vecty.Markup(
+					vecty.Class("file-input"),
+					prop.ID("file"),
+					prop.Type("file"),
+					vecty.Property("accept", "application/json"), // TODO(divan): add prop.Accept PR
+					event.Input(u.onUploadClick),
+				),
+			),
+			elem.Span(
+				vecty.Markup(
+					vecty.Class("file-cta"),
+				),
+				elem.Span(
+					vecty.Markup(
+						vecty.Class("file-label"),
+					),
+					vecty.Text("Upload..."),
+				),
+			),
 		),
 	)
 }

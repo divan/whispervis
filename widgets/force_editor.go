@@ -4,6 +4,7 @@ import (
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/event"
 )
 
 // DefaultForcesConfig specifies default configuration for physics simulation.
@@ -22,6 +23,8 @@ type ForceEditor struct {
 	spring    *ForceInput
 	drag      *ForceInput
 	steps     *Range
+
+	apply func()
 }
 
 // ForcesConfig represents physics simulation configuration.
@@ -30,30 +33,12 @@ type ForcesConfig struct {
 	Steps int
 }
 
-// Render implements vecty's Component interface for ForceEditor.
-func (l *ForceEditor) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		elem.Heading3(
-			vecty.Text("Layout forces:"),
-		),
-		elem.Form(
-			vecty.Markup(
-				vecty.Class("pure-form"),
-			),
-			l.repelling,
-			l.spring,
-			l.drag,
-			l.steps,
-		),
-	)
-}
-
 // NewForceEditor creates a new ForceEditor widget.
-func NewForceEditor() *ForceEditor {
+func NewForceEditor(apply func()) *ForceEditor {
 	config := DefaultForcesConfig
-	repelling := NewForceInput("Gravity force:", config.Repelling)
-	spring := NewForceInput("Spring force:", config.SpringStiffness)
-	drag := NewForceInput("Drag force:", config.DragCoeff)
+	repelling := NewForceInput("Gravity:", config.Repelling)
+	spring := NewForceInput("Spring:", config.SpringStiffness)
+	drag := NewForceInput("Drag:", config.DragCoeff)
 	steps := NewRange("Steps:", config.Steps)
 	return &ForceEditor{
 		config:    config,
@@ -61,18 +46,49 @@ func NewForceEditor() *ForceEditor {
 		spring:    spring,
 		drag:      drag,
 		steps:     steps,
+		apply:     apply,
 	}
 }
 
+// Render implements vecty's Component interface for ForceEditor.
+func (f *ForceEditor) Render() vecty.ComponentOrHTML {
+	return elem.Div(
+		Header("Layout forces:"),
+		elem.Form(
+			f.repelling,
+			f.spring,
+			f.drag,
+			f.steps,
+		),
+		f.applyButton(),
+	)
+}
+
 // Config returns current forces & simulation configuration, getting values from UI.
-func (l *ForceEditor) Config() ForcesConfig {
+func (f *ForceEditor) Config() ForcesConfig {
 	return ForcesConfig{
-		Steps: l.steps.Value(),
+		Steps: f.steps.Value(),
 		Config: layout.Config{
-			Repelling:       l.repelling.Value(),
-			SpringStiffness: l.spring.Value(),
-			SpringLen:       l.config.SpringLen,
-			DragCoeff:       l.drag.Value(),
+			Repelling:       f.repelling.Value(),
+			SpringStiffness: f.spring.Value(),
+			SpringLen:       f.config.SpringLen,
+			DragCoeff:       f.drag.Value(),
 		},
 	}
+}
+
+func (f *ForceEditor) applyButton() *vecty.HTML {
+	return elem.Div(
+		elem.Button(
+			vecty.Markup(
+				vecty.Class("button", "is-info", "is-small"),
+				event.Click(f.onClick),
+			),
+			vecty.Text("Apply"),
+		),
+	)
+}
+
+func (f *ForceEditor) onClick(e *vecty.Event) {
+	go f.apply()
 }

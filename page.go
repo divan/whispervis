@@ -33,12 +33,12 @@ type Page struct {
 // NewPage creates and inits new app page.
 func NewPage() *Page {
 	page := &Page{
-		loader:      widgets.NewLoader(),
-		forceEditor: widgets.NewForceEditor(),
+		loader: widgets.NewLoader(),
 	}
+	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
-	page.simulationWidget = widgets.NewSimulation("localhost:8084", page.startSimulation, page.replaySimulation)
+	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	return page
 }
@@ -48,13 +48,14 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		elem.Div(
 			vecty.Markup(
-				vecty.Class("pure-g"),
-				vecty.Style("height", "100%"),
+				vecty.Class("columns"),
 			),
 			elem.Div(
-				vecty.Markup(vecty.Class("pure-u-1-5")),
-				elem.Heading1(vecty.Text("Whisper Message Propagation")),
-				elem.Paragraph(vecty.Text("This visualization represents message propagation in the p2p network.")),
+				vecty.Markup(
+					vecty.Class("column", "is-narrow"),
+					vecty.Style("width", "300px"),
+				),
+				p.header(),
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(p.isSimulating,
@@ -63,10 +64,10 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 							vecty.Style("opacity", "0.4"),
 						),
 					),
+					elem.HorizontalRule(),
 					p.network,
 					elem.HorizontalRule(),
 					p.forceEditor,
-					p.updateButton(),
 				),
 				elem.HorizontalRule(),
 				elem.Div(
@@ -89,7 +90,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 			),
 			elem.Div(
 				vecty.Markup(
-					vecty.Class("pure-u-4-5"),
+					vecty.Class("column"),
 					/*
 						we use display:none property to hide WebGL instead of mounting/unmounting,
 						because we want to create only one WebGL context and reuse it. Plus,
@@ -117,26 +118,12 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func (p *Page) updateButton() *vecty.HTML {
-	return elem.Div(
-		elem.Button(
-			vecty.Markup(
-				vecty.Class("pure-button"),
-				vecty.Style("background", "rgb(28, 184, 65)"),
-				vecty.Style("color", "white"),
-				vecty.Style("border-radius", "4px"),
-				event.Click(p.onUpdateClick),
-			),
-			vecty.Text("Update"),
-		),
-	)
-}
-
-func (p *Page) onUpdateClick(e *vecty.Event) {
+// onForcesApply executes when Force Editor click is fired.
+func (p *Page) onForcesApply() {
 	if !p.loaded {
 		return
 	}
-	go p.UpdateGraph()
+	p.UpdateGraph()
 }
 
 func (p *Page) onNetworkChange(network *Network) {
@@ -179,4 +166,21 @@ func (p *Page) replaySimulation() {
 		return
 	}
 	p.webgl.AnimatePropagation(p.simulation.plog)
+}
+
+func (p *Page) header() *vecty.HTML {
+	return elem.Section(
+		elem.Heading2(
+			vecty.Markup(
+				vecty.Class("title", "has-text-weight-light"),
+			),
+			vecty.Text("Whisper Message Propagation"),
+		),
+		elem.Heading5(
+			vecty.Markup(
+				vecty.Class("subtitle", "has-text-weight-light"),
+			),
+			vecty.Text("This visualization represents message propagation in the p2p network."),
+		),
+	)
 }

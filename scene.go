@@ -45,7 +45,7 @@ func NewWebGLScene() *WebGLScene {
 
 func (w *WebGLScene) init(renderer *three.WebGLRenderer) {
 	fmt.Println("WebGL init")
-	windowWidth := js.Global.Get("innerWidth").Float()*80/100 - 20
+	windowWidth := js.Global.Get("innerWidth").Float() - 300 // TODO(divan): sync this with page layout
 	windowHeight := js.Global.Get("innerHeight").Float() - 20
 
 	w.renderer = renderer

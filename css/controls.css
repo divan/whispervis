@@ -1,8 +1,7 @@
 body {
-	background: #c0c0c0 -webkit-gradient(linear, left top, left bottom, from(#fff), to(#c0c0c0)) no-repeat;
+	background: #c0c0c0 -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#f0f0f0)) no-repeat;
 	padding-left: 10px;
 	padding-right: 10px;
-	height: 1000px;
 }
 
 h1 {
