@@ -1,15 +1,12 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 
-	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/layout"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
-	"github.com/status-im/simulation/propagation"
 	"github.com/status-im/whispervis/widgets"
 )
 
@@ -23,11 +20,13 @@ type Page struct {
 
 	loaded bool
 
-	loader         *widgets.Loader
-	forceEditor    *widgets.ForceEditor
-	network        *NetworkSelector
-	simulationConf *widgets.Simulation
-	statsWidget    *widgets.Stats
+	loader           *widgets.Loader
+	forceEditor      *widgets.ForceEditor
+	network          *NetworkSelector
+	simulationWidget *widgets.Simulation
+	statsWidget      *widgets.Stats
+
+	simulation *Simulation
 }
 
 // NewPage creates and inits new app page.
@@ -38,7 +37,7 @@ func NewPage() *Page {
 	}
 	page.network = NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
-	page.simulationConf = widgets.NewSimulation("localhost:8084", page.CurrentNetwork, page.onSimulationFinish)
+	page.simulationWidget = widgets.NewSimulation("localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	return page
 }
@@ -61,7 +60,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
 					),
-					p.simulationConf,
+					p.simulationWidget,
 					elem.HorizontalRule(),
 					p.forceEditor,
 					p.updateButton(),
@@ -128,24 +127,28 @@ func (p *Page) onNetworkChange(network *Network) {
 	go p.UpdateGraph()
 }
 
-// CurrentNetwork returns JSON encoded description of the current graph/network.
-func (p *Page) CurrentNetwork() []byte {
-	net := p.network.current.Data
-	var buf bytes.Buffer
-	err := formats.NewD3JSON(&buf, true).ExportGraph(net)
+// startSimulation is called on the end of each simulation round.
+func (p *Page) startSimulation() {
+	backend := p.simulationWidget.Address()
+	sim, err := p.runSimulation(backend)
 	if err != nil {
-		fmt.Println("[ERROR] Can't export graph:", err)
-		return nil
+		// TODO(divan): handle error
+		return
 	}
-	return buf.Bytes()
+
+	// calculate stats and update stats widget
+	p.RecalculateStats()
+	p.statsWidget.Update(sim.stats)
+
+	p.simulation = sim
+
+	p.replaySimulation()
 }
 
-// onSimulationFinish is called on the end of each simulation round.
-func (p *Page) onSimulationFinish(plog *propagation.Log) {
-	net := p.network.current
-	nodesCount := len(net.Data.Nodes())
-	linksCount := len(net.Data.Links())
-	p.statsWidget.Update(plog, nodesCount, linksCount)
-
-	p.webgl.AnimatePropagation(plog)
+// replaySimulation animates last simulation.
+func (p *Page) replaySimulation() {
+	if p.simulation == nil {
+		return
+	}
+	p.webgl.AnimatePropagation(p.simulation.plog)
 }

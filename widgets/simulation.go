@@ -1,12 +1,6 @@
 package widgets
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -17,8 +11,8 @@ import (
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
-	networkFn    func() []byte // function that returns current network JSON description
-	simulationFn func(*propagation.Log)
+	startSimulation func()
+	replay          func()
 
 	address string           // backend host address
 	plog    *propagation.Log // last simulation result
@@ -26,14 +20,14 @@ type Simulation struct {
 
 // NewSimulation creates new simulation configuration panel. If simulation
 // backend host address is not specified, it'll use 'localhost:8084' as a default.
-func NewSimulation(address string, networkFn func() []byte, simulationFn func(*propagation.Log)) *Simulation {
+func NewSimulation(address string, startSimulation, replay func()) *Simulation {
 	if address == "" {
 		address = "http://localhost:8084"
 	}
 	return &Simulation{
-		address:      address,
-		networkFn:    networkFn,
-		simulationFn: simulationFn,
+		address:         address,
+		startSimulation: startSimulation,
+		replay:          replay,
 	}
 }
 
@@ -98,49 +92,9 @@ func (s *Simulation) Address() string {
 }
 
 func (s *Simulation) onSimulateClick(e *vecty.Event) {
-	if s.networkFn == nil {
-		return
-	}
-
-	go s.runSimulation()
+	go s.startSimulation()
 }
 
 func (s *Simulation) onRestartClick(e *vecty.Event) {
-	go s.play()
-}
-
-// runSimulation starts whisper message propagation simulation,
-// remotely talking to simulation backend.
-func (s *Simulation) runSimulation() {
-	payload := s.networkFn()
-	buf := bytes.NewBuffer(payload)
-	url := "http://" + s.address + "/"
-	resp, err := http.Post(url, "application/json", buf)
-	if err != nil {
-		fmt.Println("[ERROR] POST request to simulation backend:", err)
-		return
-	}
-
-	var plog propagation.Log
-	err = json.NewDecoder(resp.Body).Decode(&plog)
-	if err != nil {
-		fmt.Println("[ERROR] decoding response from simulation backend:", err)
-		return
-	}
-
-	var max int
-	for _, ts := range plog.Timestamps {
-		if ts > max {
-			max = ts
-		}
-	}
-
-	timespan := time.Duration(max) * time.Millisecond
-	fmt.Printf("Whoa! Got results! %d timestamps over %v\n", len(plog.Timestamps), timespan)
-	s.plog = &plog
-	s.play()
-}
-
-func (s *Simulation) play() {
-	s.simulationFn(s.plog)
+	go s.replay()
 }

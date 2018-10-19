@@ -6,7 +6,6 @@ import (
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/status-im/simulation/propagation"
 	"github.com/status-im/simulation/stats"
 )
 
@@ -29,8 +28,8 @@ func NewStats() *Stats {
 }
 
 // Update updates the stats based on the propagation log info and current graph.
-func (s *Stats) Update(plog *propagation.Log, nodes, links int) {
-	s.stats = stats.Analyze(plog, nodes, links)
+func (s *Stats) Update(stats *stats.Stats) {
+	s.stats = stats
 	vecty.Rerender(s)
 }
 
