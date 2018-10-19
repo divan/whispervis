@@ -1,12 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/status-im/simulation/propagation"
 )
 
-const BlinkDecay = 100 * time.Millisecond
+const (
+	// TODO(divan): move this as variables to the frontend
+	BlinkDecay        = 100 * time.Millisecond // time for highlighted node/link to be active
+	AnimationSlowdown = 1                      // slowdown factor for propagation animation
+)
 
 func (w *WebGLScene) animate() {
 	if w.renderer == nil {
@@ -55,4 +61,27 @@ func (w *WebGLScene) BlinkEdge(id int) {
 	edge.Set("material", BlinkedEdgeMaterial)
 	restore := func() { edge.Object.Set("material", DefaultEdgeMaterial) }
 	time.AfterFunc(BlinkDecay, restore)
+}
+
+// AnimatePropagation visualizes propagation of message based on plog.
+func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
+	fmt.Println("Animating plog")
+	for i, ts := range plog.Timestamps {
+		duration := time.Duration(time.Duration(ts) * time.Millisecond)
+		duration = duration * AnimationSlowdown
+
+		nodes := plog.Nodes[i]
+		edges := plog.Indices[i]
+		fn := func() {
+			// blink nodes for this timestamp
+			for _, idx := range nodes {
+				w.BlinkNode(idx)
+			}
+			// blink links for this timestamp
+			for _, idx := range edges {
+				w.BlinkEdge(idx)
+			}
+		}
+		time.AfterFunc(duration, fn)
+	}
 }
