@@ -59,9 +59,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(p.isSimulating,
-							// disable
-							vecty.Style("pointer-events", "none"),
-							vecty.Style("opacity", "0.4"),
+							vecty.Attribute("disabled", "true"),
 						),
 					),
 					p.network,
@@ -75,9 +73,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					elem.Div(
 						vecty.Markup(
 							vecty.MarkupIf(p.isSimulating,
-								// disable
-								vecty.Style("pointer-events", "none"),
-								vecty.Style("opacity", "0.4"),
+								vecty.Attribute("disabled", "true"),
 							),
 						),
 						p.statsWidget,
@@ -93,7 +89,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 						WebGL takes time to initialize, so it can do it being hidden.
 					*/
 					vecty.MarkupIf(!p.loaded,
-						vecty.Style("visibility", "hidden"),
+						vecty.Class("is-invisible"),
 						vecty.Style("height", "0px"),
 						vecty.Style("width", "0px"),
 					),
@@ -102,7 +98,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 			),
 			elem.Div(
 				vecty.Markup(
-					vecty.Class("pure-u-4-5"),
+					vecty.Class("column", "is-full", "has-text-centered"),
 				),
 				vecty.If(!p.loaded, p.loader),
 			),
