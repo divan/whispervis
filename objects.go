@@ -50,6 +50,8 @@ func (w *WebGLScene) createNodes() {
 			Mesh: three.NewMesh(geometry, material),
 		}
 		mesh.Position.Set(node.X, node.Y, node.Z)
+		mesh.MatrixAutoUpdate = false
+		mesh.UpdateMatrix()
 		w.nodesGroup.Add(mesh.Mesh)
 		w.nodes = append(w.nodes, mesh)
 	}
@@ -78,6 +80,7 @@ func (w *WebGLScene) createEdges(links []*graph.Link) {
 			To:   to,
 			Line: three.NewLine(geom, material),
 		}
+		line.MatrixAutoUpdate = false
 		w.edgesGroup.Add(line.Line)
 		w.lines = append(w.lines, line)
 	}
@@ -89,6 +92,7 @@ func (w *WebGLScene) updatePositions() {
 	for _, node := range w.nodes {
 		pos := w.positions[node.ID]
 		node.Position.Set(pos.X, pos.Y, pos.Z)
+		node.UpdateMatrix()
 	}
 	for i := range w.lines {
 		start := w.positions[w.lines[i].From]
