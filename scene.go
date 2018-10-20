@@ -79,7 +79,6 @@ func (w *WebGLScene) InitScene(width, height float64) {
 	w.camera.Position.Set(0, 0, 400)
 
 	w.scene = three.NewScene()
-	w.scene.MatrixAutoUpdate = false
 
 	w.InitLights()
 	w.InitControls()
