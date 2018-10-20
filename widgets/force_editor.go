@@ -19,10 +19,11 @@ type ForceEditor struct {
 
 	config ForcesConfig
 
-	repelling *ForceInput
-	spring    *ForceInput
-	drag      *ForceInput
-	steps     *Range
+	repelling   *ForceInput
+	spring      *ForceInput
+	drag        *ForceInput
+	steps       *Range
+	collapsable *Collapsable
 
 	apply func()
 }
@@ -35,32 +36,27 @@ type ForcesConfig struct {
 
 // NewForceEditor creates a new ForceEditor widget.
 func NewForceEditor(apply func()) *ForceEditor {
-	config := DefaultForcesConfig
-	repelling := NewForceInput("Gravity:", config.Repelling)
-	spring := NewForceInput("Spring:", config.SpringStiffness)
-	drag := NewForceInput("Drag:", config.DragCoeff)
-	steps := NewRange("Steps:", config.Steps)
-	return &ForceEditor{
-		config:    config,
-		repelling: repelling,
-		spring:    spring,
-		drag:      drag,
-		steps:     steps,
-		apply:     apply,
-	}
+	f := &ForceEditor{}
+	f.config = DefaultForcesConfig
+	f.repelling = NewForceInput("Gravity:", f.config.Repelling)
+	f.spring = NewForceInput("Spring:", f.config.SpringStiffness)
+	f.drag = NewForceInput("Drag:", f.config.DragCoeff)
+	f.steps = NewRange("Steps:", f.config.Steps)
+	f.collapsable = NewCollapsable("Layout forces:", true,
+		f.applyButton,
+		f.repelling,
+		f.spring,
+		f.drag,
+		f.steps,
+	)
+	f.apply = apply
+	return f
 }
 
 // Render implements vecty's Component interface for ForceEditor.
 func (f *ForceEditor) Render() vecty.ComponentOrHTML {
 	return Widget(
-		Header("Layout forces:"),
-		elem.Form(
-			f.repelling,
-			f.spring,
-			f.drag,
-			f.steps,
-		),
-		f.applyButton(),
+		f.collapsable,
 	)
 }
 
@@ -77,15 +73,13 @@ func (f *ForceEditor) Config() ForcesConfig {
 	}
 }
 
-func (f *ForceEditor) applyButton() *vecty.HTML {
-	return elem.Div(
-		elem.Button(
-			vecty.Markup(
-				vecty.Class("button", "is-info", "is-small"),
-				event.Click(f.onClick),
-			),
-			vecty.Text("Apply"),
+func (f *ForceEditor) applyButton() vecty.ComponentOrHTML {
+	return elem.Button(
+		vecty.Markup(
+			vecty.Class("button", "is-info", "is-small"),
+			event.Click(f.onClick),
 		),
+		vecty.Text("Apply"),
 	)
 }
 
