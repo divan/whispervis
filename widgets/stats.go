@@ -2,7 +2,6 @@ package widgets
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -19,11 +18,13 @@ type Stats struct {
 // NewStats create a new Stats widget.
 func NewStats() *Stats {
 	return &Stats{
-		stats: &stats.Stats{
-			Time:         1234 * time.Millisecond,
-			NodeCoverage: stats.NewCoverage(100, 200),
-			LinkCoverage: stats.NewCoverage(100, 200),
-		},
+		/*
+			stats: &stats.Stats{
+				Time:         1234 * time.Millisecond,
+				NodeCoverage: stats.NewCoverage(100, 200),
+				LinkCoverage: stats.NewCoverage(100, 200),
+			},
+		*/
 	}
 }
 

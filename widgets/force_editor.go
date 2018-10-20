@@ -42,7 +42,7 @@ func NewForceEditor(apply func()) *ForceEditor {
 	f.spring = NewForceInput("Spring:", f.config.SpringStiffness)
 	f.drag = NewForceInput("Drag:", f.config.DragCoeff)
 	f.steps = NewRange("Steps:", f.config.Steps)
-	f.collapsable = NewCollapsable("Layout forces:", true,
+	f.collapsable = NewCollapsable("Layout forces:", false,
 		f.applyButton,
 		f.repelling,
 		f.spring,
