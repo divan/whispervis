@@ -5,8 +5,6 @@ import (
 	"time"
 
 	"github.com/divan/graphx/layout"
-
-	"github.com/gopherjs/gopherjs/js"
 )
 
 const (
@@ -70,15 +68,6 @@ func (w *Wobbling) changeDirection() {
 		}
 		w.directions[id] = direction
 	}
-}
-
-// moveRandom randomly moves the three.js object to given distance.
-// TODO(divan): use Mesh's Position?
-func moveRandom(obj *js.Object, d *Direction) {
-	pos := obj.Get("position")
-	pos.Set("x", pos.Get("x").Float()+d.X)
-	pos.Set("y", pos.Get("y").Float()+d.Y)
-	pos.Set("z", pos.Get("z").Float()+d.Z)
 }
 
 type Direction struct {
