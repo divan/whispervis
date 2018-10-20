@@ -53,9 +53,6 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 			),
 		),
 		elem.Div(
-			vecty.Markup(
-				vecty.Class("pure-markup-group", "pure-u-1"),
-			),
 			elem.Button(
 				vecty.Markup(
 					vecty.MarkupIf(s.inProgress,

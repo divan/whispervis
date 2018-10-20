@@ -22,7 +22,7 @@ func (l *Loader) Render() vecty.ComponentOrHTML {
 	text := l.text()
 	return elem.Div(
 		vecty.Markup(
-			vecty.Style("text-align", "center"),
+			vecty.Class("is-size-1"),
 			vecty.Style("position", "relative"),
 			vecty.Style("top", "50%"),
 		),
