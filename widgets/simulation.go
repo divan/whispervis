@@ -35,7 +35,7 @@ func NewSimulation(address string, startSimulation func() error, replay func()) 
 
 // Render implements vecty.Component interface for Simulation.
 func (s *Simulation) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+	return Widget(
 		elem.Div(
 			Header("Simulation backend:"),
 			elem.Div(

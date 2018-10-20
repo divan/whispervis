@@ -64,12 +64,9 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 							vecty.Style("opacity", "0.4"),
 						),
 					),
-					elem.HorizontalRule(),
 					p.network,
-					elem.HorizontalRule(),
 					p.forceEditor,
 				),
-				elem.HorizontalRule(),
 				elem.Div(
 					vecty.Markup(
 						vecty.MarkupIf(!p.loaded, vecty.Style("visibility", "hidden")),
@@ -83,7 +80,6 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 								vecty.Style("opacity", "0.4"),
 							),
 						),
-						elem.HorizontalRule(),
 						p.statsWidget,
 					),
 				),

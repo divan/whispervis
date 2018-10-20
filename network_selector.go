@@ -46,7 +46,7 @@ func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
 
 // Render implements the vecty.Component interface.
 func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+	return widgets.Widget(
 		widgets.Header("Network graph:"),
 		elem.Div(
 			vecty.Markup(

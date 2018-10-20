@@ -38,7 +38,7 @@ func (s *Stats) Render() vecty.ComponentOrHTML {
 	if s.stats == nil {
 		return elem.Div()
 	}
-	return elem.Div(
+	return Widget(
 		Header("Stats:"),
 		elem.Table(
 			vecty.Markup(

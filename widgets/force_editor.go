@@ -52,7 +52,7 @@ func NewForceEditor(apply func()) *ForceEditor {
 
 // Render implements vecty's Component interface for ForceEditor.
 func (f *ForceEditor) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+	return Widget(
 		Header("Layout forces:"),
 		elem.Form(
 			f.repelling,
