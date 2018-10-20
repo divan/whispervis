@@ -71,17 +71,15 @@ func (w *WebGLScene) shutdown(renderer *three.WebGLRenderer) {
 func (w *WebGLScene) Reset() {
 	fmt.Println("Resetting WebGL")
 	w.RemoveObjects()
-	zeroCamera := three.PerspectiveCamera{}
-	if w.camera != zeroCamera {
-		w.camera.Position.Set(0, 0, 400)
-	}
 }
 
 // InitScene inits a new scene, sets up camera, lights and all that.
 func (w *WebGLScene) InitScene(width, height float64) {
 	w.camera = three.NewPerspectiveCamera(70, width/height, 1, 1000)
+	w.camera.Position.Set(0, 0, 400)
 
 	w.scene = three.NewScene()
+	w.scene.MatrixAutoUpdate = false
 
 	w.InitLights()
 	w.InitControls()
@@ -91,10 +89,11 @@ func (w *WebGLScene) InitScene(width, height float64) {
 // InitLights init lights for the scene.
 func (w *WebGLScene) InitLights() {
 	ambLight := three.NewAmbientLight(three.NewColor(187, 187, 187), 0.5)
+	ambLight.MatrixAutoUpdate = false
 	w.scene.Add(ambLight)
 
 	light := three.NewDirectionalLight(three.NewColor(255, 255, 255), 0.3)
-	//light.Position.Set(256, 256, 256).Normalize()
+	light.MatrixAutoUpdate = false
 	w.scene.Add(light)
 }
 

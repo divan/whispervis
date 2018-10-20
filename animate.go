@@ -12,7 +12,7 @@ const (
 	// TODO(divan): move this as variables to the frontend
 	BlinkDecay        = 100 * time.Millisecond // time for highlighted node/link to be active
 	AnimationSlowdown = 1                      // slowdown factor for propagation animation
-	FPS               = 20                     // default FPS
+	FPS               = 30                     // default FPS
 )
 
 // animate fires up as an requestAnimationFrame handler.
@@ -23,9 +23,13 @@ func (w *WebGLScene) animate() {
 
 	w.controls.Update()
 
-	time.AfterFunc((1000/FPS)*time.Millisecond, func() {
+	if FPS == 60 {
 		js.Global.Call("requestAnimationFrame", w.animate)
-	})
+	} else {
+		time.AfterFunc((1000/FPS)*time.Millisecond, func() {
+			js.Global.Call("requestAnimationFrame", w.animate)
+		})
+	}
 
 	if w.autoRotate {
 		pos := w.graphGroup.Object.Get("rotation")

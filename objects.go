@@ -25,12 +25,15 @@ func (w *WebGLScene) CreateObjects(positions map[string]*layout.Object, links []
 	w.positions = positions
 
 	w.graphGroup = three.NewGroup()
+	w.graphGroup.MatrixAutoUpdate = false
 	w.scene.Add(w.graphGroup)
 
 	w.nodesGroup = three.NewGroup()
+	w.nodesGroup.MatrixAutoUpdate = false
 	w.graphGroup.Add(w.nodesGroup)
 
 	w.edgesGroup = three.NewGroup()
+	w.edgesGroup.MatrixAutoUpdate = false
 	w.graphGroup.Add(w.edgesGroup)
 
 	w.createNodes()
