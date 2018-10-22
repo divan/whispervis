@@ -10,6 +10,10 @@ import (
 	"github.com/status-im/whispervis/widgets"
 )
 
+// DefaultNetwork specifies the network shown by default when app is first opened.
+// TODO(divan): use local storage to keep the preference.
+const DefaultNetwork = "grid25.json"
+
 // NetworkSelector represents widget for choosing or uploading network topology
 // to be used for visualization.
 type NetworkSelector struct {
@@ -31,7 +35,7 @@ func NewNetworkSelector(handler func(*Network)) *NetworkSelector {
 	if err != nil {
 		fmt.Println("No networks loaded:", err)
 	} else {
-		current = networks["net100.json"]
+		current = networks[DefaultNetwork]
 	}
 
 	ns := &NetworkSelector{
