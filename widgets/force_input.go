@@ -28,7 +28,7 @@ func NewForceInput(title string, value float64) *ForceInput {
 
 // Render implements vecty.Component interface for ForceInput.
 func (f *ForceInput) Render() vecty.ComponentOrHTML {
-	value := fmt.Sprintf("%.2f", f.value)
+	value := fmt.Sprintf("%.4f", f.value)
 	return elem.Div(
 		vecty.Markup(
 			vecty.Class("field", "is-horizontal", "is-paddingless", "is-marginless"),
