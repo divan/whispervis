@@ -36,6 +36,7 @@ func (w *WebGLScene) animate() {
 		pos := w.graphGroup.Object.Get("rotation")
 		coeff := 60 / FPS * 0.001 // rotate faster on lower FPS
 		pos.Set("y", pos.Get("y").Float()+coeff)
+		w.graphGroup.UpdateMatrix()
 	}
 
 	if w.wobble {
