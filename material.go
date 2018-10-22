@@ -34,9 +34,9 @@ func NewBlinkedNodeMaterial() three.Material {
 // NewEdgeMaterial creates a new default material for the graph edge lines.
 func NewEdgeMaterial() three.Material {
 	params := three.NewMaterialParameters()
-	params.Color = three.NewColorRGB(200, 200, 255)
-	params.Transparent = false
-	params.Opacity = DefaultTransparency
+	params.Color = three.NewColorHex(0xf0f0f0)
+	params.Transparent = true
+	params.Opacity = 0.7
 	return three.NewLineBasicMaterial(params)
 }
 
