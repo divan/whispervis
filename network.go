@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/divan/graphx/formats"
 	"github.com/divan/graphx/graph"
 )
 
@@ -38,12 +37,11 @@ func LoadNetwork(file string) (*Network, error) {
 
 // LoadNetworkFromReader loads network information from the io.Reader.
 func LoadNetworkFromReader(r io.Reader) (*Network, error) {
-	g, err := formats.FromD3JSONReader(r)
+	g, desc, err := GraphFromJSON(r)
 	if err != nil {
 		return nil, fmt.Errorf("parse JSON: %v", err)
 	}
 
-	desc := "TBD"
 	return &Network{
 		Description: desc,
 		Data:        g,

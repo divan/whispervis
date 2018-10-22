@@ -16,6 +16,7 @@ const DefaultNetwork = "grid25.json"
 
 // NetworkSelector represents widget for choosing or uploading network topology
 // to be used for visualization.
+// TODO: move to widgets package
 type NetworkSelector struct {
 	vecty.Core
 
