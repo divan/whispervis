@@ -55,7 +55,7 @@ func (n *NetworkSelector) Render() vecty.ComponentOrHTML {
 		widgets.Header("Network graph:"),
 		elem.Div(
 			vecty.Markup(
-				vecty.Class("select"),
+				vecty.Class("select", "is-fullwidth"),
 				event.Change(n.onChange),
 			),
 			elem.Select(

@@ -7,6 +7,7 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
+	"github.com/gopherjs/vecty/prop"
 	"github.com/status-im/whispervis/widgets"
 )
 
@@ -163,17 +164,23 @@ func (p *Page) replaySimulation() {
 
 func (p *Page) header() *vecty.HTML {
 	return elem.Section(
+		elem.Image(
+			vecty.Markup(
+				vecty.Style("padding-top", "5px"),
+				prop.Src("images/status.png"),
+			),
+		),
 		elem.Heading2(
 			vecty.Markup(
 				vecty.Class("title", "has-text-weight-light"),
 			),
-			vecty.Text("Whisper Message Propagation"),
+			vecty.Text("Whisper Simulator"),
 		),
-		elem.Heading5(
+		elem.Heading6(
 			vecty.Markup(
 				vecty.Class("subtitle", "has-text-weight-light"),
 			),
-			vecty.Text("This visualization represents message propagation in the p2p network."),
+			vecty.Text("This simulator shows message propagation in the Whisper network."),
 		),
 	)
 }
