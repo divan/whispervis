@@ -31,11 +31,15 @@ type WebGLScene struct {
 	// TODO(divan): as soon as three.js wrappers allow us to access children, get rid of it here
 	nodes []*Mesh
 	lines []*Line
+
+	rt *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
 }
 
 // NewWebGLScene inits and returns new WebGL scene and canvas.
 func NewWebGLScene() *WebGLScene {
-	w := &WebGLScene{}
+	w := &WebGLScene{
+		rt: NewRenderThrottler(),
+	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
 		Init:     w.init,
 		Shutdown: w.shutdown,

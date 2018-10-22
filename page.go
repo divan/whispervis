@@ -105,6 +105,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 		),
 		vecty.Markup(
 			event.KeyDown(p.KeyListener),
+			event.MouseMove(p.MouseMoveListener),
 			event.VisibilityChange(p.VisibilityListener),
 		),
 	)

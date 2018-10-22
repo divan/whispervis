@@ -5,11 +5,12 @@ import (
 	"time"
 
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/vecty"
 	"github.com/status-im/simulation/propagation"
 )
 
+// TODO(divan): move this as variables to the frontend
 const (
-	// TODO(divan): move this as variables to the frontend
 	BlinkDecay        = 100 * time.Millisecond // time for highlighted node/link to be active
 	AnimationSlowdown = 1                      // slowdown factor for propagation animation
 	FPS               = 30                     // default FPS
@@ -42,7 +43,18 @@ func (w *WebGLScene) animate() {
 		w.updatePositions()
 	}
 
-	w.renderer.Render(w.scene, w.camera)
+	// some render throttling magic to prevent wasting CPU/GPU while idle
+	// if auto rotation or other effects are active, render always
+	var needRendering bool = w.wobble || w.autoRotate
+	if !needRendering {
+		// else, consult render throttler
+		needRendering = w.rt.NeedRendering()
+	}
+
+	if needRendering {
+		w.renderer.Render(w.scene, w.camera)
+		w.rt.ReenableIfNeeded()
+	}
 }
 
 // ToggleAutoRotation switches auto rotation option.
@@ -75,6 +87,7 @@ func (w *WebGLScene) BlinkEdge(id int) {
 // AnimatePropagation visualizes propagation of message based on plog.
 func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 	fmt.Println("Animating plog")
+	w.rt.Disable()
 	for i, ts := range plog.Timestamps {
 		duration := time.Duration(time.Duration(ts) * time.Millisecond)
 		duration = duration * AnimationSlowdown
@@ -92,5 +105,19 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 			}
 		}
 		time.AfterFunc(duration, fn)
+	}
+}
+
+// MouseMoveListener implements listener for mousemove events.
+// We use it for disabling render throttling, as mousemove events
+// correlates with user moving inside of the WebGL canvas. We
+// may switch to use mousedown or drag events, but let's see how
+// mousemove works.
+// This is sort of a hack, as the proper approach would be to get
+// data from controls code (w.controls.Update), but it's currently
+// a JS code, so it's easier use this hack.
+func (p *Page) MouseMoveListener(e *vecty.Event) {
+	if !p.webgl.rt.NeedRendering() {
+		p.webgl.rt.Disable()
 	}
 }
