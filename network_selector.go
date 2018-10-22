@@ -88,7 +88,8 @@ func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 			vecty.Class("is-small", "is-marginless"),
 		),
 		elem.Div(
-			vecty.Text(n.current.Description),
+			vecty.If(n.isCustom, vecty.Text("Upload custom graph...")),
+			vecty.If(!n.isCustom, vecty.Text(n.current.Description)),
 		),
 	)
 }

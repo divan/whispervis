@@ -27,7 +27,7 @@ func NewUploadWidget(handler func([]byte)) *UploadWidget {
 func (u *UploadWidget) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
-			vecty.Class("file"),
+			vecty.Class("file", "is-primary", "is-small"),
 		),
 		elem.Label(
 			vecty.Markup(
@@ -45,6 +45,16 @@ func (u *UploadWidget) Render() vecty.ComponentOrHTML {
 			elem.Span(
 				vecty.Markup(
 					vecty.Class("file-cta"),
+				),
+				elem.Span(
+					vecty.Markup(
+						vecty.Class("file-icon"),
+					),
+					elem.Italic(
+						vecty.Markup(
+							vecty.Class("fas", "fa-upload"),
+						),
+					),
 				),
 				elem.Span(
 					vecty.Markup(
