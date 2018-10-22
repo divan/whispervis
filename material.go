@@ -16,8 +16,8 @@ const (
 // NewNodeMaterial creates a new default material for the graph node.
 func NewNodeMaterial() three.Material {
 	params := three.NewMaterialParameters()
-	params.Color = three.NewColor(0, 255, 0)
-	params.Transparent = true
+	params.Color = three.NewColorRGB(0, 255, 0)
+	params.Transparent = false
 	params.Opacity = DefaultTransparency
 	return three.NewMeshPhongMaterial(params)
 }
@@ -25,7 +25,7 @@ func NewNodeMaterial() three.Material {
 // NewBlinkedNodeMaterial creates a new default material for the graph blinked node.
 func NewBlinkedNodeMaterial() three.Material {
 	params := three.NewMaterialParameters()
-	params.Color = three.NewColor(255, 0, 0) // red
+	params.Color = three.NewColorRGB(255, 0, 0) // red
 	params.Transparent = true
 	params.Opacity = DefaultTransparency
 	return three.NewMeshPhongMaterial(params)
@@ -34,8 +34,8 @@ func NewBlinkedNodeMaterial() three.Material {
 // NewEdgeMaterial creates a new default material for the graph edge lines.
 func NewEdgeMaterial() three.Material {
 	params := three.NewMaterialParameters()
-	params.Color = three.NewColor(200, 200, 255)
-	params.Transparent = true
+	params.Color = three.NewColorRGB(200, 200, 255)
+	params.Transparent = false
 	params.Opacity = DefaultTransparency
 	return three.NewLineBasicMaterial(params)
 }
@@ -43,7 +43,7 @@ func NewEdgeMaterial() three.Material {
 // NewBlinkedEdgeMaterial creates a new default material for the graph blinked edge lines.
 func NewBlinkedEdgeMaterial() three.Material {
 	params := three.NewMaterialParameters()
-	params.Color = three.NewColor(255, 0, 0)
+	params.Color = three.NewColorRGB(255, 0, 0)
 	params.Transparent = true
 	params.Opacity = DefaultTransparency
 	return three.NewLineBasicMaterial(params)
