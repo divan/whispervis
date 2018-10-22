@@ -41,8 +41,9 @@ func NewWebGLScene() *WebGLScene {
 		rt: NewRenderThrottler(),
 	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
-		Init:     w.init,
-		Shutdown: w.shutdown,
+		Init:      w.init,
+		Shutdown:  w.shutdown,
+		Antialias: true,
 	})
 	return w
 }

@@ -18,7 +18,10 @@ type WebGLRenderer struct {
 
 // Mount implements the vecty.Mounter interface.
 func (r *WebGLRenderer) Mount() {
-	r.renderer = newWebGLRenderer(&webGLRendererParameters{Canvas: r.canvas.Node()})
+	r.renderer = newWebGLRenderer(&webGLRendererParameters{
+		Canvas:       r.canvas.Node(),
+		WebGLOptions: &r.opts,
+	})
 	r.opts.Init(r.renderer)
 }
 
@@ -53,6 +56,7 @@ type WebGLOptions struct {
 	// TODO(slimsag): allow specifying other parameters like context, precision,
 	// etc. from three.js WebGLRenderer constructor here:
 	// https://threejs.org/docs/#api/renderers/WebGLRenderer
+	Antialias bool
 }
 
 // NewWebGLRenderer returns a Vecty component that initializes a three.js WebGL renderer for
@@ -69,6 +73,7 @@ func NewWebGLRenderer(opts WebGLOptions, markup ...vecty.MarkupOrChild) *WebGLRe
 
 type webGLRendererParameters struct {
 	Canvas *js.Object
+	*WebGLOptions
 }
 
 // Note: We can't use three.NewWebGLRenderer because it doesn't allow
@@ -76,7 +81,8 @@ type webGLRendererParameters struct {
 func newWebGLRenderer(parameters *webGLRendererParameters) *three.WebGLRenderer {
 	return &three.WebGLRenderer{
 		Object: js.Global.Get("THREE").Get("WebGLRenderer").New(map[string]interface{}{
-			"canvas": parameters.Canvas,
+			"canvas":    parameters.Canvas,
+			"antialias": parameters.Antialias,
 		}),
 	}
 }
