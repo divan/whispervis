@@ -12,5 +12,7 @@ func (p *Page) KeyListener(e *vecty.Event) {
 		p.webgl.ToggleAutoRotation()
 	case "o":
 		p.webgl.ToggleWobbling()
+	case "]":
+		p.ApplyForces()
 	}
 }

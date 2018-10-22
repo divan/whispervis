@@ -122,7 +122,7 @@ func (p *Page) onForcesApply() {
 func (p *Page) onNetworkChange(network *Network) {
 	fmt.Println("Network changed:", network)
 	config := p.forceEditor.Config()
-	p.layout = layout.NewFromConfig(network.Data, config.Config)
+	p.layout = layout.New(network.Data, config.Config)
 	go p.UpdateGraph()
 }
 

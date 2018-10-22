@@ -27,3 +27,13 @@ func (p *Page) UpdateGraph() {
 
 	vecty.Rerender(p)
 }
+
+// ApplyForces applies current forces to the objects, and runs
+// a single simulation run to update positions.
+func (p *Page) ApplyForces() {
+	fc := p.forceEditor.Config()
+	p.layout.SetConfig(fc.Config)
+	p.layout.UpdatePositions()
+	p.webgl.updatePositions()
+	p.webgl.rt.Disable()
+}
