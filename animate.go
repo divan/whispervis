@@ -13,7 +13,7 @@ import (
 const (
 	BlinkDecay        = 100 * time.Millisecond // time for highlighted node/link to be active
 	AnimationSlowdown = 1                      // slowdown factor for propagation animation
-	FPS               = 30                     // default FPS
+	FPS               = 60                     // default FPS
 )
 
 // animate fires up as an requestAnimationFrame handler.
