@@ -30,6 +30,7 @@ type Page struct {
 	statsWidget      *widgets.Stats
 
 	statsPage *StatsPage
+	faqPage   *FAQPage
 
 	simulation *Simulation
 	activeView string
@@ -53,6 +54,7 @@ func NewPage() *Page {
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	page.statsPage = NewStatsPage()
+	page.faqPage = NewFAQPage()
 	return page
 }
 
@@ -116,6 +118,9 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 				),
 				vecty.If(p.activeView == ViewStats,
 					p.statsPage,
+				),
+				vecty.If(p.activeView == ViewFAQ,
+					p.faqPage,
 				),
 				vecty.If(!p.loaded,
 					elem.Div(
