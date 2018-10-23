@@ -29,8 +29,32 @@ func (s *StatsPage) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Style("width", s.width),
 			vecty.Style("height", s.height),
-			vecty.Class("title", "has-text-centered"),
 		),
-		elem.Heading1(vecty.Text("Stats page")),
+		elem.Div(
+			vecty.Markup(
+				vecty.Class("title", "has-text-centered"),
+			),
+			vecty.Text("Stats page"),
+		),
+		// consult this tile madness here https://bulma.io/documentation/layout/tiles/
+		elem.Div(vecty.Markup(vecty.Class("tile", "is-anscestor")),
+			elem.Div(vecty.Markup(vecty.Class("tile", "is-parent", "is-4", "is-vertical")),
+				elem.Div(vecty.Markup(vecty.Class("tile")),
+					elem.Div(vecty.Markup(vecty.Class("tile", "is-child", "box")),
+						vecty.Text("Part left"),
+					),
+				),
+				elem.Div(vecty.Markup(vecty.Class("tile")),
+					elem.Div(vecty.Markup(vecty.Class("tile", "is-child", "box")),
+						vecty.Text("Part left 2"),
+					),
+				),
+			),
+			elem.Div(vecty.Markup(vecty.Class("tile", "is-parent")),
+				elem.Div(vecty.Markup(vecty.Class("tile", "is-child", "box")),
+					vecty.Text("Part right"),
+				),
+			),
+		),
 	)
 }
