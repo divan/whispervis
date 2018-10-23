@@ -271,12 +271,12 @@ func (p *Page) renderTabs() *vecty.HTML {
 	)
 }
 
+// onTabSwitch returns a proper tab switching function depending on the tab clicked.
 func (p *Page) onTabSwitch(view string) func(e *vecty.Event) {
 	if p.activeView == view {
 		return nil
 	}
 	return func(e *vecty.Event) {
-		fmt.Println("Set view", view)
 		p.activeView = view
 		vecty.Rerender(p)
 	}
