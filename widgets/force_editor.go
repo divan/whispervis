@@ -10,7 +10,7 @@ import (
 // DefaultForcesConfig specifies default configuration for physics simulation.
 var DefaultForcesConfig = ForcesConfig{
 	Config: layout.DefaultConfig,
-	Steps:  10,
+	Steps:  100,
 }
 
 // ForceEditor represents forces and physics simulation configuration widget.
@@ -21,6 +21,7 @@ type ForceEditor struct {
 
 	repelling   *ForceInput
 	spring      *ForceInput
+	springLen   *ForceInput
 	drag        *ForceInput
 	steps       *Range
 	collapsable *Collapsable
@@ -40,12 +41,14 @@ func NewForceEditor(apply func()) *ForceEditor {
 	f.config = DefaultForcesConfig
 	f.repelling = NewForceInput("Gravity:", f.config.Repelling)
 	f.spring = NewForceInput("Spring:", f.config.SpringStiffness)
+	f.springLen = NewForceInput("Spring Length:", f.config.SpringLen)
 	f.drag = NewForceInput("Drag:", f.config.DragCoeff)
 	f.steps = NewRange("Steps:", f.config.Steps)
 	f.collapsable = NewCollapsable("Layout forces:", false,
 		f.applyButton,
 		f.repelling,
 		f.spring,
+		f.springLen,
 		f.drag,
 		f.steps,
 	)
@@ -67,7 +70,7 @@ func (f *ForceEditor) Config() ForcesConfig {
 		Config: layout.Config{
 			Repelling:       f.repelling.Value(),
 			SpringStiffness: f.spring.Value(),
-			SpringLen:       f.config.SpringLen,
+			SpringLen:       f.springLen.Value(),
 			DragCoeff:       f.drag.Value(),
 		},
 	}
