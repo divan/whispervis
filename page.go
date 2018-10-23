@@ -198,6 +198,7 @@ func (p *Page) replaySimulation() {
 		return
 	}
 	p.webgl.AnimatePropagation(p.simulation.plog)
+	p.statsPage.UpdateStats(p.network.Current().Data, p.simulation.plog)
 }
 
 func (p *Page) header() *vecty.HTML {

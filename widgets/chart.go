@@ -1,7 +1,7 @@
 package widgets
 
 import (
-	"fmt"
+	"strings"
 
 	charts "github.com/cnguy/gopherjs-frappe-charts"
 	"github.com/gopherjs/vecty"
@@ -13,11 +13,16 @@ import (
 type Chart struct {
 	vecty.Core
 
+	id   string
+	name string
 	data *charts.ChartData
 }
 
-func NewChart(data *charts.ChartData) *Chart {
+func NewChart(name string, data *charts.ChartData) *Chart {
+	id := strings.ToLower(name) // TODO(divan): make it unique
 	return &Chart{
+		id:   id,
+		name: name,
 		data: data,
 	}
 }
@@ -26,16 +31,15 @@ func NewChart(data *charts.ChartData) *Chart {
 func (c *Chart) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
-			prop.ID("chart"),
+			prop.ID(c.id),
 		),
 	)
 }
 
 // Mount implements the vecty.Mounter interface for Chart. Triggers when DOM has been created for the component.
 func (c *Chart) Mount() {
-	fmt.Println("Attaching chart...")
-	charts.NewLineChart("#chart", c.data).
-		WithTitle("Test chart").
+	charts.NewLineChart("#"+c.id, c.data).
+		WithTitle(c.name).
 		WithColors([]string{"blue"}).
 		SetShowDots(false).
 		SetHeatline(true).
