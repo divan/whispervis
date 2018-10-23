@@ -30,12 +30,20 @@ type Page struct {
 	statsWidget      *widgets.Stats
 
 	simulation *Simulation
+	activeView string
 }
+
+const (
+	View3D    = "3d"
+	ViewStats = "stats"
+	ViewFAQ   = "faq"
+)
 
 // NewPage creates and inits new app page.
 func NewPage() *Page {
 	page := &Page{
-		loader: widgets.NewLoader(),
+		loader:     widgets.NewLoader(),
+		activeView: View3D,
 	}
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
@@ -52,6 +60,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("columns"),
 			),
+			// Left sidebar
 			elem.Div(
 				vecty.Markup(
 					vecty.Class("column", "is-narrow"),
@@ -82,27 +91,37 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					),
 				),
 			),
+			// Right page section
 			elem.Div(
 				vecty.Markup(
 					vecty.Class("column"),
+				),
+				p.renderTabs(),
+				elem.Div(
 					/*
 						we use display:none property to hide WebGL instead of mounting/unmounting,
 						because we want to create only one WebGL context and reuse it. Plus,
 						WebGL takes time to initialize, so it can do it being hidden.
 					*/
-					vecty.MarkupIf(!p.loaded,
-						vecty.Class("is-invisible"),
-						vecty.Style("height", "0px"),
-						vecty.Style("width", "0px"),
+					vecty.Markup(
+						vecty.MarkupIf(!p.loaded || p.activeView != View3D,
+							vecty.Class("is-invisible"),
+							vecty.Style("height", "0px"),
+						),
+					),
+					p.webgl,
+				),
+				vecty.If(p.activeView == ViewStats,
+					p.statsView(),
+				),
+				vecty.If(!p.loaded,
+					elem.Div(
+						vecty.Markup(
+							vecty.Class("has-text-centered"),
+						),
+						p.loader,
 					),
 				),
-				p.webgl,
-			),
-			elem.Div(
-				vecty.Markup(
-					vecty.Class("column", "is-full", "has-text-centered"),
-				),
-				vecty.If(!p.loaded, p.loader),
 			),
 		),
 		vecty.Markup(
@@ -199,4 +218,67 @@ func (p *Page) header() *vecty.HTML {
 // onWebGLReady is executed when WebGL context is up and ready to render scene.
 func (p *Page) onWebGLReady() {
 	p.onNetworkChange(p.network.Current())
+}
+
+func (p *Page) renderTabs() *vecty.HTML {
+	return elem.Div(
+		vecty.Markup(
+			vecty.Class("tabs", "is-marginless", "is-boxed", "is-fullwidth"),
+		),
+		elem.UnorderedList(
+			elem.ListItem(
+				vecty.Markup(
+					vecty.MarkupIf(p.activeView == View3D,
+						vecty.Class("is-active"),
+					),
+					event.Click(p.onTabSwitch(View3D)),
+				),
+				elem.Anchor(
+					vecty.Text("3D view"),
+				),
+			),
+			elem.ListItem(
+				vecty.Markup(
+					vecty.MarkupIf(p.activeView == ViewStats,
+						vecty.Class("is-active"),
+					),
+					event.Click(p.onTabSwitch(ViewStats)),
+				),
+				elem.Anchor(
+					vecty.Text("Stats view"),
+				),
+			),
+			elem.ListItem(
+				vecty.Markup(
+					vecty.MarkupIf(p.activeView == ViewFAQ,
+						vecty.Class("is-active"),
+					),
+					event.Click(p.onTabSwitch(ViewFAQ)),
+				),
+				elem.Anchor(
+					vecty.Text("FAQ"),
+				),
+			),
+		),
+	)
+}
+
+func (p *Page) onTabSwitch(view string) func(e *vecty.Event) {
+	if p.activeView == view {
+		return nil
+	}
+	return func(e *vecty.Event) {
+		fmt.Println("Set view", view)
+		p.activeView = view
+		vecty.Rerender(p)
+	}
+}
+
+func (p *Page) statsView() *vecty.HTML {
+	return elem.Div(
+		vecty.Markup(),
+		elem.Heading1(
+			vecty.Text("Stats page"),
+		),
+	)
 }
