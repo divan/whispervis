@@ -6,7 +6,7 @@ import (
 )
 
 func (p *Page) RecalculateStats(plog *propagation.Log) *stats.Stats {
-	net := p.network.current
+	net := p.network.Current()
 	nodes := len(net.Data.Nodes())
 	links := len(net.Data.Links())
 

@@ -42,7 +42,7 @@ func (p *Page) runSimulation(address string) (*Simulation, error) {
 
 // currentNetworkJSON returns JSON encoded description of the current graph/network.
 func (p *Page) currentNetworkJSON() []byte {
-	net := p.network.current.Data
+	net := p.network.Current().Data
 	var buf bytes.Buffer
 	err := formats.NewD3JSON(&buf, true).ExportGraph(net)
 	if err != nil {

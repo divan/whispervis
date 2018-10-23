@@ -8,6 +8,7 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/status-im/whispervis/network"
 	"github.com/status-im/whispervis/widgets"
 )
 
@@ -24,7 +25,7 @@ type Page struct {
 
 	loader           *widgets.Loader
 	forceEditor      *widgets.ForceEditor
-	network          *NetworkSelector
+	network          *widgets.NetworkSelector
 	simulationWidget *widgets.Simulation
 	statsWidget      *widgets.Stats
 
@@ -37,7 +38,7 @@ func NewPage() *Page {
 		loader: widgets.NewLoader(),
 	}
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
-	page.network = NewNetworkSelector(page.onNetworkChange)
+	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
 	page.webgl = NewWebGLScene()
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
@@ -120,7 +121,7 @@ func (p *Page) onForcesApply() {
 	p.UpdateGraph()
 }
 
-func (p *Page) onNetworkChange(network *Network) {
+func (p *Page) onNetworkChange(network *network.Network) {
 	fmt.Println("Network changed:", network)
 	config := p.forceEditor.Config()
 	p.layout = layout.New(network.Data, config.Config)
