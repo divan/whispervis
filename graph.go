@@ -21,7 +21,14 @@ func (p *Page) UpdateGraph() {
 		runtime.Gosched()
 	}
 	p.loaded = true
-	// TODO(divan): remove previous objects
+
+	p.RecreateObjects()
+}
+
+// RecreateObjects removes (if any) objects from the WebGL scene,
+// and creates all new objects based on current data and positions.
+// It doesn't do any calculations of changes to the layout or graph data.
+func (p *Page) RecreateObjects() {
 	p.webgl.RemoveObjects()
 	p.webgl.CreateObjects(p.layout.Positions(), p.layout.Links())
 

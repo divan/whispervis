@@ -9,6 +9,7 @@ import (
 	"io"
 
 	"github.com/divan/graphx/graph"
+	"github.com/divan/graphx/layout"
 )
 
 // Network represents network graph and information, used for
@@ -17,6 +18,7 @@ type Network struct {
 	Name        string
 	Description string
 	Data        *graph.Graph
+	Positions   []*layout.Point
 }
 
 // LoadNetwork loads network information from the JSON file.
@@ -56,19 +58,6 @@ func LoadNetworks() (map[string]*Network, error) {
 	return networks, nil
 }
 
-// LoadNetworkFromReader loads network information from the io.Reader.
-func LoadNetworkFromReader(r io.Reader) (*Network, error) {
-	g, desc, err := GraphFromJSON(r)
-	if err != nil {
-		return nil, fmt.Errorf("parse JSON: %v", err)
-	}
-
-	return &Network{
-		Description: desc,
-		Data:        g,
-	}, nil
-}
-
 // String implements Stringer for Network.
 func (n *Network) String() string {
 	return fmt.Sprintf("[%s: %s] - %d nodes, %d links", n.Name, n.Description, n.NodesCount(), n.LinksCount())
@@ -90,10 +79,9 @@ func (n *Network) LinksCount() int {
 	return len(n.Data.Links())
 }
 
-// GraphFromJSON is a custom version of graphx JSON importer, as we want to use
-// some additional fields (Description).
-// TODO(divan): that's probably can be done better within the limits of graphx library.
-func GraphFromJSON(r io.Reader) (*graph.Graph, string, error) {
+// NetworkFromJSON is a custom version of graphx JSON importer, as we want to use
+// some additional fields (Description, Positions, etc).
+func LoadNetworkFromReader(r io.Reader) (*Network, error) {
 	// decode into temporary struct to process
 	var res struct {
 		Description string             `json:"description"`
@@ -102,14 +90,15 @@ func GraphFromJSON(r io.Reader) (*graph.Graph, string, error) {
 			Source string `json:"source"`
 			Target string `json:"target"`
 		} `json:"links"`
+		Positions []*layout.Point `json:"positions"`
 	}
 	err := json.NewDecoder(r).Decode(&res)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 
 	if len(res.Nodes) == 0 {
-		return nil, "", errors.New("empty graph")
+		return nil, errors.New("empty graph")
 	}
 
 	// convert links IDs into indices
@@ -122,11 +111,15 @@ func GraphFromJSON(r io.Reader) (*graph.Graph, string, error) {
 	for _, link := range res.Links {
 		err := g.AddLink(link.Source, link.Target)
 		if err != nil {
-			return nil, "", err
+			return nil, err
 		}
 	}
 
 	g.UpdateCache()
 
-	return g, res.Description, nil
+	return &Network{
+		Data:        g,
+		Description: res.Description,
+		Positions:   res.Positions,
+	}, nil
 }

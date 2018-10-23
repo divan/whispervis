@@ -125,6 +125,15 @@ func (p *Page) onNetworkChange(network *network.Network) {
 	fmt.Println("Network changed:", network)
 	config := p.forceEditor.Config()
 	p.layout = layout.New(network.Data, config.Config)
+
+	// set forced positions if found in network
+	if network.Positions != nil {
+		p.layout.SetPositions(network.Positions)
+		go p.RecreateObjects()
+		return
+	}
+
+	// else, recalculate positions
 	go p.UpdateGraph()
 }
 
