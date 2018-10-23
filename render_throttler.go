@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -32,14 +31,12 @@ func NewRenderThrottler() *RenderThrottler {
 
 // Disable disables render throttling.
 func (r *RenderThrottler) Disable() {
-	fmt.Printf("Switching ON rendering")
 	r.needRendering = true
 	r.lastUpdate = time.Now().Unix()
 }
 
 // Enable enables render throttling.
 func (r *RenderThrottler) Enable() {
-	fmt.Printf("Switching off rendering")
 	r.needRendering = false
 }
 
