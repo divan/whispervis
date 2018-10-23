@@ -122,6 +122,7 @@ func (n *NetworkSelector) onChange(e *vecty.Event) {
 
 	net := n.networks[value]
 	n.setCurrentNetwork(net)
+	n.handler(n.current)
 
 	vecty.Rerender(n)
 }
