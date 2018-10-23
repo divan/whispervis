@@ -13,17 +13,20 @@ import (
 type ForceInput struct {
 	vecty.Core
 
-	changed bool
-	title   string
-	value   float64
+	changed     bool
+	title       string
+	description string
+	value       float64
 }
 
 // NewForceInput creates new input.
-func NewForceInput(title string, value float64) *ForceInput {
-	return &ForceInput{
-		title: title,
-		value: value,
+func NewForceInput(title, description string, value float64) *ForceInput {
+	f := &ForceInput{
+		title:       title,
+		description: description,
+		value:       value,
 	}
+	return f
 }
 
 // Render implements vecty.Component interface for ForceInput.
@@ -36,7 +39,7 @@ func (f *ForceInput) Render() vecty.ComponentOrHTML {
 
 		elem.Div(
 			vecty.Markup(
-				vecty.Class("field-label"),
+				vecty.Class("field-label", "is-normal"),
 			),
 			elem.Label(
 				vecty.Markup(
@@ -50,11 +53,13 @@ func (f *ForceInput) Render() vecty.ComponentOrHTML {
 			elem.Input(
 				vecty.Markup(
 					vecty.Class("input", "is-small"),
+					vecty.Style("text-align", "right"),
 					prop.Value(value),
 					event.Input(f.onEditInput),
 				),
 			),
 		),
+		vecty.If(f.description != "", QuestionTooltip(f.description)),
 	)
 }
 
@@ -68,7 +73,7 @@ func fieldControl(element *vecty.HTML) *vecty.HTML {
 			vecty.Markup(
 				vecty.Class("field"),
 			),
-			elem.Div(
+			elem.Paragraph(
 				vecty.Markup(
 					vecty.Class("control"),
 				),

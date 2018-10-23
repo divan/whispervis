@@ -39,11 +39,11 @@ type ForcesConfig struct {
 func NewForceEditor(apply func()) *ForceEditor {
 	f := &ForceEditor{}
 	f.config = DefaultForcesConfig
-	f.repelling = NewForceInput("Gravity:", f.config.Repelling)
-	f.spring = NewForceInput("Spring:", f.config.SpringStiffness)
-	f.springLen = NewForceInput("Spring Length:", f.config.SpringLen)
-	f.drag = NewForceInput("Drag:", f.config.DragCoeff)
-	f.steps = NewRange("Steps:", f.config.Steps)
+	f.repelling = NewForceInput("Gravity:", RepellingForceDescription, f.config.Repelling)
+	f.spring = NewForceInput("Spring:", SpringForceDescription, f.config.SpringStiffness)
+	f.springLen = NewForceInput("Length:", SpringLengthDescription, f.config.SpringLen)
+	f.drag = NewForceInput("Drag:", DragForceDescritption, f.config.DragCoeff)
+	f.steps = NewRange("Steps:", StepsDescription, f.config.Steps)
 	f.collapsable = NewCollapsable("Layout forces:", false,
 		f.applyButton,
 		f.repelling,
@@ -89,3 +89,11 @@ func (f *ForceEditor) applyButton() vecty.ComponentOrHTML {
 func (f *ForceEditor) onClick(e *vecty.Event) {
 	go f.apply()
 }
+
+const (
+	RepellingForceDescription = "Repelling force coefficient defines the force for nodes to repel from each other. It's a coefficent for Coulomb's law, and should be negative (positive is attraction)"
+	SpringForceDescription    = "Spring force coefficient defines the force of attraction between linked nodes. It obeys Hooke's law. The larger the coefficient, the more stiffer the spring."
+	SpringLengthDescription   = "Spring length defines a \"normal\" length of the spring. If link is shorted then this value, nodes start to repel, attract otherwise."
+	DragForceDescritption     = "Drag force coefficient defines a drag force, that slows down nodes velocities after applying repelling and spring forces. Increase it if you see jitterness or too much movement on each iteration."
+	StepsDescription          = "Number of physics simulation steps to run. Too big value may slowdown calculation without giving more benefit to the layout. Too little may not be enough to fully apply forces."
+)

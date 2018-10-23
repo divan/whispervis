@@ -13,16 +13,18 @@ import (
 type Range struct {
 	vecty.Core
 
-	changed bool
-	title   string
-	value   int
+	changed     bool
+	title       string
+	description string
+	value       int
 }
 
 // NewRange builds new Range widget.
-func NewRange(title string, value int) *Range {
+func NewRange(title, description string, value int) *Range {
 	return &Range{
-		title: title,
-		value: value,
+		title:       title,
+		description: description,
+		value:       value,
 	}
 }
 
@@ -66,6 +68,7 @@ func (r *Range) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
+		vecty.If(r.description != "", QuestionTooltip(r.description)),
 	)
 }
 

@@ -36,3 +36,23 @@ func Header(title string) *vecty.HTML {
 		vecty.Text(title),
 	)
 }
+
+// QuestionTooltip renders question mark with tooltip with given text.
+func QuestionTooltip(description string) *vecty.HTML {
+	return elem.Span(
+		vecty.Markup(
+			vecty.Class("is-small", "tooltip", "is-tooltip-multiline"),
+			vecty.Attribute("data-tooltip", description),
+		),
+		elem.Span(
+			vecty.Markup(
+				vecty.Class("icon", "is-small", "has-text-grey-light"),
+			),
+			elem.Italic(
+				vecty.Markup(
+					vecty.Class("fas", "fa-question-circle"),
+				),
+			),
+		),
+	)
+}

@@ -48,6 +48,7 @@ func (c *Collapsable) Render() vecty.ComponentOrHTML {
 					vecty.Style("height", "0px"),
 				),
 			),
+			elem.Break(),
 			c.elems,
 			c.button(), // FIXME: hack
 		),
