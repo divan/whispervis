@@ -139,6 +139,10 @@ func (n *NetworkSelector) onUpload(json []byte) {
 	n.networks[net.Name] = net
 	n.setCurrentNetwork(net)
 
+	if n.handler != nil {
+		go n.handler(n.current)
+	}
+
 	vecty.Rerender(n)
 }
 
@@ -150,8 +154,4 @@ func (n *NetworkSelector) Current() *network.Network {
 // setCurrentNetwork changes current network and runs needed update handlers.
 func (n *NetworkSelector) setCurrentNetwork(net *network.Network) {
 	n.current = net
-
-	if n.handler != nil {
-		go n.handler(n.current)
-	}
 }

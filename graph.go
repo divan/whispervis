@@ -29,6 +29,9 @@ func (p *Page) UpdateGraph() {
 // and creates all new objects based on current data and positions.
 // It doesn't do any calculations of changes to the layout or graph data.
 func (p *Page) RecreateObjects() {
+	p.loaded = true
+	p.loader.Reset()
+
 	p.webgl.RemoveObjects()
 	p.webgl.CreateObjects(p.layout.Positions(), p.layout.Links())
 

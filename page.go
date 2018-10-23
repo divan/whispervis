@@ -39,7 +39,7 @@ func NewPage() *Page {
 	}
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
-	page.webgl = NewWebGLScene()
+	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	return page
@@ -128,6 +128,7 @@ func (p *Page) onNetworkChange(network *network.Network) {
 
 	// set forced positions if found in network
 	if network.Positions != nil {
+		fmt.Println("Using precalculated positions")
 		p.layout.SetPositions(network.Positions)
 		go p.RecreateObjects()
 		return
@@ -193,4 +194,9 @@ func (p *Page) header() *vecty.HTML {
 			vecty.Text("This simulator shows message propagation in the Whisper network."),
 		),
 	)
+}
+
+// onWebGLReady is executed when WebGL context is up and ready to render scene.
+func (p *Page) onWebGLReady() {
+	p.onNetworkChange(p.network.Current())
 }

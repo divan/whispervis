@@ -33,12 +33,15 @@ type WebGLScene struct {
 	lines []*Line
 
 	rt *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
+
+	initFn func() // function to run on initialization
 }
 
 // NewWebGLScene inits and returns new WebGL scene and canvas.
-func NewWebGLScene() *WebGLScene {
+func NewWebGLScene(initFn func()) *WebGLScene {
 	w := &WebGLScene{
-		rt: NewRenderThrottler(),
+		rt:     NewRenderThrottler(),
+		initFn: initFn,
 	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
 		Init:      w.init,
@@ -61,6 +64,9 @@ func (w *WebGLScene) init(renderer *three.WebGLRenderer) {
 
 	w.InitScene(windowWidth, windowHeight)
 
+	if w.initFn != nil {
+		w.initFn()
+	}
 	w.animate()
 }
 
