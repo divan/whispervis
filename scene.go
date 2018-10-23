@@ -112,3 +112,18 @@ func (w *WebGLScene) InitLights() {
 func (w *WebGLScene) InitControls() {
 	w.controls = NewTrackBallControl(w.camera, w.renderer)
 }
+
+// WindowSize returns current window's width and height.
+func WindowSize() (int, int) {
+	w := js.Global.Get("innerWidth").Float()
+	h := js.Global.Get("innerHeight").Float()
+	return int(w), int(h)
+}
+
+// PageViewSize returns current page aread width and height (adjusted for sidebar and margins).
+func PageViewSize() (int, int) {
+	w, h := WindowSize()
+	w = w - 300 // TODO: remove magic (300 is a width of sidebar)
+	h = h - 20  // some top margin
+	return w, h
+}

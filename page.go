@@ -29,6 +29,8 @@ type Page struct {
 	simulationWidget *widgets.Simulation
 	statsWidget      *widgets.Stats
 
+	statsPage *StatsPage
+
 	simulation *Simulation
 	activeView string
 }
@@ -50,6 +52,7 @@ func NewPage() *Page {
 	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
+	page.statsPage = NewStatsPage()
 	return page
 }
 
@@ -112,7 +115,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					p.webgl,
 				),
 				vecty.If(p.activeView == ViewStats,
-					p.statsView(),
+					p.statsPage,
 				),
 				vecty.If(!p.loaded,
 					elem.Div(
@@ -272,13 +275,4 @@ func (p *Page) onTabSwitch(view string) func(e *vecty.Event) {
 		p.activeView = view
 		vecty.Rerender(p)
 	}
-}
-
-func (p *Page) statsView() *vecty.HTML {
-	return elem.Div(
-		vecty.Markup(),
-		elem.Heading1(
-			vecty.Text("Stats page"),
-		),
-	)
 }
