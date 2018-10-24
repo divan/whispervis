@@ -68,7 +68,7 @@ func (n *Network) NodesCount() int {
 	if n.Data == nil {
 		return 0
 	}
-	return len(n.Data.Nodes())
+	return n.Data.NumNodes()
 }
 
 // LinksCount returns number of the links in the network.
@@ -76,7 +76,7 @@ func (n *Network) LinksCount() int {
 	if n.Data == nil {
 		return 0
 	}
-	return len(n.Data.Links())
+	return n.Data.NumLinks()
 }
 
 // NetworkFromJSON is a custom version of graphx JSON importer, as we want to use
