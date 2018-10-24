@@ -32,39 +32,20 @@ func NewForceInput(title, description string, value float64) *ForceInput {
 // Render implements vecty.Component interface for ForceInput.
 func (f *ForceInput) Render() vecty.ComponentOrHTML {
 	value := fmt.Sprintf("%.4f", f.value)
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("field", "is-horizontal", "is-paddingless", "is-marginless"),
-		),
-
-		elem.Div(
+	return InputField(f.title, f.description,
+		elem.Input(
 			vecty.Markup(
-				vecty.Class("field-label", "is-normal"),
-			),
-			elem.Label(
-				vecty.Markup(
-					vecty.Class("label"),
-				),
-				vecty.Text(f.title),
+				vecty.Class("input", "is-small"),
+				vecty.Style("text-align", "right"),
+				prop.Value(value),
+				event.Input(f.onEditInput),
 			),
 		),
-
-		fieldControl(
-			elem.Input(
-				vecty.Markup(
-					vecty.Class("input", "is-small"),
-					vecty.Style("text-align", "right"),
-					prop.Value(value),
-					event.Input(f.onEditInput),
-				),
-			),
-		),
-		vecty.If(f.description != "", QuestionTooltip(f.description)),
 	)
 }
 
 // helper for wrapping many divs
-func fieldControl(element *vecty.HTML) *vecty.HTML {
+func fieldControl(element vecty.MarkupOrChild) *vecty.HTML {
 	return elem.Div(
 		vecty.Markup(
 			vecty.Class("field-body"),

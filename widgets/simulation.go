@@ -7,6 +7,10 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+const (
+	DefaultTTL = 10 // seconds
+)
+
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
@@ -14,6 +18,8 @@ type Simulation struct {
 	replay          func()
 
 	address string // backend host address
+
+	ttl int
 
 	errMsg     string
 	hasResults bool
@@ -27,6 +33,7 @@ func NewSimulation(address string, startSimulation func() error, replay func()) 
 		address = "http://localhost:8084"
 	}
 	return &Simulation{
+		ttl:             DefaultTTL,
 		address:         address,
 		startSimulation: startSimulation,
 		replay:          replay,
@@ -38,16 +45,16 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 	return Widget(
 		elem.Div(
 			Header("Simulation backend:"),
-			elem.Div(
+			InputField("Host:", "Simulation backend host address",
 				elem.Input(
 					vecty.Markup(
 						vecty.MarkupIf(s.inProgress,
 							vecty.Attribute("disabled", "true"),
 						),
+						vecty.Class("input", "is-small"),
 						prop.Value(s.address),
 						vecty.Attribute("placehoder", "backend url"),
 						event.Input(s.onEditInput),
-						vecty.Class("input", "is-small"),
 					),
 				),
 			),

@@ -56,3 +56,28 @@ func QuestionTooltip(description string) *vecty.HTML {
 		),
 	)
 }
+
+// InputField renders common render field. If description is non empty,
+// icon with question mark is shown.
+func InputField(label, description string, input vecty.MarkupOrChild) *vecty.HTML {
+	return elem.Div(
+		vecty.Markup(
+			vecty.Class("field", "is-horizontal", "is-paddingless", "is-marginless"),
+		),
+		elem.Div(
+			vecty.Markup(
+				vecty.Class("field-label", "is-normal"),
+			),
+			elem.Label(
+				vecty.Markup(
+					vecty.Class("label", "is-small"),
+				),
+				vecty.Text(label),
+			),
+		),
+		fieldControl(
+			input,
+		),
+		vecty.If(description != "", QuestionTooltip(description)),
+	)
+}
