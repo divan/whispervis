@@ -75,11 +75,24 @@ func (s *StatsPage) UpdateStats(g *graph.Graph, plog *propagation.Log) {
 
 	for i, ts := range plog.Timestamps {
 		labels[i] = fmt.Sprintf("%d", ts)
-		nodes := len(plog.Nodes[i])
-		links := len(plog.Links[i])
+
+		// calculate unique new nodes
+		var nodes, links int
+		for _, nodeIdx := range plog.Nodes[i] {
+			if _, ok := nodesMap[nodeIdx]; !ok {
+				nodes++
+			}
+		}
+		for _, linkIdx := range plog.Links[i] {
+			if _, ok := linksMap[linkIdx]; !ok {
+				links++
+			}
+		}
+
 		nodeCounts[i] = float64(nodes)
 		linkCounts[i] = float64(links)
 
+		// calculate unique cumulative nodes
 		for _, nodeIdx := range plog.Nodes[i] {
 			nodesMap[nodeIdx]++
 		}
