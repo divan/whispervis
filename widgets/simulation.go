@@ -1,6 +1,8 @@
 package widgets
 
 import (
+	"fmt"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -53,8 +55,19 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 						),
 						vecty.Class("input", "is-small"),
 						prop.Value(s.address),
-						vecty.Attribute("placehoder", "backend url"),
-						event.Input(s.onEditInput),
+						event.Input(s.onAddressChange),
+					),
+				),
+			),
+			InputField("TTL:", "Message time to live value (in seconds)",
+				elem.Input(
+					vecty.Markup(
+						vecty.MarkupIf(s.inProgress,
+							vecty.Attribute("disabled", "true"),
+						),
+						vecty.Class("input", "is-small"),
+						prop.Value(fmt.Sprint(s.ttl)),
+						event.Input(s.onTTLChange),
 					),
 				),
 			),
@@ -99,15 +112,26 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func (s *Simulation) onEditInput(event *vecty.Event) {
+func (s *Simulation) onAddressChange(event *vecty.Event) {
 	value := event.Target.Get("value").String()
 
 	s.address = value
 }
 
+func (s *Simulation) onTTLChange(event *vecty.Event) {
+	value := event.Target.Get("value").Int()
+
+	s.ttl = value
+}
+
 // Address returns the current backend address.
 func (s *Simulation) Address() string {
 	return s.address
+}
+
+// TTL returns the current TTL value.
+func (s *Simulation) TTL() int {
+	return s.ttl
 }
 
 func (s *Simulation) onSimulateClick(e *vecty.Event) {

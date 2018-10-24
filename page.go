@@ -184,7 +184,8 @@ func (p *Page) startSimulation() error {
 	}()
 
 	backend := p.simulationWidget.Address()
-	sim, err := p.runSimulation(backend)
+	ttl := p.simulationWidget.TTL()
+	sim, err := p.runSimulation(backend, ttl)
 	if err != nil {
 		return err
 	}

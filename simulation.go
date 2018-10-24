@@ -28,8 +28,8 @@ type SimulationRequest struct {
 
 // runSimulation starts whisper message propagation simulation,
 // remotely talking to simulation backend with given address.
-func (p *Page) runSimulation(address string) (*Simulation, error) {
-	buf, err := p.newPOSTSimulationRequest()
+func (p *Page) runSimulation(address string, ttl int) (*Simulation, error) {
+	buf, err := p.newPOSTSimulationRequest(ttl)
 	if err != nil {
 		return nil, fmt.Errorf("Internal error. See console output.")
 	}
@@ -53,10 +53,10 @@ func (p *Page) runSimulation(address string) (*Simulation, error) {
 
 // newPOSTSimulationRequest generates SimulationReqeust and
 // prepares it as io.Reader for usage with http.Post.
-func (p *Page) newPOSTSimulationRequest() (io.Reader, error) {
+func (p *Page) newPOSTSimulationRequest(ttl int) (io.Reader, error) {
 	req := SimulationRequest{
 		SenderIdx: 0,
-		TTL:       10,
+		TTL:       ttl,
 		MsgSize:   400,
 		Network:   p.currentNetworkJSON(),
 	}
