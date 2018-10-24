@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/divan/graphx/formats"
@@ -17,11 +18,21 @@ type Simulation struct {
 	stats *stats.Stats
 }
 
+// SimulationRequests defines a POST request payload for simulation backend.
+type SimulationRequest struct {
+	SenderIdx int             `json:"senderIdx"` // index of the sender node (index of data.Nodes, in fact)
+	TTL       int             `json:"ttl"`       // ttl in seconds
+	MsgSize   int             `json:"msg_size"`  // msg size in bytes
+	Network   json.RawMessage `json:"network"`   // current network graph
+}
+
 // runSimulation starts whisper message propagation simulation,
 // remotely talking to simulation backend with given address.
 func (p *Page) runSimulation(address string) (*Simulation, error) {
-	payload := p.currentNetworkJSON()
-	buf := bytes.NewBuffer(payload)
+	buf, err := p.newPOSTSimulationRequest()
+	if err != nil {
+		return nil, fmt.Errorf("Internal error. See console output.")
+	}
 	resp, err := http.Post(address, "application/json", buf)
 	if err != nil {
 		fmt.Println("[ERROR] POST request to simulation backend:", err)
@@ -38,6 +49,26 @@ func (p *Page) runSimulation(address string) (*Simulation, error) {
 	return &Simulation{
 		plog: &plog,
 	}, nil
+}
+
+// newPOSTSimulationRequest generates SimulationReqeust and
+// prepares it as io.Reader for usage with http.Post.
+func (p *Page) newPOSTSimulationRequest() (io.Reader, error) {
+	req := SimulationRequest{
+		SenderIdx: 0,
+		TTL:       10,
+		MsgSize:   400,
+		Network:   p.currentNetworkJSON(),
+	}
+	payload, err := json.Marshal(req)
+	if err != nil {
+		fmt.Println("[ERROR] Can't marshal SimulationRequest", err)
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(payload)
+
+	return buf, nil
 }
 
 // currentNetworkJSON returns JSON encoded description of the current graph/network.
