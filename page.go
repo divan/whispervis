@@ -24,8 +24,9 @@ type Page struct {
 	isSimulating bool
 
 	loader           *widgets.Loader
-	forceEditor      *widgets.ForceEditor
 	network          *widgets.NetworkSelector
+	forceEditor      *widgets.ForceEditor
+	graphics         *widgets.Graphics
 	simulationWidget *widgets.Simulation
 	statsWidget      *widgets.Stats
 
@@ -48,8 +49,9 @@ func NewPage() *Page {
 		loader:     widgets.NewLoader(),
 		activeView: View3D,
 	}
-	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
+	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
+	page.graphics = widgets.NewGraphics()
 	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
@@ -80,6 +82,7 @@ func (p *Page) Render() vecty.ComponentOrHTML {
 					),
 					p.network,
 					p.forceEditor,
+					p.graphics,
 				),
 				elem.Div(
 					vecty.Markup(
