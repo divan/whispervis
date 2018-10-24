@@ -94,7 +94,7 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 		duration = duration * AnimationSlowdown
 
 		nodes := plog.Nodes[i]
-		edges := plog.Indices[i]
+		edges := plog.Links[i]
 		fn := func() {
 			// blink nodes for this timestamp
 			for _, idx := range nodes {

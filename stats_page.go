@@ -73,7 +73,7 @@ func (s *StatsPage) UpdateStats(g *graph.Graph, plog *propagation.Log) {
 	for i, ts := range plog.Timestamps {
 		labels[i] = fmt.Sprintf("%d", ts)
 		nodes := len(plog.Nodes[i])
-		links := len(plog.Indices[i])
+		links := len(plog.Links[i])
 		totalNode += int64(nodes)
 		totalLink += int64(links)
 		nodeCounts[i] = float64(nodes)
