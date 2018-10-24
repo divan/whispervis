@@ -69,17 +69,26 @@ func (s *StatsPage) UpdateStats(g *graph.Graph, plog *propagation.Log) {
 	linkCounts := make([]float64, len(plog.Timestamps))
 	nodeCum := make([]float64, len(plog.Timestamps))
 	linkCum := make([]float64, len(plog.Timestamps))
-	var totalNode, totalLink int64
+
+	nodesMap := make(map[int]int)
+	linksMap := make(map[int]int)
+
 	for i, ts := range plog.Timestamps {
 		labels[i] = fmt.Sprintf("%d", ts)
 		nodes := len(plog.Nodes[i])
 		links := len(plog.Links[i])
-		totalNode += int64(nodes)
-		totalLink += int64(links)
 		nodeCounts[i] = float64(nodes)
 		linkCounts[i] = float64(links)
-		nodeCum[i] = float64(totalNode)
-		linkCum[i] = float64(totalLink)
+
+		for _, nodeIdx := range plog.Nodes[i] {
+			nodesMap[nodeIdx]++
+		}
+		for _, linkIdx := range plog.Links[i] {
+			linksMap[linkIdx]++
+		}
+
+		nodeCum[i] = float64(len(nodesMap))
+		linkCum[i] = float64(len(linksMap))
 	}
 
 	data := charts.NewChartData()
