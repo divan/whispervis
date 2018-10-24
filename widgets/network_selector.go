@@ -8,11 +8,8 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/status-im/whispervis/network"
+	"github.com/status-im/whispervis/storage"
 )
-
-// DefaultNetwork specifies the network shown by default when app is first opened.
-// TODO(divan): use local storage to keep the preference.
-const DefaultNetwork = "grid25.json"
 
 // NetworkSelector represents widget for choosing or uploading network topology
 // to be used for visualization.
@@ -35,7 +32,7 @@ func NewNetworkSelector(handler func(*network.Network)) *NetworkSelector {
 	if err != nil {
 		fmt.Println("No networks loaded:", err)
 	} else {
-		current = networks[DefaultNetwork]
+		current = networks[storage.Network()]
 	}
 
 	ns := &NetworkSelector{
@@ -123,6 +120,9 @@ func (n *NetworkSelector) onChange(e *vecty.Event) {
 	net := n.networks[value]
 	n.setCurrentNetwork(net)
 	n.handler(n.current)
+
+	// save to localstorage
+	storage.SetNetwork(value)
 
 	vecty.Rerender(n)
 }
