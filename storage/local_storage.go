@@ -6,6 +6,8 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+// TODO: add forces editor values
+
 // this app can be served from "file://", so let's not
 // mix with other local apps
 const prefix = "whisperviz_"
