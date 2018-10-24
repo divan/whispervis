@@ -1,19 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
-	"github.com/status-im/simulation/propagation"
 )
 
 // TODO(divan): move this as variables to the frontend
 const (
-	BlinkDecay        = 100 * time.Millisecond // time for highlighted node/link to be active
-	AnimationSlowdown = 1                      // slowdown factor for propagation animation
-	FPS               = 60                     // default FPS
+	FPS = 60 // default FPS
 )
 
 // animate fires up as an requestAnimationFrame handler.
@@ -66,47 +62,6 @@ func (w *WebGLScene) ToggleAutoRotation() {
 // ToggleWobbling switches wobbling option.
 func (w *WebGLScene) ToggleWobbling() {
 	w.wobble = !w.wobble
-}
-
-// BlinkNode animates a single node blinking. Node specified by its idx.
-func (w *WebGLScene) BlinkNode(id int) {
-	node := w.nodes[id]
-	node.Set("material", BlinkedNodeMaterial)
-	restore := func() { node.Object.Set("material", DefaultNodeMaterial) }
-	time.AfterFunc(BlinkDecay, restore)
-
-}
-
-// BlinkEdge animates a single edge blinking. Edge specified by its idx.
-func (w *WebGLScene) BlinkEdge(id int) {
-	edge := w.lines[id]
-	edge.Set("material", BlinkedEdgeMaterial)
-	restore := func() { edge.Object.Set("material", DefaultEdgeMaterial) }
-	time.AfterFunc(BlinkDecay, restore)
-}
-
-// AnimatePropagation visualizes propagation of message based on plog.
-func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
-	fmt.Println("Animating plog")
-	w.rt.Disable()
-	for i, ts := range plog.Timestamps {
-		duration := time.Duration(time.Duration(ts) * time.Millisecond)
-		duration = duration * AnimationSlowdown
-
-		nodes := plog.Nodes[i]
-		edges := plog.Links[i]
-		fn := func() {
-			// blink nodes for this timestamp
-			for _, idx := range nodes {
-				w.BlinkNode(idx)
-			}
-			// blink links for this timestamp
-			for _, idx := range edges {
-				w.BlinkEdge(idx)
-			}
-		}
-		time.AfterFunc(duration, fn)
-	}
 }
 
 // MouseMoveListener implements listener for mousemove events.
