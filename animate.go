@@ -9,7 +9,7 @@ import (
 
 // TODO(divan): move this as variables to the frontend
 const (
-	FPS = 60 // default FPS
+	DefaultFPS = 60 // default FPS
 )
 
 // animate fires up as an requestAnimationFrame handler.
@@ -20,17 +20,17 @@ func (w *WebGLScene) animate() {
 
 	w.controls.Update()
 
-	if FPS == 60 {
+	if w.fps == 60 {
 		js.Global.Call("requestAnimationFrame", w.animate)
 	} else {
-		time.AfterFunc((1000/FPS)*time.Millisecond, func() {
+		time.AfterFunc(time.Duration(1000/w.fps)*time.Millisecond, func() {
 			js.Global.Call("requestAnimationFrame", w.animate)
 		})
 	}
 
 	if w.autoRotate {
 		pos := w.graphGroup.Object.Get("rotation")
-		coeff := 60 / FPS * 0.001 // rotate faster on lower FPS
+		coeff := 60 / float64(w.fps) * 0.001 // rotate faster on lower FPS
 		pos.Set("y", pos.Get("y").Float()+coeff)
 		w.graphGroup.UpdateMatrix()
 	}
@@ -62,11 +62,6 @@ func (w *WebGLScene) ToggleAutoRotation() {
 // ToggleWobbling switches wobbling option.
 func (w *WebGLScene) ToggleWobbling() {
 	w.wobble = !w.wobble
-}
-
-// ToggleRenderThrottler switches render throttling option.
-func (w *WebGLScene) ToggleRenderThrottler() {
-	w.rt.Toggle()
 }
 
 // MouseMoveListener implements listener for mousemove events.

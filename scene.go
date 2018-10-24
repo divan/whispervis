@@ -32,7 +32,8 @@ type WebGLScene struct {
 	nodes []*Mesh
 	lines []*Line
 
-	rt *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
+	rt  *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
+	fps int
 
 	initFn func() // function to run on initialization
 }
@@ -42,6 +43,7 @@ func NewWebGLScene(initFn func()) *WebGLScene {
 	w := &WebGLScene{
 		rt:     NewRenderThrottler(),
 		initFn: initFn,
+		fps:    DefaultFPS,
 	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
 		Init:      w.init,
@@ -126,4 +128,15 @@ func PageViewSize() (int, int) {
 	w = w - 300 // TODO: remove magic (300 is a width of sidebar)
 	h = h - 20  // some top margin
 	return w, h
+}
+
+// ToggleRenderThrottler switches render throttling option. Implements SceneConfigurator.
+func (w *WebGLScene) ToggleRenderThrottler() {
+	w.rt.Toggle()
+}
+
+// ChangeFPS changes rendering FPS. Implements SceneConfigurator.
+func (w *WebGLScene) ChangeFPS(value int) {
+	fmt.Println("Changing FPS to", value)
+	w.fps = value
 }

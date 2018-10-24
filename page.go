@@ -52,7 +52,7 @@ func NewPage() *Page {
 	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
-	page.graphics = widgets.NewGraphics(page.webgl)
+	page.graphics = widgets.NewGraphics(page.webgl, DefaultFPS)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	page.statsPage = NewStatsPage()

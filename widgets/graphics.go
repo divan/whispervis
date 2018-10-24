@@ -3,7 +3,6 @@ package widgets
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
 )
 
 // Graphics represents graphics configuration widget.
@@ -11,6 +10,7 @@ type Graphics struct {
 	vecty.Core
 
 	rtSwitch    *Switch
+	fpsRadio    *RadioGroup
 	collapsable *Collapsable
 
 	conf SceneConfigurator
@@ -18,13 +18,15 @@ type Graphics struct {
 
 // NewGraphics creates a new Graphics widget. It needs to have
 // access to scene configuration, as it configures mostly things from it.
-func NewGraphics(conf SceneConfigurator) *Graphics {
+func NewGraphics(conf SceneConfigurator, value int) *Graphics {
 	g := &Graphics{
 		conf: conf,
 	}
 	g.rtSwitch = NewSwitch("Render throttler", true, conf.ToggleRenderThrottler)
+	g.fpsRadio = NewRadioGroup("FPS", value, conf.ChangeFPS, []int{60, 30, 20, 15})
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
+		g.fpsRadio,
 		g.rtSwitch,
 	)
 	return g
@@ -37,16 +39,7 @@ func (g *Graphics) Render() vecty.ComponentOrHTML {
 	)
 }
 
+// FIXME: it exists due to limitations of collapsible.
 func (g *Graphics) applyButton() vecty.ComponentOrHTML {
-	return elem.Button(
-		vecty.Markup(
-			vecty.Class("button", "is-info", "is-small"),
-			event.Click(g.onApply),
-		),
-		vecty.Text("Apply"),
-	)
-}
-
-func (g *Graphics) onApply(e *vecty.Event) {
-	// TODO
+	return elem.Span()
 }

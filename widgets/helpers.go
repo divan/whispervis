@@ -8,6 +8,7 @@ import (
 // SceneConfigurator defines a webgl scene config type.
 type SceneConfigurator interface {
 	ToggleRenderThrottler()
+	ChangeFPS(fps int)
 }
 
 // Widgets renders common sidebar widget layout.
