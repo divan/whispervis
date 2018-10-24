@@ -74,6 +74,6 @@ func (w *WebGLScene) ToggleWobbling() {
 // a JS code, so it's easier use this hack.
 func (p *Page) MouseMoveListener(e *vecty.Event) {
 	if !p.webgl.rt.NeedRendering() {
-		p.webgl.rt.Disable()
+		p.webgl.rt.EnableRendering()
 	}
 }

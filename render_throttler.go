@@ -10,7 +10,6 @@ const DefaultRenderThrottleDecay = 5 // sec
 // RenderThrottler is a helper to enable rendering only when it's really need to.
 // Rendering can be enabled/requested externally, but will be turned off/slowed down
 // after some period of time.
-// TODO(divan): disable/enable throttling is inverse of enable/disable rendering, and may be confusing. Rename maybe?
 // TODO(divan): also, instead of disabling, might be a good idea to just decrease FPS. Explore this.
 type RenderThrottler struct {
 	needRendering bool
@@ -29,14 +28,14 @@ func NewRenderThrottler() *RenderThrottler {
 	return r
 }
 
-// Disable disables render throttling.
-func (r *RenderThrottler) Disable() {
+// EnableRendering enables next frames to render.
+func (r *RenderThrottler) EnableRendering() {
 	r.needRendering = true
 	r.lastUpdate = time.Now().Unix()
 }
 
-// Enable enables render throttling.
-func (r *RenderThrottler) Enable() {
+// DisableRendering disables next frames from rendering.
+func (r *RenderThrottler) DisableRendering() {
 	r.needRendering = false
 }
 
@@ -45,7 +44,7 @@ func (r *RenderThrottler) Enable() {
 func (r *RenderThrottler) ReenableIfNeeded() {
 	now := time.Now().Unix()
 	if r.lastUpdate+r.decay < now {
-		r.Enable()
+		r.DisableRendering()
 	}
 }
 

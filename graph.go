@@ -45,5 +45,5 @@ func (p *Page) ApplyForces() {
 	p.layout.SetConfig(fc.Config)
 	p.layout.UpdatePositions()
 	p.webgl.updatePositions()
-	p.webgl.rt.Disable()
+	p.webgl.rt.EnableRendering()
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/divan/three"
@@ -20,8 +19,7 @@ var (
 
 // AnimatePropagation visualizes propagation of message based on plog.
 func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
-	fmt.Println("Animating plog")
-	w.rt.Disable()
+	w.rt.EnableRendering()
 
 	maxTs := plog.Timestamps[len(plog.Timestamps)-1]
 	for i, ts := range plog.Timestamps {
@@ -47,7 +45,7 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 		}
 		go time.AfterFunc(duration, fn)
 
-		w.rt.Disable() // prevent thorttler from enabling during long animations
+		w.rt.EnableRendering() // prevent thorttler from enabling during long animations
 	}
 }
 
