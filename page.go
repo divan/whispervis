@@ -150,12 +150,20 @@ func (p *Page) onForcesApply() {
 
 func (p *Page) onNetworkChange(network *network.Network) {
 	fmt.Println("Network changed:", network)
+
+	// reset view on network switch
+	p.activeView = View3D
+
+	// reset simulation and stats
+	p.simulation = nil
+	p.simulationWidget.Reset()
+	p.statsWidget.Reset()
+
 	config := p.forceEditor.Config()
 	p.layout = layout.New(network.Data, config.Config)
 
 	// set forced positions if found in network
 	if network.Positions != nil {
-		fmt.Println("Using precalculated positions")
 		p.layout.SetPositions(network.Positions)
 		go p.RecreateObjects()
 		return
@@ -187,6 +195,7 @@ func (p *Page) startSimulation() error {
 
 	sim.stats = stats
 	p.simulation = sim
+	p.statsPage.UpdateStats(p.network.Current().Data, p.simulation.plog)
 
 	p.replaySimulation()
 	return nil
@@ -198,7 +207,6 @@ func (p *Page) replaySimulation() {
 		return
 	}
 	p.webgl.AnimatePropagation(p.simulation.plog)
-	p.statsPage.UpdateStats(p.network.Current().Data, p.simulation.plog)
 }
 
 func (p *Page) header() *vecty.HTML {

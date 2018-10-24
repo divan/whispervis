@@ -72,3 +72,7 @@ func (s *Stats) tableRow(label string, value interface{}) *vecty.HTML {
 		),
 	)
 }
+
+func (s *Stats) Reset() {
+	s.stats = nil
+}

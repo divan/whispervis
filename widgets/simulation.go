@@ -124,3 +124,10 @@ func (s *Simulation) onSimulateClick(e *vecty.Event) {
 func (s *Simulation) onRestartClick(e *vecty.Event) {
 	go s.replay()
 }
+
+func (s *Simulation) Reset() {
+	s.hasResults = false
+	s.inProgress = false
+	s.errMsg = ""
+	vecty.Rerender(s)
+}
