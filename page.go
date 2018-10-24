@@ -37,22 +37,19 @@ type Page struct {
 	activeView string
 }
 
-const (
-	View3D    = "3d"
-	ViewStats = "stats"
-	ViewFAQ   = "faq"
-)
-
 // NewPage creates and inits new app page.
 func NewPage() *Page {
-	page := &Page{
-		loader:     widgets.NewLoader(),
-		activeView: View3D,
-	}
+	page := &Page{}
+
+	// preload defaults
+	page.activeView = View3D
+
+	// init widgets
+	page.loader = widgets.NewLoader()
 	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
-	page.graphics = widgets.NewGraphics(page.webgl, DefaultFPS)
+	page.graphics = widgets.NewGraphics(page.webgl)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	page.statsPage = NewStatsPage()
@@ -155,7 +152,7 @@ func (p *Page) onNetworkChange(network *network.Network) {
 	fmt.Println("Network changed:", network)
 
 	// reset view on network switch
-	p.activeView = View3D
+	p.switchView(View3D)
 
 	// reset simulation and stats
 	p.simulation = nil
@@ -282,15 +279,4 @@ func (p *Page) renderTabs() *vecty.HTML {
 			),
 		),
 	)
-}
-
-// onTabSwitch returns a proper tab switching function depending on the tab clicked.
-func (p *Page) onTabSwitch(view string) func(e *vecty.Event) {
-	if p.activeView == view {
-		return nil
-	}
-	return func(e *vecty.Event) {
-		p.activeView = view
-		vecty.Rerender(p)
-	}
 }

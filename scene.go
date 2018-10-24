@@ -6,6 +6,7 @@ import (
 	"github.com/divan/graphx/layout"
 	"github.com/divan/three"
 	"github.com/gopherjs/gopherjs/js"
+	"github.com/status-im/whispervis/storage"
 	"github.com/status-im/whispervis/vthree"
 )
 
@@ -43,7 +44,7 @@ func NewWebGLScene(initFn func()) *WebGLScene {
 	w := &WebGLScene{
 		rt:     NewRenderThrottler(),
 		initFn: initFn,
-		fps:    DefaultFPS,
+		fps:    storage.FPS(),
 	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
 		Init:      w.init,
@@ -139,4 +140,5 @@ func (w *WebGLScene) ToggleRenderThrottler() {
 func (w *WebGLScene) ChangeFPS(value int) {
 	fmt.Println("Changing FPS to", value)
 	w.fps = value
+	storage.SetFPS(value)
 }

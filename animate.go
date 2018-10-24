@@ -7,9 +7,8 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
-// TODO(divan): move this as variables to the frontend
 const (
-	DefaultFPS = 60 // default FPS
+	MagicNumberFPS = 60 // correct me if I'm wrong, but 60 FPS is a special value for 'requestAnimationFrame'
 )
 
 // animate fires up as an requestAnimationFrame handler.
@@ -20,7 +19,7 @@ func (w *WebGLScene) animate() {
 
 	w.controls.Update()
 
-	if w.fps == 60 {
+	if w.fps == MagicNumberFPS {
 		js.Global.Call("requestAnimationFrame", w.animate)
 	} else {
 		time.AfterFunc(time.Duration(1000/w.fps)*time.Millisecond, func() {
@@ -30,7 +29,7 @@ func (w *WebGLScene) animate() {
 
 	if w.autoRotate {
 		pos := w.graphGroup.Object.Get("rotation")
-		coeff := 60 / float64(w.fps) * 0.001 // rotate faster on lower FPS
+		coeff := MagicNumberFPS / float64(w.fps) * 0.001 // rotate faster on lower FPS
 		pos.Set("y", pos.Get("y").Float()+coeff)
 		w.graphGroup.UpdateMatrix()
 	}

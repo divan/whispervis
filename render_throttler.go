@@ -2,12 +2,13 @@ package main
 
 import (
 	"time"
+
+	"github.com/status-im/whispervis/storage"
 )
 
 // DefaultRenderThrottleDecay defines a decay period after which throttling should reenabled.
 const (
-	DefaultRenderThrottleState = true // enabled
-	DefaultRenderThrottleDecay = 5    // sec
+	DefaultRenderThrottleDecay = 5 // sec
 )
 
 // RenderThrottler is a helper to enable rendering only when it's really need to.
@@ -25,7 +26,7 @@ type RenderThrottler struct {
 // NewRenderThrottler returns a new render throttler.
 func NewRenderThrottler() *RenderThrottler {
 	r := &RenderThrottler{
-		isActive:      DefaultRenderThrottleState,
+		isActive:      storage.RT(),
 		needRendering: true,
 		lastUpdate:    time.Now().Unix(),
 		decay:         DefaultRenderThrottleDecay,
@@ -34,19 +35,15 @@ func NewRenderThrottler() *RenderThrottler {
 	return r
 }
 
-// SwitchOn enables activates render throttler.
-func (r *RenderThrottler) SwitchOn() {
-	r.isActive = true
-}
-
-// SwitchOff enables desactivates render throttler.
-func (r *RenderThrottler) SwitchOff() {
-	r.isActive = false
-}
-
 // Toggle switches render throttler state.
 func (r *RenderThrottler) Toggle() {
 	r.isActive = !r.isActive
+	storage.SetRT(r.isActive) // TODO: this is bad. global local storage
+}
+
+// IsActive returns state of render throttler.
+func (r *RenderThrottler) IsActive() bool {
+	return r.isActive
 }
 
 // EnableRendering enables next frames to render.

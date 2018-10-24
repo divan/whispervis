@@ -3,6 +3,7 @@ package widgets
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/status-im/whispervis/storage"
 )
 
 // Graphics represents graphics configuration widget.
@@ -18,12 +19,12 @@ type Graphics struct {
 
 // NewGraphics creates a new Graphics widget. It needs to have
 // access to scene configuration, as it configures mostly things from it.
-func NewGraphics(conf SceneConfigurator, value int) *Graphics {
+func NewGraphics(conf SceneConfigurator) *Graphics {
 	g := &Graphics{
 		conf: conf,
 	}
-	g.rtSwitch = NewSwitch("Render throttler", true, conf.ToggleRenderThrottler)
-	g.fpsRadio = NewRadioGroup("FPS", value, conf.ChangeFPS, []int{60, 30, 20, 15})
+	g.rtSwitch = NewSwitch("Render throttler", storage.RT(), conf.ToggleRenderThrottler)
+	g.fpsRadio = NewRadioGroup("FPS", storage.FPS(), conf.ChangeFPS, []int{60, 30, 20, 15})
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
 		g.fpsRadio,
