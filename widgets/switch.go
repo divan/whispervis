@@ -15,6 +15,7 @@ import (
 type Switch struct {
 	vecty.Core
 
+	title     string
 	isChecked bool
 	handler   func()
 
@@ -22,10 +23,11 @@ type Switch struct {
 }
 
 // NewSwitch creates and inits a new switch.
-func NewSwitch(checked bool, handler func()) *Switch {
+func NewSwitch(title string, checked bool, handler func()) *Switch {
 	rnd := rand.Int63n(math.MaxInt64)
 	domID := fmt.Sprintf("idSwitch%d", rnd)
 	return &Switch{
+		title:     title,
 		isChecked: checked,
 		handler:   handler,
 		domID:     domID,
@@ -52,7 +54,7 @@ func (s *Switch) Render() vecty.ComponentOrHTML {
 				// see https://wikiki.github.io/form/switch/
 				vecty.Attribute("for", s.domID),
 			),
-			vecty.Text("Render throttler"),
+			vecty.Text(s.title),
 		),
 	)
 }

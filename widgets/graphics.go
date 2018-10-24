@@ -22,7 +22,7 @@ func NewGraphics(conf SceneConfigurator) *Graphics {
 	g := &Graphics{
 		conf: conf,
 	}
-	g.rtSwitch = NewSwitch(true, conf.ToggleRenderThrottler)
+	g.rtSwitch = NewSwitch("Render throttler", true, conf.ToggleRenderThrottler)
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
 		g.rtSwitch,
