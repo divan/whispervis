@@ -3,10 +3,11 @@ package main
 import "github.com/divan/three"
 
 var (
-	DefaultNodeMaterial = NewNodeMaterial()
-	BlinkedNodeMaterial = NewBlinkedNodeMaterial()
-	DefaultEdgeMaterial = NewEdgeMaterial()
-	BlinkedEdgeMaterial = NewBlinkedEdgeMaterial()
+	DefaultNodeMaterial     = NewNodeMaterial()
+	BlinkedNodeMaterial     = NewBlinkedNodeMaterial()
+	TransparentNodeMaterial = NewTransparentNodeMaterial()
+	DefaultEdgeMaterial     = NewEdgeMaterial()
+	BlinkedEdgeMaterial     = NewBlinkedEdgeMaterial()
 )
 
 const (
@@ -28,6 +29,15 @@ func NewBlinkedNodeMaterial() three.Material {
 	params.Color = three.NewColorRGB(255, 0, 0) // red
 	params.Transparent = true
 	params.Opacity = DefaultTransparency
+	return three.NewMeshPhongMaterial(params)
+}
+
+// NewTransparentNodeMaterial creates a new transparent material for the graph normal node.
+func NewTransparentNodeMaterial() three.Material {
+	params := three.NewMaterialParameters()
+	params.Color = three.NewColorRGB(0, 255, 0)
+	params.Transparent = true
+	params.Opacity = 0.5
 	return three.NewMeshPhongMaterial(params)
 }
 
