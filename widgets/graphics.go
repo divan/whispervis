@@ -12,12 +12,17 @@ type Graphics struct {
 
 	rtSwitch    *Switch
 	collapsable *Collapsable
+
+	conf SceneConfigurator
 }
 
-// NewGraphics creates a new Graphics widget.
-func NewGraphics() *Graphics {
-	g := &Graphics{}
-	g.rtSwitch = NewSwitch(true)
+// NewGraphics creates a new Graphics widget. It needs to have
+// access to scene configuration, as it configures mostly things from it.
+func NewGraphics(conf SceneConfigurator) *Graphics {
+	g := &Graphics{
+		conf: conf,
+	}
+	g.rtSwitch = NewSwitch(true, conf.ToggleRenderThrottler)
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
 		g.rtSwitch,

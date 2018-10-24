@@ -49,10 +49,10 @@ func NewPage() *Page {
 		loader:     widgets.NewLoader(),
 		activeView: View3D,
 	}
+	page.webgl = NewWebGLScene(page.onWebGLReady)
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
-	page.graphics = widgets.NewGraphics()
-	page.webgl = NewWebGLScene(page.onWebGLReady)
+	page.graphics = widgets.NewGraphics(page.webgl)
 	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
 	page.statsWidget = widgets.NewStats()
 	page.statsPage = NewStatsPage()

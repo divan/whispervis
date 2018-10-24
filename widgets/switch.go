@@ -16,16 +16,18 @@ type Switch struct {
 	vecty.Core
 
 	isChecked bool
+	handler   func()
 
 	domID string
 }
 
 // NewSwitch creates and inits a new switch.
-func NewSwitch(checked bool) *Switch {
+func NewSwitch(checked bool, handler func()) *Switch {
 	rnd := rand.Int63n(math.MaxInt64)
 	domID := fmt.Sprintf("idSwitch%d", rnd)
 	return &Switch{
 		isChecked: checked,
+		handler:   handler,
 		domID:     domID,
 	}
 }
@@ -64,4 +66,7 @@ func (s *Switch) Checked() bool {
 func (s *Switch) onToggle(*vecty.Event) {
 	s.isChecked = !s.isChecked
 	vecty.Rerender(s)
+	if s.handler != nil {
+		go s.handler()
+	}
 }

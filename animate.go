@@ -64,6 +64,11 @@ func (w *WebGLScene) ToggleWobbling() {
 	w.wobble = !w.wobble
 }
 
+// ToggleRenderThrottler switches render throttling option.
+func (w *WebGLScene) ToggleRenderThrottler() {
+	w.rt.Toggle()
+}
+
 // MouseMoveListener implements listener for mousemove events.
 // We use it for disabling render throttling, as mousemove events
 // correlates with user moving inside of the WebGL canvas. We

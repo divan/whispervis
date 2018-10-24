@@ -5,6 +5,11 @@ import (
 	"github.com/gopherjs/vecty/elem"
 )
 
+// SceneConfigurator defines a webgl scene config type.
+type SceneConfigurator interface {
+	ToggleRenderThrottler()
+}
+
 // Widgets renders common sidebar widget layout.
 func Widget(elements ...vecty.MarkupOrChild) *vecty.HTML {
 	hr := elem.HorizontalRule(
