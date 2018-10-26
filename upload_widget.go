@@ -8,6 +8,7 @@ import (
 )
 
 // UploadWidget implements widget responsible for uploading JSON file.
+// TODO(divan): move to widgets package
 type UploadWidget struct {
 	vecty.Core
 
