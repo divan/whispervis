@@ -72,3 +72,21 @@ func RT() bool {
 	}
 	return rt
 }
+
+// SetBlinkTime saves blink time value to local storage.
+func SetBlinkTime(ms int) {
+	Set("blink_time", strconv.Itoa(ms))
+}
+
+func BlinkTime() int {
+	var blink int = 200
+
+	str := Get("blink_time")
+	if str != "" {
+		value, err := strconv.Atoi(str)
+		if err == nil {
+			blink = value
+		}
+	}
+	return blink
+}

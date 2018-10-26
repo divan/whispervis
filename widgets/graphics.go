@@ -12,6 +12,7 @@ type Graphics struct {
 
 	rtSwitch    *Switch
 	fpsRadio    *RadioGroup
+	blinkRange  *Range
 	collapsable *Collapsable
 
 	conf SceneConfigurator
@@ -25,10 +26,12 @@ func NewGraphics(conf SceneConfigurator) *Graphics {
 	}
 	g.rtSwitch = NewSwitch("Render throttler", storage.RT(), conf.ToggleRenderThrottler)
 	g.fpsRadio = NewRadioGroup("FPS", storage.FPS(), conf.ChangeFPS, []int{60, 30, 20, 15})
+	g.blinkRange = NewRange("Blink:", BlinkDescription, storage.BlinkTime(), conf.ChangeBlinkTime)
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
 		g.fpsRadio,
 		g.rtSwitch,
+		g.blinkRange,
 	)
 	return g
 }
@@ -44,3 +47,7 @@ func (g *Graphics) Render() vecty.ComponentOrHTML {
 func (g *Graphics) applyButton() vecty.ComponentOrHTML {
 	return elem.Span()
 }
+
+const (
+	BlinkDescription = "How many milliseconds should blink last. You may want to change this value to make animations more interesting depending on the length of the total simulation"
+)

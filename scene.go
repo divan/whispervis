@@ -33,8 +33,9 @@ type WebGLScene struct {
 	nodes []*Mesh
 	lines []*Line
 
-	rt  *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
-	fps int
+	rt    *RenderThrottler // used as a helper to reduce rendering calls when animation is not needed (experimental)
+	fps   int              // frames per second
+	blink int              // time in ms for blinking nodes/edges
 
 	initFn func() // function to run on initialization
 }
@@ -45,6 +46,7 @@ func NewWebGLScene(initFn func()) *WebGLScene {
 		rt:     NewRenderThrottler(),
 		initFn: initFn,
 		fps:    storage.FPS(),
+		blink:  storage.BlinkTime(),
 	}
 	w.WebGLRenderer = vthree.NewWebGLRenderer(vthree.WebGLOptions{
 		Init:      w.init,
@@ -141,4 +143,10 @@ func (w *WebGLScene) ChangeFPS(value int) {
 	fmt.Println("Changing FPS to", value)
 	w.fps = value
 	storage.SetFPS(value)
+}
+
+// ChangeBlinkTime changes propagation animation blink time. Implements SceneConfigurator.
+func (w *WebGLScene) ChangeBlinkTime(value int) {
+	w.blink = value
+	storage.SetBlinkTime(value)
 }

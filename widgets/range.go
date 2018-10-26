@@ -17,14 +17,17 @@ type Range struct {
 	title       string
 	description string
 	value       int
+
+	handler func(int)
 }
 
 // NewRange builds new Range widget.
-func NewRange(title, description string, value int) *Range {
+func NewRange(title, description string, value int, handler func(int)) *Range {
 	return &Range{
 		title:       title,
 		description: description,
 		value:       value,
+		handler:     handler,
 	}
 }
 
@@ -93,4 +96,8 @@ func (r *Range) onChange(event *vecty.Event) {
 	r.changed = true
 	r.value = value
 	vecty.Rerender(r)
+
+	if r.handler != nil {
+		r.handler(value)
+	}
 }

@@ -9,6 +9,7 @@ import (
 type SceneConfigurator interface {
 	ToggleRenderThrottler()
 	ChangeFPS(fps int)
+	ChangeBlinkTime(ms int)
 }
 
 // Widgets renders common sidebar widget layout.
