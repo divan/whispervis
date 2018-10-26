@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	BlinkDecay        = 200 * time.Millisecond // time for highlighted node/link to be active
-	AnimationSlowdown = 1                      // slowdown factor for propagation animation
+	AnimationSlowdown = 1 // slowdown factor for propagation animation
 )
 
 var (
@@ -54,7 +53,7 @@ func (w *WebGLScene) BlinkNode(id, percentage int) {
 	node := w.nodes[id]
 	node.Set("material", BlinkedNodeMaterials[percentage/10]) // choose material depending on percentage of propagation
 	restore := func() { node.Object.Set("material", DefaultNodeMaterial) }
-	go time.AfterFunc(BlinkDecay, restore)
+	go time.AfterFunc(time.Duration(w.blink)*time.Millisecond, restore)
 
 }
 
@@ -63,7 +62,7 @@ func (w *WebGLScene) BlinkEdge(id, percentage int) {
 	edge := w.lines[id]
 	edge.Set("material", BlinkedEdgeMaterials[percentage/10]) // choose material depending on percentage of propagation
 	restore := func() { edge.Object.Set("material", DefaultEdgeMaterial) }
-	go time.AfterFunc(BlinkDecay, restore)
+	go time.AfterFunc(time.Duration(w.blink)*time.Millisecond, restore)
 }
 
 // NewBlinkedEdgeMaterials creates a new default material for the graph blinked edge lines.
