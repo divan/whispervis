@@ -25,13 +25,15 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 		fn := func() {
 			// blink nodes for this timestamp
 			for _, idx := range nodes {
-				w.BlinkNode(idx)
-				go time.AfterFunc(delay, func() { w.UnblinkNode(idx) })
+				node := w.nodes[idx]
+				w.BlinkNode(node)
+				go time.AfterFunc(delay, func() { w.UnblinkNode(node) })
 			}
 			// blink links for this timestamp
 			for _, idx := range edges {
-				w.BlinkEdge(idx)
-				go time.AfterFunc(delay, func() { w.UnblinkEdge(idx) })
+				edge := w.lines[idx]
+				w.BlinkEdge(edge)
+				go time.AfterFunc(delay, func() { w.UnblinkEdge(edge) })
 			}
 		}
 		go time.AfterFunc(duration, fn)
@@ -53,10 +55,11 @@ func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
 	}
 	// blink nodes for this timestamp
 	for i, _ := range w.nodes {
+		node := w.nodes[i]
 		if _, ok := nodesToBlink[i]; ok {
-			w.BlinkNode(i)
+			w.BlinkNode(node)
 		} else {
-			w.UnblinkNode(i)
+			w.UnblinkNode(node)
 		}
 	}
 
@@ -65,35 +68,32 @@ func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
 		edgesToBlink[idx] = struct{}{}
 	}
 	for i, _ := range w.lines {
+		edge := w.lines[i]
 		if _, ok := edgesToBlink[i]; ok {
-			w.BlinkEdge(i)
+			w.BlinkEdge(edge)
 		} else {
-			w.UnblinkEdge(i)
+			w.UnblinkEdge(edge)
 		}
 	}
 }
 
 // BlinkNode animates a single node blinking. Node specified by its idx.
 // TODO(divan): consider renaming it to Highlight or something.
-func (w *WebGLScene) BlinkNode(id int) {
-	node := w.nodes[id]
+func (w *WebGLScene) BlinkNode(node *Mesh) {
 	node.Set("material", BlinkedNodeMaterial)
 }
 
-func (w *WebGLScene) UnblinkNode(id int) {
-	node := w.nodes[id]
+func (w *WebGLScene) UnblinkNode(node *Mesh) {
 	node.Object.Set("material", DefaultNodeMaterial)
 }
 
 // BlinkEdge animates a single edge blinking. Edge specified by its idx.
-func (w *WebGLScene) BlinkEdge(id int) {
-	edge := w.lines[id]
+func (w *WebGLScene) BlinkEdge(edge *Line) {
 	edge.Set("material", BlinkedEdgeMaterial)
 }
 
-func (w *WebGLScene) UnblinkEdge(id int) {
-	node := w.lines[id]
-	node.Object.Set("material", DefaultEdgeMaterial)
+func (w *WebGLScene) UnblinkEdge(edge *Line) {
+	edge.Set("material", DefaultEdgeMaterial)
 }
 
 // NewBlinkedEdgeMaterial creates a new default material for the graph blinked edge lines.
