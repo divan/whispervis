@@ -8,22 +8,16 @@ import (
 )
 
 var (
-	BlinkedEdgeMaterials = NewBlinkedEdgeMaterials()
-	BlinkedNodeMaterials = NewBlinkedNodeMaterials()
+	BlinkedEdgeMaterial = NewBlinkedEdgeMaterial()
+	BlinkedNodeMaterial = NewBlinkedNodeMaterial()
 )
 
 // AnimatePropagation visualizes propagation of message based on plog.
 func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 	w.rt.EnableRendering()
 
-	maxTs := plog.Timestamps[len(plog.Timestamps)-1]
 	for i, ts := range plog.Timestamps {
 		duration := time.Duration(time.Duration(ts) * time.Millisecond)
-
-		percentage := (ts * 100) / maxTs // % of plog
-		if percentage > 99 {
-			percentage = 99
-		}
 
 		nodes := plog.Nodes[i]
 		edges := plog.Links[i]
@@ -31,12 +25,12 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 		fn := func() {
 			// blink nodes for this timestamp
 			for _, idx := range nodes {
-				w.BlinkNode(idx, percentage)
+				w.BlinkNode(idx)
 				go time.AfterFunc(delay, func() { w.UnblinkNode(idx) })
 			}
 			// blink links for this timestamp
 			for _, idx := range edges {
-				w.BlinkEdge(idx, percentage)
+				w.BlinkEdge(idx)
 				go time.AfterFunc(delay, func() { w.UnblinkEdge(idx) })
 			}
 		}
@@ -60,7 +54,7 @@ func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
 	// blink nodes for this timestamp
 	for i, _ := range w.nodes {
 		if _, ok := nodesToBlink[i]; ok {
-			w.BlinkNode(i, 99)
+			w.BlinkNode(i)
 		} else {
 			w.UnblinkNode(i)
 		}
@@ -72,7 +66,7 @@ func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
 	}
 	for i, _ := range w.lines {
 		if _, ok := edgesToBlink[i]; ok {
-			w.BlinkEdge(i, 99)
+			w.BlinkEdge(i)
 		} else {
 			w.UnblinkEdge(i)
 		}
@@ -81,9 +75,9 @@ func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
 
 // BlinkNode animates a single node blinking. Node specified by its idx.
 // TODO(divan): consider renaming it to Highlight or something.
-func (w *WebGLScene) BlinkNode(id, percentage int) {
+func (w *WebGLScene) BlinkNode(id int) {
 	node := w.nodes[id]
-	node.Set("material", BlinkedNodeMaterials[percentage/10]) // choose material depending on percentage of propagation
+	node.Set("material", BlinkedNodeMaterial)
 }
 
 func (w *WebGLScene) UnblinkNode(id int) {
@@ -92,12 +86,9 @@ func (w *WebGLScene) UnblinkNode(id int) {
 }
 
 // BlinkEdge animates a single edge blinking. Edge specified by its idx.
-func (w *WebGLScene) BlinkEdge(id, percentage int) {
+func (w *WebGLScene) BlinkEdge(id int) {
 	edge := w.lines[id]
-	edge.Set("material", BlinkedEdgeMaterials[percentage/10]) // choose material depending on percentage of propagation
-
-	delay := time.Duration(w.blink) * time.Millisecond
-	go time.AfterFunc(delay, func() { w.UnblinkEdge(id) })
+	edge.Set("material", BlinkedEdgeMaterial)
 }
 
 func (w *WebGLScene) UnblinkEdge(id int) {
@@ -105,28 +96,18 @@ func (w *WebGLScene) UnblinkEdge(id int) {
 	node.Object.Set("material", DefaultEdgeMaterial)
 }
 
-// NewBlinkedEdgeMaterials creates a new default material for the graph blinked edge lines.
-func NewBlinkedEdgeMaterials() []three.Material {
+// NewBlinkedEdgeMaterial creates a new default material for the graph blinked edge lines.
+func NewBlinkedEdgeMaterial() three.Material {
 	params := three.NewMaterialParameters()
 	params.Color = three.NewColorRGB(255, 0, 0)
-	params.Transparent = true
-	ret := make([]three.Material, 0, 10)
-	for i := 0; i < 10; i++ {
-		params.Opacity = float64(1 - (float64(i) * 0.05)) // 1, 0.95, 0.90, 0.85...
-		ret = append(ret, three.NewLineBasicMaterial(params))
-	}
-	return ret
+	params.Transparent = false
+	return three.NewLineBasicMaterial(params)
 }
 
-// NewBlinkedNodeMaterials creates a new default material for the graph blinked node.
-func NewBlinkedNodeMaterials() []three.Material {
+// NewBlinkedNodeMaterial creates a new default material for the graph blinked node.
+func NewBlinkedNodeMaterial() three.Material {
 	params := three.NewMaterialParameters()
 	params.Color = three.NewColorRGB(255, 0, 0) // red
-	params.Transparent = true
-	ret := make([]three.Material, 0, 10)
-	for i := 0; i < 10; i++ {
-		params.Opacity = float64(1 - (float64(i) * 0.05)) // 1, 0.95, 0.90, 0.85...
-		ret = append(ret, three.NewMeshPhongMaterial(params))
-	}
-	return ret
+	params.Transparent = false
+	return three.NewMeshPhongMaterial(params)
 }
