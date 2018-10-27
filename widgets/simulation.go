@@ -171,3 +171,13 @@ func (s *Simulation) Reset() {
 	s.errMsg = ""
 	vecty.Rerender(s)
 }
+
+// StepForward increases timeline step.
+func (s *Simulation) StepForward() {
+	s.timeline.Inc()
+}
+
+// StepBackward decreases timeline step.
+func (s *Simulation) StepBackward() {
+	s.timeline.Dec()
+}

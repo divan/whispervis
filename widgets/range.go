@@ -96,11 +96,32 @@ func (r *Range) Changed() bool {
 func (r *Range) onChange(event *vecty.Event) {
 	value := event.Target.Get("value").Int()
 
-	r.changed = true
+	r.SetValue(value)
+}
+
+func (r *Range) Inc() {
+	r.SetValue(r.value + 1)
+}
+
+func (r *Range) Dec() {
+	r.SetValue(r.value - 1)
+}
+
+// SetValue sets a new value for the range.
+func (r *Range) SetValue(value int) {
+	if value > r.max {
+		value = r.max
+	}
+	if value < r.min {
+		value = r.min
+	}
+
 	r.value = value
 	vecty.Rerender(r)
 
+	r.changed = true
+
 	if r.handler != nil {
-		r.handler(value)
+		r.handler(r.value)
 	}
 }
