@@ -50,7 +50,7 @@ func NewPage() *Page {
 	page.network = widgets.NewNetworkSelector(page.onNetworkChange)
 	page.forceEditor = widgets.NewForceEditor(page.onForcesApply)
 	page.graphics = widgets.NewGraphics(page.webgl)
-	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation)
+	page.simulationWidget = widgets.NewSimulation("http://localhost:8084", page.startSimulation, page.replaySimulation, page.stepSimulation)
 	page.statsWidget = widgets.NewStats()
 	page.statsPage = NewStatsPage()
 	page.faqPage = NewFAQPage()
@@ -174,7 +174,9 @@ func (p *Page) onNetworkChange(network *network.Network) {
 }
 
 // startSimulation is called on the end of each simulation round.
-func (p *Page) startSimulation() error {
+// Returns numnber of timesteps for the simulation.
+// TODO(divan): maybe sim widget need to have access to whole simulation?
+func (p *Page) startSimulation() (int, error) {
 	p.isSimulating = true
 	vecty.Rerender(p)
 
@@ -187,7 +189,7 @@ func (p *Page) startSimulation() error {
 	ttl := p.simulationWidget.TTL()
 	sim, err := p.runSimulation(backend, ttl)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	// calculate stats and update stats widget
@@ -199,7 +201,7 @@ func (p *Page) startSimulation() error {
 	p.statsPage.UpdateStats(p.network.Current().Data, p.simulation.plog)
 
 	p.replaySimulation()
-	return nil
+	return len(sim.plog.Timestamps), nil
 }
 
 // replaySimulation animates last simulation.
@@ -279,4 +281,12 @@ func (p *Page) renderTabs() *vecty.HTML {
 			),
 		),
 	)
+}
+
+// stepSimulation animates a single step from the last simulation.
+func (p *Page) stepSimulation(step int) {
+	if p.simulation == nil {
+		return
+	}
+	p.webgl.AnimateOneStep(p.simulation.plog, step)
 }

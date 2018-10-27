@@ -16,10 +16,12 @@ const (
 // Simulation represents configuration panel for propagation simulation.
 type Simulation struct {
 	vecty.Core
-	startSimulation func() error
+	startSimulation func() (int, error)
 	replay          func()
+	step            func(int)
 
-	address string // backend host address
+	address  string // backend host address
+	timeline *Range
 
 	ttl int
 
@@ -30,7 +32,7 @@ type Simulation struct {
 
 // NewSimulation creates new simulation configuration panel. If simulation
 // backend host address is not specified, it'll use 'localhost:8084' as a default.
-func NewSimulation(address string, startSimulation func() error, replay func()) *Simulation {
+func NewSimulation(address string, startSimulation func() (int, error), replay func(), step func(int)) *Simulation {
 	if address == "" {
 		address = "http://localhost:8084"
 	}
@@ -39,6 +41,7 @@ func NewSimulation(address string, startSimulation func() error, replay func()) 
 		address:         address,
 		startSimulation: startSimulation,
 		replay:          replay,
+		step:            step,
 	}
 }
 
@@ -92,6 +95,7 @@ func (s *Simulation) Render() vecty.ComponentOrHTML {
 					),
 					vecty.Text("Replay"),
 				),
+				s.timeline,
 			),
 			elem.Break(),
 			vecty.If(s.inProgress, elem.Div(
@@ -141,13 +145,18 @@ func (s *Simulation) onSimulateClick(e *vecty.Event) {
 		s.inProgress = true
 		vecty.Rerender(s)
 
-		err := s.startSimulation()
+		steps, err := s.startSimulation()
 		if err != nil {
 			s.errMsg = err.Error()
 		}
 
 		s.hasResults = err == nil
 		s.inProgress = false
+
+		if s.hasResults {
+			s.timeline = NewRange("Time", "", 0, 0, steps-1, s.step)
+		}
+
 		vecty.Rerender(s)
 	}()
 }

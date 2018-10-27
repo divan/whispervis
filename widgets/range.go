@@ -13,6 +13,7 @@ import (
 type Range struct {
 	vecty.Core
 
+	min, max    int
 	changed     bool
 	title       string
 	description string
@@ -22,12 +23,14 @@ type Range struct {
 }
 
 // NewRange builds new Range widget.
-func NewRange(title, description string, value int, handler func(int)) *Range {
+func NewRange(title, description string, value, min, max int, handler func(int)) *Range {
 	return &Range{
 		title:       title,
 		description: description,
 		value:       value,
 		handler:     handler,
+		min:         min,
+		max:         max,
 	}
 }
 
@@ -56,8 +59,8 @@ func (r *Range) Render() vecty.ComponentOrHTML {
 					vecty.Style("margin-right", "10px"),
 					prop.Value(value),
 					prop.Type("range"),
-					vecty.Attribute("min", "1"),
-					vecty.Attribute("max", "1000"), // allow 1-1000 range for steps
+					vecty.Attribute("min", fmt.Sprintf("%d", r.min)),
+					vecty.Attribute("max", fmt.Sprintf("%d", r.max)),
 					event.Input(r.onChange),
 				),
 			),

@@ -26,7 +26,7 @@ func NewGraphics(conf SceneConfigurator) *Graphics {
 	}
 	g.rtSwitch = NewSwitch("Render throttler", storage.RT(), conf.ToggleRenderThrottler)
 	g.fpsRadio = NewRadioGroup("FPS", storage.FPS(), conf.ChangeFPS, []int{60, 30, 20, 15})
-	g.blinkRange = NewRange("Blink:", BlinkDescription, storage.BlinkTime(), conf.ChangeBlinkTime)
+	g.blinkRange = NewRange("Blink:", BlinkDescription, storage.BlinkTime(), 10, 1500, conf.ChangeBlinkTime)
 	g.collapsable = NewCollapsable("Graphics:", false,
 		g.applyButton,
 		g.fpsRadio,

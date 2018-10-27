@@ -43,7 +43,7 @@ func NewForceEditor(apply func()) *ForceEditor {
 	f.spring = NewForceInput("Spring:", SpringForceDescription, f.config.SpringStiffness)
 	f.springLen = NewForceInput("Length:", SpringLengthDescription, f.config.SpringLen)
 	f.drag = NewForceInput("Drag:", DragForceDescritption, f.config.DragCoeff)
-	f.steps = NewRange("Steps:", StepsDescription, f.config.Steps, nil)
+	f.steps = NewRange("Steps:", StepsDescription, f.config.Steps, 1, 1000, nil)
 	f.collapsable = NewCollapsable("Layout forces:", false,
 		f.applyButton,
 		f.repelling,

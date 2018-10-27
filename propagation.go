@@ -7,10 +7,6 @@ import (
 	"github.com/status-im/simulation/propagation"
 )
 
-const (
-	AnimationSlowdown = 1 // slowdown factor for propagation animation
-)
-
 var (
 	BlinkedEdgeMaterials = NewBlinkedEdgeMaterials()
 	BlinkedNodeMaterials = NewBlinkedNodeMaterials()
@@ -23,7 +19,6 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 	maxTs := plog.Timestamps[len(plog.Timestamps)-1]
 	for i, ts := range plog.Timestamps {
 		duration := time.Duration(time.Duration(ts) * time.Millisecond)
-		duration = duration * AnimationSlowdown
 
 		percentage := (ts * 100) / maxTs // % of plog
 		if percentage > 99 {
@@ -32,14 +27,17 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 
 		nodes := plog.Nodes[i]
 		edges := plog.Links[i]
+		delay := time.Duration(w.blink) * time.Millisecond
 		fn := func() {
 			// blink nodes for this timestamp
 			for _, idx := range nodes {
 				w.BlinkNode(idx, percentage)
+				go time.AfterFunc(delay, func() { w.UnblinkNode(idx) })
 			}
 			// blink links for this timestamp
 			for _, idx := range edges {
 				w.BlinkEdge(idx, percentage)
+				go time.AfterFunc(delay, func() { w.UnblinkEdge(idx) })
 			}
 		}
 		go time.AfterFunc(duration, fn)
@@ -48,21 +46,63 @@ func (w *WebGLScene) AnimatePropagation(plog *propagation.Log) {
 	}
 }
 
+// AnimateOneStep blinks permantently nodes and edges for the given step of plog.
+// TODO(divan): "Animate-" is probably not the best name here, come up with something
+// better (this function doesn't *animate* anything so far)
+func (w *WebGLScene) AnimateOneStep(plog *propagation.Log, step int) {
+	nodes := plog.Nodes[step]
+	edges := plog.Links[step]
+
+	nodesToBlink := make(map[int]struct{})
+	for _, idx := range nodes {
+		nodesToBlink[idx] = struct{}{}
+	}
+	// blink nodes for this timestamp
+	for i, _ := range w.nodes {
+		if _, ok := nodesToBlink[i]; ok {
+			w.BlinkNode(i, 99)
+		} else {
+			w.UnblinkNode(i)
+		}
+	}
+
+	edgesToBlink := make(map[int]struct{})
+	for _, idx := range edges {
+		edgesToBlink[idx] = struct{}{}
+	}
+	for i, _ := range w.lines {
+		if _, ok := edgesToBlink[i]; ok {
+			w.BlinkEdge(i, 99)
+		} else {
+			w.UnblinkEdge(i)
+		}
+	}
+}
+
 // BlinkNode animates a single node blinking. Node specified by its idx.
+// TODO(divan): consider renaming it to Highlight or something.
 func (w *WebGLScene) BlinkNode(id, percentage int) {
 	node := w.nodes[id]
 	node.Set("material", BlinkedNodeMaterials[percentage/10]) // choose material depending on percentage of propagation
-	restore := func() { node.Object.Set("material", DefaultNodeMaterial) }
-	go time.AfterFunc(time.Duration(w.blink)*time.Millisecond, restore)
+}
 
+func (w *WebGLScene) UnblinkNode(id int) {
+	node := w.nodes[id]
+	node.Object.Set("material", DefaultNodeMaterial)
 }
 
 // BlinkEdge animates a single edge blinking. Edge specified by its idx.
 func (w *WebGLScene) BlinkEdge(id, percentage int) {
 	edge := w.lines[id]
 	edge.Set("material", BlinkedEdgeMaterials[percentage/10]) // choose material depending on percentage of propagation
-	restore := func() { edge.Object.Set("material", DefaultEdgeMaterial) }
-	go time.AfterFunc(time.Duration(w.blink)*time.Millisecond, restore)
+
+	delay := time.Duration(w.blink) * time.Millisecond
+	go time.AfterFunc(delay, func() { w.UnblinkEdge(id) })
+}
+
+func (w *WebGLScene) UnblinkEdge(id int) {
+	node := w.lines[id]
+	node.Object.Set("material", DefaultEdgeMaterial)
 }
 
 // NewBlinkedEdgeMaterials creates a new default material for the graph blinked edge lines.
