@@ -91,7 +91,7 @@ func (w *WebGLScene) Reset() {
 
 // InitScene inits a new scene, sets up camera, lights and all that.
 func (w *WebGLScene) InitScene(width, height float64) {
-	w.camera = three.NewPerspectiveCamera(70, width/height, 1, 10000)
+	w.camera = three.NewPerspectiveCamera(70, width/height, 1, 50000)
 	w.camera.Position.Set(0, 0, 100)
 
 	w.scene = three.NewScene()
