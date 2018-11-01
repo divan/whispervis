@@ -20,6 +20,7 @@ type Simulation struct {
 
 // SimulationRequests defines a POST request payload for simulation backend.
 type SimulationRequest struct {
+	Algorithm string          `json:"algorithm"`
 	SenderIdx int             `json:"senderIdx"` // index of the sender node (index of data.Nodes, in fact)
 	TTL       int             `json:"ttl"`       // ttl in seconds
 	MsgSize   int             `json:"msg_size"`  // msg size in bytes
@@ -55,6 +56,7 @@ func (p *Page) runSimulation(address string, ttl int) (*Simulation, error) {
 // prepares it as io.Reader for usage with http.Post.
 func (p *Page) newPOSTSimulationRequest(ttl int) (io.Reader, error) {
 	req := SimulationRequest{
+		Algorithm: "whisperv6", // TODO(divan): move to UI configuration
 		SenderIdx: 0,
 		TTL:       ttl,
 		MsgSize:   400,
