@@ -94,13 +94,19 @@ func (n *NetworkSelector) descriptionBlock() *vecty.HTML {
 func (n *NetworkSelector) networkOptions() vecty.List {
 	var options vecty.List
 	for name := range n.networks {
-		options = append(options, elem.Option(
+		currentName := "none"
+		if n.current != nil {
+			currentName = n.current.Name
+		}
+
+		opt := elem.Option(
 			vecty.Markup(
 				vecty.Property("value", name),
-				vecty.Property("selected", n.current.Name == "data/"+name), // TODO(divan): get rid of "data"
+				vecty.Property("selected", currentName == "data/"+name), // TODO(divan): get rid of "data"
 			),
 			vecty.Text(name),
-		))
+		)
+		options = append(options, opt)
 	}
 	return options
 }
