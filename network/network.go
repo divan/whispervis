@@ -18,7 +18,7 @@ type Network struct {
 	Name        string
 	Description string
 	Data        *graph.Graph
-	Positions   []*layout.Point
+	Positions   []*layout.Position
 }
 
 // LoadNetwork loads network information from the JSON file.
@@ -90,7 +90,7 @@ func LoadNetworkFromReader(r io.Reader) (*Network, error) {
 			Source string `json:"source"`
 			Target string `json:"target"`
 		} `json:"links"`
-		Positions []*layout.Point `json:"positions"`
+		Positions []*layout.Position `json:"positions"`
 	}
 	err := json.NewDecoder(r).Decode(&res)
 	if err != nil {
@@ -114,8 +114,6 @@ func LoadNetworkFromReader(r io.Reader) (*Network, error) {
 			return nil, err
 		}
 	}
-
-	g.UpdateCache()
 
 	return &Network{
 		Data:        g,

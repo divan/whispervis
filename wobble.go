@@ -48,9 +48,7 @@ func (w *Wobbling) Animate() {
 func (w *Wobbling) wobbleNodes() {
 	for id, pos := range w.positions {
 		d := w.directions[id]
-		pos.X += d.X
-		pos.Y += d.Y
-		pos.Z += d.Z
+		pos.SetPosition(pos.X()+d.X, pos.Y()+d.Y, pos.Z()+d.Z)
 	}
 }
 

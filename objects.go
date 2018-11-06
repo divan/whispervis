@@ -52,7 +52,7 @@ func (w *WebGLScene) createNodes() {
 			ID:   id,
 			Mesh: three.NewMesh(geometry, material),
 		}
-		mesh.Position.Set(node.X, node.Y, node.Z)
+		mesh.Position.Set(node.X(), node.Y(), node.Z())
 		mesh.MatrixAutoUpdate = false
 		mesh.UpdateMatrix()
 		w.nodesGroup.Add(mesh.Mesh)
@@ -74,8 +74,8 @@ func (w *WebGLScene) createEdges(links []*graph.Link) {
 
 		geom.AddAttribute("position", attr)
 
-		attr.SetXYZ(0, start.X, start.Y, start.Z)
-		attr.SetXYZ(1, end.X, end.Y, end.Z)
+		attr.SetXYZ(0, start.X(), start.Y(), start.Z())
+		attr.SetXYZ(1, end.X(), end.Y(), end.Z())
 		attr.NeedsUpdate = true
 
 		line := &Line{
@@ -94,7 +94,7 @@ func (w *WebGLScene) createEdges(links []*graph.Link) {
 func (w *WebGLScene) updatePositions() {
 	for _, node := range w.nodes {
 		pos := w.positions[node.ID]
-		node.Position.Set(pos.X, pos.Y, pos.Z)
+		node.Position.Set(pos.X(), pos.Y(), pos.Z())
 		node.UpdateMatrix()
 	}
 	for i := range w.lines {
@@ -102,8 +102,8 @@ func (w *WebGLScene) updatePositions() {
 		end := w.positions[w.lines[i].To]
 
 		attr := w.lines[i].Geometry.GetAttribute("position")
-		attr.SetXYZ(0, start.X, start.Y, start.Z)
-		attr.SetXYZ(1, end.X, end.Y, end.Z)
+		attr.SetXYZ(0, start.X(), start.Y(), start.Z())
+		attr.SetXYZ(1, end.X(), end.Y(), end.Z())
 		attr.NeedsUpdate = true
 	}
 }
