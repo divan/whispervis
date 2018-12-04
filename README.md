@@ -12,7 +12,7 @@ It provides an UI for choosing/generating different network graphs, requesting s
 Just open `index.html` in the modern browser.
 
 ```
-git clone git@github.com:status-im/whispervis.git
+git clone git@github.com:divan/whispervis.git
 cd whisperviz/
 
 # on MacOS
@@ -30,8 +30,8 @@ go get -u github.com/gopherjs/gopherjs
 
 Then, install source code:
 ```
-go get github.com/status-im/whispervis
-cd $GOPATH/github.com/status-im/whispervis
+go get github.com/divan/whispervis
+cd $GOPATH/github.com/divan/whispervis
 ```
 after you made your changes, just run:
 

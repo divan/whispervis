@@ -3,9 +3,9 @@ package widgets
 import (
 	"fmt"
 
+	"github.com/divan/simulation/stats"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/status-im/simulation/stats"
 )
 
 // Stats represents widget with the statistics from the latest simulation.

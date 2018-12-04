@@ -5,9 +5,9 @@ import (
 
 	"github.com/divan/graphx/layout"
 	"github.com/divan/three"
+	"github.com/divan/whispervis/storage"
+	"github.com/divan/whispervis/vthree"
 	"github.com/gopherjs/gopherjs/js"
-	"github.com/status-im/whispervis/storage"
-	"github.com/status-im/whispervis/vthree"
 )
 
 // WebGLScene represents WebGL part of app.

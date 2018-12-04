@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/status-im/simulation/propagation"
-	"github.com/status-im/simulation/stats"
+	"github.com/divan/simulation/propagation"
+	"github.com/divan/simulation/stats"
 )
 
 func (p *Page) RecalculateStats(plog *propagation.Log) *stats.Stats {

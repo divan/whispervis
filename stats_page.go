@@ -6,10 +6,10 @@ import (
 
 	charts "github.com/cnguy/gopherjs-frappe-charts"
 	"github.com/divan/graphx/graph"
+	"github.com/divan/simulation/propagation"
+	"github.com/divan/whispervis/widgets"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/status-im/simulation/propagation"
-	"github.com/status-im/whispervis/widgets"
 )
 
 // StatsPage is stats view component.

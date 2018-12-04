@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/status-im/whispervis/storage"
+	"github.com/divan/whispervis/storage"
 )
 
 // DefaultRenderThrottleDecay defines a decay period after which throttling should reenabled.

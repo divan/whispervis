@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/divan/whispervis/network"
+	"github.com/divan/whispervis/storage"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
-	"github.com/status-im/whispervis/network"
-	"github.com/status-im/whispervis/storage"
 )
 
 // NetworkSelector represents widget for choosing or uploading network topology

@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/divan/graphx/formats"
-	"github.com/status-im/simulation/propagation"
-	"github.com/status-im/simulation/stats"
+	"github.com/divan/simulation/propagation"
+	"github.com/divan/simulation/stats"
 )
 
 // Simulation represents the state of last simulation.

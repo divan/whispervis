@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
+	"github.com/divan/simulation/propagation"
 	"github.com/divan/three"
-	"github.com/status-im/simulation/propagation"
 )
 
 var (

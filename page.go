@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	"github.com/divan/graphx/layout"
+	"github.com/divan/whispervis/network"
+	"github.com/divan/whispervis/widgets"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/status-im/whispervis/network"
-	"github.com/status-im/whispervis/widgets"
 )
 
 // Page is our main page component.

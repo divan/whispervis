@@ -3,11 +3,11 @@ package widgets
 import (
 	"fmt"
 
+	"github.com/divan/whispervis/jsapi"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/status-im/whispervis/jsapi"
 )
 
 // UploadWidget implements widget responsible for uploading JSON file.
