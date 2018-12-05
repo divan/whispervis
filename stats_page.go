@@ -46,11 +46,6 @@ func (s *StatsPage) Render() vecty.ComponentOrHTML {
 		),
 		// consult this tile madness here https://bulma.io/documentation/layout/tiles/
 		elem.Div(vecty.Markup(vecty.Class("tile", "is-anscestor")),
-			elem.Div(vecty.Markup(vecty.Class("tile", "is-parent", "is-4", "is-vertical")),
-				Tile(vecty.Text("Part left")),
-				Tile(vecty.Text("Part left 2")),
-			),
-
 			elem.Div(vecty.Markup(vecty.Class("tile", "is-parent", "is-vertical")),
 				vecty.If(s.chart1Data != nil, Tile(widgets.NewChart("nodes", s.chart1Data))),
 				vecty.If(s.chart2Data != nil, Tile(widgets.NewChart("cumulative", s.chart2Data))),
