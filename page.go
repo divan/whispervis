@@ -9,7 +9,6 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // Page is our main page component.
@@ -214,12 +213,6 @@ func (p *Page) replaySimulation() {
 
 func (p *Page) header() *vecty.HTML {
 	return elem.Section(
-		elem.Image(
-			vecty.Markup(
-				vecty.Style("padding-top", "5px"),
-				prop.Src("images/status.png"),
-			),
-		),
 		elem.Heading2(
 			vecty.Markup(
 				vecty.Class("title", "has-text-weight-light"),
