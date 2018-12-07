@@ -4,7 +4,7 @@ Web application for visualizing network graphs and p2p message propagation algor
 It provides an UI for choosing/generating different network graphs, requesting simulation results from the simulation backend, displaying statistics and animating message(s) propagation.
 
 ## Demo
-[![Demo](https://img.youtube.com/vi/z2Zrfz6xxng/0.jpg)](https://www.youtube.com/watch?v=z2Zrfz6xxng)
+[![Demo](/images/demo.gif)](https://www.youtube.com/watch?v=z2Zrfz6xxng)
 
 
 ## Usage
