@@ -29,7 +29,7 @@ func SetNetwork(name string) {
 
 func Network() string {
 	net := Get("network")
-	if net == "" {
+	if net == "" || net == "undefined" {
 		net = "3dgrid125.json"
 	}
 	return net
@@ -82,7 +82,7 @@ func BlinkTime() int {
 	var blink int = 200
 
 	str := Get("blink_time")
-	if str != "" {
+	if str != "" && str != "undefined" {
 		value, err := strconv.Atoi(str)
 		if err == nil {
 			blink = value
